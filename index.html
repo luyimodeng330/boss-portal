@@ -3470,7 +3470,8 @@ function renderChips(chips) {
       <div class="chip-basis">法律依据: ${c.legal_basis || '通用'}</div>
       ${c.exclusivity ? `<div class="chip-exclusive">独有性: ${c.exclusivity}</div>` : ''}
     </div>`;
-  });
+    });
+  }
 
   if (chips.tradeable && chips.tradeable.length > 0) {
     html += '<div class="sub-heading">可谈判筹码</div>';
