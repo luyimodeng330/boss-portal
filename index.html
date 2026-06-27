@@ -1,0 +1,3069 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>总裁每日工作看板</title>
+<style>
+  :root {
+    --wine: #431C1E;
+    --wine-light: #5A282A;
+    --wine-lighter: #6D3537;
+    --warm-gray: #99A0AC;
+    --warm-gray-light: #B5BBC5;
+    --warm-gray-dark: #7A8290;
+    --beige: #F3F1EE;
+    --beige-dark: #E8E5E0;
+    --white: #FFFFFF;
+    --green-ok: #2D8A56;
+    --green-bg: #E8F5E9;
+    --yellow-prog: #D4A017;
+    --yellow-bg: #FFF8E1;
+    --red-alert: #C62828;
+    --red-bg: #FFEBEE;
+    --blue-plan: #1565C0;
+    --blue-bg: #E3F2FD;
+    --purple: #6A1B9A;
+    --purple-bg: #F3E5F5;
+    --orange: #E65100;
+    --orange-bg: #FFF3E0;
+    --shadow: 0 2px 8px rgba(67,28,30,0.08);
+    --shadow-md: 0 4px 16px rgba(67,28,30,0.12);
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
+    background: var(--beige);
+    color: var(--wine);
+    line-height: 1.6;
+    min-height: 100vh;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  /* Header */
+  .header {
+    background: var(--wine);
+    color: var(--beige);
+    padding: 16px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .header-title {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .header-subtitle {
+    font-size: 13px;
+    color: var(--warm-gray-light);
+    margin-top: 2px;
+  }
+  .header-actions {
+    display: flex;
+    gap: 8px;
+  }
+  .btn-refresh {
+    background: var(--wine-light);
+    color: var(--beige);
+    border: none;
+    padding: 8px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-refresh:hover { background: var(--wine-lighter); }
+  .btn-refresh:active { transform: scale(0.95); }
+
+  /* Status Banner */
+  .status-banner {
+    background: var(--red-bg);
+    border-left: 3px solid var(--red-alert);
+    padding: 10px 16px;
+    margin: 12px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .status-banner .icon { font-size: 16px; }
+  .status-banner .text { flex: 1; }
+  .status-banner .tag {
+    background: var(--red-alert);
+    color: var(--white);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  /* Cards */
+  .card-section {
+    margin: 12px 16px;
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .card-header {
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--beige-dark);
+    cursor: pointer;
+    user-select: none;
+  }
+  .card-header .icon { font-size: 18px; }
+  .card-header .title {
+    font-size: 15px;
+    font-weight: 600;
+    flex: 1;
+  }
+  .card-header .count {
+    background: var(--wine-light);
+    color: var(--beige);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .card-header .toggle {
+    font-size: 14px;
+    color: var(--warm-gray);
+    transition: transform 0.2s;
+  }
+  .card-body {
+    padding: 0;
+    max-height: 2000px;
+    transition: max-height 0.3s ease;
+  }
+  .card-body.collapsed {
+    max-height: 0;
+    overflow: hidden;
+  }
+
+  /* Schedule Items */
+  .schedule-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--beige-dark);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    transition: background 0.2s;
+    position: relative;
+  }
+  .schedule-item:last-child { border-bottom: none; }
+  .schedule-item:hover { background: var(--beige); }
+  .schedule-item.done { opacity: 0.5; }
+  .schedule-item.done .item-title { text-decoration: line-through; }
+
+  .time-col {
+    min-width: 56px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--wine);
+    text-align: center;
+    padding-top: 2px;
+  }
+  .time-col .time-start { font-size: 14px; }
+  .time-col .time-end { font-size: 11px; color: var(--warm-gray); }
+
+  .item-content { flex: 1; }
+  .item-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--wine);
+  }
+  .item-location {
+    font-size: 12px;
+    color: var(--warm-gray);
+    margin-top: 2px;
+  }
+  .item-tags { display: flex; gap: 4px; margin-top: 4px; }
+  .item-tag {
+    font-size: 11px;
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: var(--beige-dark);
+    color: var(--warm-gray-dark);
+  }
+  .item-tag.urgent { background: var(--red-bg); color: var(--red-alert); }
+  .item-tag.client { background: var(--blue-bg); color: var(--blue-plan); }
+  .item-tag.internal { background: var(--green-bg); color: var(--green-ok); }
+
+  .item-actions {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+  .btn-icon {
+    background: none;
+    border: 1px solid var(--beige-dark);
+    padding: 4px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    color: var(--warm-gray);
+    transition: all 0.2s;
+  }
+  .btn-icon:hover { background: var(--beige-dark); color: var(--wine); }
+  .btn-icon.active { background: var(--green-ok); color: var(--white); border-color: var(--green-ok); }
+
+  /* Free Time Block */
+  .free-block {
+    padding: 8px 16px;
+    background: var(--green-bg);
+    border-bottom: 1px solid var(--beige-dark);
+    font-size: 13px;
+    color: var(--green-ok);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* Travel Section */
+  .travel-constraint {
+    padding: 10px 16px;
+    background: var(--yellow-bg);
+    border-bottom: 1px solid var(--beige-dark);
+    font-size: 13px;
+  }
+  .constraint-row {
+    display: flex;
+    gap: 8px;
+    margin: 4px 0;
+    align-items: center;
+  }
+  .constraint-label { font-weight: 600; min-width: 48px; }
+  .constraint-no { color: var(--red-alert); }
+  .constraint-yes { color: var(--green-ok); }
+
+  .flight-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--beige-dark);
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .flight-item:last-child { border-bottom: none; }
+  .flight-airline {
+    font-size: 12px;
+    font-weight: 600;
+    min-width: 70px;
+  }
+  .flight-route {
+    flex: 1;
+    font-size: 13px;
+  }
+  .flight-time { font-weight: 600; }
+  .flight-duration { font-size: 11px; color: var(--warm-gray); }
+  .flight-price {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--wine);
+    min-width: 60px;
+    text-align: right;
+  }
+
+  .travel-domestic-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--beige-dark);
+    font-size: 13px;
+  }
+  .domestic-option {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin: 4px 0;
+  }
+  .domestic-icon { min-width: 24px; }
+  .domestic-detail { flex: 1; }
+
+  /* Exercise Section */
+  .exercise-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--beige-dark);
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .exercise-item:last-child { border-bottom: none; }
+  .exercise-icon { font-size: 20px; min-width: 24px; }
+  .exercise-detail { flex: 1; }
+  .exercise-name { font-size: 14px; font-weight: 500; }
+  .exercise-desc { font-size: 12px; color: var(--warm-gray); }
+  .exercise-status {
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid var(--beige-dark);
+    background: var(--white);
+    color: var(--warm-gray);
+    transition: all 0.2s;
+  }
+  .exercise-status.done {
+    background: var(--green-ok);
+    color: var(--white);
+    border-color: var(--green-ok);
+  }
+
+  .tea-recommend {
+    padding: 10px 16px;
+    background: var(--orange-bg);
+    font-size: 13px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    border-bottom: 1px solid var(--beige-dark);
+  }
+  .tea-icon { font-size: 16px; }
+  .tea-name { font-weight: 600; color: var(--orange); }
+  .tea-effect { color: var(--warm-gray-dark); }
+
+  /* Notes Section */
+  .notes-area {
+    padding: 12px 16px;
+  }
+  .notes-input {
+    width: 100%;
+    min-height: 80px;
+    border: 1px solid var(--beige-dark);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--wine);
+    background: var(--beige);
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .notes-input:focus { border-color: var(--wine-light); }
+  .notes-hint {
+    font-size: 11px;
+    color: var(--warm-gray);
+    margin-top: 4px;
+  }
+
+  /* Footer */
+  .footer {
+    padding: 16px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--warm-gray);
+    border-top: 1px solid var(--beige-dark);
+    margin-top: 12px;
+  }
+  .footer .last-update { color: var(--wine-lighter); font-weight: 500; }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .header-title { font-size: 18px; }
+    .card-section { margin: 8px 12px; }
+    .status-banner { margin: 8px 12px; }
+    .time-col { min-width: 44px; }
+  }
+
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .card-section { animation: fadeIn 0.3s ease; }
+
+  /* Insight Panel */
+  .insight-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(67,28,30,0.4);
+    z-index: 200;
+    backdrop-filter: blur(4px);
+  }
+  .insight-overlay.show { display: flex; align-items: flex-end; justify-content: center; }
+  .insight-panel {
+    background: var(--white);
+    width: 100%;
+    max-width: 480px;
+    max-height: 85vh;
+    border-radius: 16px 16px 0 0;
+    overflow-y: auto;
+    animation: slideUp 0.3s ease;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .insight-header {
+    padding: 16px 20px;
+    background: var(--wine);
+    color: var(--beige);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-radius: 16px 16px 0 0;
+  }
+  .insight-title { font-size: 16px; font-weight: 700; flex: 1; }
+  .insight-close {
+    background: var(--wine-light);
+    color: var(--beige);
+    border: none;
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .insight-tabs {
+    display: flex;
+    padding: 0 16px;
+    border-bottom: 2px solid var(--beige-dark);
+    gap: 0;
+  }
+  .insight-tab {
+    flex: 1;
+    padding: 10px 4px;
+    border: none;
+    background: none;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--warm-gray);
+    cursor: pointer;
+    position: relative;
+    transition: color 0.2s;
+  }
+  .insight-tab.active {
+    color: var(--wine);
+    font-weight: 700;
+  }
+  .insight-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 4px; right: 4px;
+    height: 2px;
+    background: var(--wine);
+    border-radius: 2px;
+  }
+  .insight-content {
+    padding: 16px;
+  }
+  .insight-section {
+    margin-bottom: 16px;
+  }
+  .insight-section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--wine);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .insight-section-title .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--wine);
+  }
+  .insight-section-title .section-num {
+    background: var(--wine-light);
+    color: var(--beige);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+  }
+  .insight-card {
+    background: var(--beige);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--wine);
+  }
+  .insight-card .highlight {
+    font-weight: 700;
+    color: var(--red-alert);
+  }
+  .insight-card .key-num {
+    font-weight: 700;
+    color: var(--blue-plan);
+  }
+  .insight-list {
+    list-style: none;
+    padding: 0;
+  }
+  .insight-list li {
+    padding: 6px 12px;
+    font-size: 13px;
+    line-height: 1.6;
+    border-bottom: 1px solid var(--beige-dark);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .insight-list li:last-child { border-bottom: none; }
+  .insight-list li .bullet {
+    min-width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--wine-light);
+    margin-top: 6px;
+  }
+  .insight-list li .label {
+    font-weight: 600;
+    color: var(--wine);
+    min-width: 60px;
+  }
+  .insight-list li .val {
+    color: var(--warm-gray-dark);
+    flex: 1;
+  }
+  .talk-point {
+    padding: 10px 12px;
+    background: var(--beige);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .talk-point .tag {
+    display: inline-block;
+    font-size: 11px;
+    padding: 1px 6px;
+    border-radius: 4px;
+    margin-right: 6px;
+  }
+  .talk-point .tag.priority { background: var(--red-bg); color: var(--red-alert); }
+  .talk-point .tag.opportunity { background: var(--green-bg); color: var(--green-ok); }
+  .talk-point .tag.risk { background: var(--orange-bg); color: var(--orange); }
+
+  /* Schedule item clickable */
+  .schedule-item.clickable {
+    cursor: pointer;
+  }
+  .schedule-item.clickable:hover {
+    background: var(--beige-dark);
+  }
+  .schedule-item.clickable .item-title {
+    position: relative;
+  }
+  .schedule-item.clickable .item-title::after {
+    content: ' 🔍';
+    font-size: 11px;
+    color: var(--blue-plan);
+  }
+
+  /* Progress bar in header */
+  .day-progress {
+    margin-top: 8px;
+    height: 3px;
+    background: var(--wine-light);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .day-progress-bar {
+    height: 100%;
+    background: var(--green-ok);
+    border-radius: 2px;
+    transition: width 0.5s ease;
+  }
+
+  /* ====== NEW: Negotiation-specific CSS ====== */
+
+  /* Layer separator */
+  .layer-sep {
+    text-align: center;
+    padding: 8px 0;
+    margin: 12px 0 8px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--warm-gray);
+    border-top: 1px dashed var(--beige-dark);
+    letter-spacing: 1px;
+  }
+
+  /* Chip card */
+  .chip-card {
+    background: var(--beige);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .chip-card .chip-cat {
+    font-weight: 700;
+    color: var(--wine);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 4px;
+  }
+  .chip-card .chip-cat .chip-icon {
+    font-size: 14px;
+  }
+  .chip-card .chip-level {
+    display: inline-block;
+    font-size: 11px;
+    padding: 1px 6px;
+    border-radius: 4px;
+    margin-left: 6px;
+  }
+  .chip-level.high { background: var(--red-bg); color: var(--red-alert); }
+  .chip-level.mid-high { background: var(--orange-bg); color: var(--orange); }
+  .chip-level.mid { background: var(--yellow-bg); color: var(--yellow-prog); }
+  .chip-card .chip-detail {
+    color: var(--warm-gray-dark);
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .chip-card .chip-basis {
+    font-size: 11px;
+    color: var(--warm-gray);
+    margin-top: 4px;
+    padding-top: 4px;
+    border-top: 1px dotted var(--beige-dark);
+  }
+  .chip-card .chip-exclusive {
+    font-size: 11px;
+    color: var(--blue-plan);
+    margin-top: 2px;
+  }
+
+  /* Strategy card */
+  .strategy-card {
+    background: var(--beige);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    line-height: 1.6;
+    border-left: 3px solid var(--warm-gray);
+  }
+  .strategy-card.recommended {
+    border-left-color: var(--green-ok);
+    background: var(--green-bg);
+  }
+  .strategy-card .strat-name {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--wine);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .strategy-card .strat-name .rec-badge {
+    background: var(--green-ok);
+    color: var(--white);
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  .strategy-card .strat-row {
+    display: flex;
+    gap: 4px;
+    margin: 3px 0;
+    align-items: flex-start;
+  }
+  .strategy-card .strat-label {
+    font-weight: 600;
+    color: var(--wine);
+    min-width: 52px;
+    font-size: 12px;
+  }
+  .strategy-card .strat-val {
+    color: var(--warm-gray-dark);
+    font-size: 12px;
+    flex: 1;
+  }
+
+  /* Comparison table */
+  .cmp-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+  .cmp-table th {
+    background: var(--wine-light);
+    color: var(--beige);
+    padding: 6px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    text-align: left;
+  }
+  .cmp-table td {
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--beige-dark);
+    color: var(--warm-gray-dark);
+    vertical-align: top;
+  }
+  .cmp-table td:first-child {
+    font-weight: 600;
+    color: var(--wine);
+  }
+  .cmp-table tr:hover td { background: var(--beige); }
+
+  /* Bottom line tags */
+  .bl-tag {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin: 2px 4px 2px 0;
+    font-weight: 500;
+  }
+  .bl-tag.hard { background: var(--red-bg); color: var(--red-alert); }
+  .bl-tag.soft { background: var(--yellow-bg); color: var(--yellow-prog); }
+  .bl-tag.walk { background: var(--purple-bg); color: var(--purple); }
+
+  /* Trade item */
+  .trade-item {
+    background: var(--beige);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .trade-item .trade-priority {
+    display: inline-block;
+    font-size: 11px;
+    padding: 1px 6px;
+    border-radius: 4px;
+    margin-bottom: 4px;
+  }
+  .trade-priority.high { background: var(--red-bg); color: var(--red-alert); }
+  .trade-priority.mid-high { background: var(--orange-bg); color: var(--orange); }
+  .trade-priority.mid { background: var(--yellow-bg); color: var(--yellow-prog); }
+  .trade-priority.low { background: var(--beige-dark); color: var(--warm-gray-dark); }
+  .trade-item .trade-row {
+    display: flex;
+    gap: 4px;
+    margin: 3px 0;
+    align-items: flex-start;
+  }
+  .trade-item .trade-label {
+    font-weight: 600;
+    color: var(--wine);
+    min-width: 36px;
+    font-size: 12px;
+  }
+  .trade-item .trade-val {
+    color: var(--warm-gray-dark);
+    font-size: 12px;
+    flex: 1;
+  }
+  .trade-item .trade-data {
+    font-size: 11px;
+    color: var(--warm-gray);
+    margin-top: 4px;
+    padding-top: 4px;
+    border-top: 1px dotted var(--beige-dark);
+  }
+
+  /* Scenario card */
+  .scenario-card {
+    background: var(--beige);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .scenario-card .sc-title {
+    font-weight: 700;
+    color: var(--wine);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .scenario-card .sc-title .sc-num {
+    background: var(--blue-plan);
+    color: var(--white);
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  .scenario-card .sc-row {
+    display: flex;
+    gap: 4px;
+    margin: 3px 0;
+    align-items: flex-start;
+  }
+  .scenario-card .sc-label {
+    font-weight: 600;
+    color: var(--wine);
+    min-width: 48px;
+    font-size: 12px;
+  }
+  .scenario-card .sc-val {
+    color: var(--warm-gray-dark);
+    font-size: 12px;
+    flex: 1;
+  }
+  .scenario-card .sc-bl {
+    font-size: 11px;
+    color: var(--red-alert);
+    margin-top: 4px;
+    padding-top: 4px;
+    border-top: 1px dotted var(--beige-dark);
+    font-weight: 600;
+  }
+
+  /* Closing path card */
+  .close-card {
+    background: var(--beige);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+    border-left: 3px solid var(--warm-gray);
+  }
+  .close-card.best { border-left-color: var(--green-ok); }
+  .close-card.likely { border-left-color: var(--blue-plan); }
+  .close-card.worst { border-left-color: var(--red-alert); }
+  .close-card .close-label {
+    font-weight: 700;
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+  .close-card.best .close-label { color: var(--green-ok); }
+  .close-card.likely .close-label { color: var(--blue-plan); }
+  .close-card.worst .close-label { color: var(--red-alert); }
+
+  /* Compliance risk card */
+  .compliance-card {
+    background: var(--beige);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .compliance-card .comp-title {
+    font-weight: 700;
+    color: var(--wine);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .compliance-card .comp-title .comp-icon {
+    color: var(--red-alert);
+    font-size: 14px;
+  }
+  .compliance-card .comp-row {
+    display: flex;
+    gap: 4px;
+    margin: 3px 0;
+    align-items: flex-start;
+  }
+  .compliance-card .comp-label {
+    font-weight: 600;
+    color: var(--wine);
+    min-width: 48px;
+    font-size: 12px;
+  }
+  .compliance-card .comp-val {
+    color: var(--warm-gray-dark);
+    font-size: 12px;
+    flex: 1;
+  }
+  .compliance-card .comp-risk {
+    color: var(--red-alert);
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .compliance-card .comp-action {
+    font-size: 12px;
+    color: var(--green-ok);
+    font-weight: 500;
+    margin-top: 4px;
+    padding-top: 4px;
+    border-top: 1px dotted var(--beige-dark);
+  }
+
+  /* Feasibility card */
+  .feasibility-card {
+    background: var(--beige);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+    border-left: 3px solid var(--warm-gray);
+  }
+  .feasibility-card.high { border-left-color: var(--green-ok); }
+  .feasibility-card.mid { border-left-color: var(--yellow-prog); }
+  .feasibility-card.mid-low { border-left-color: var(--orange); }
+  .feasibility-card .feas-name {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--wine);
+    margin-bottom: 6px;
+  }
+  .feasibility-card .feas-badge {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-left: 6px;
+  }
+  .feasibility-card.high .feas-badge { background: var(--green-bg); color: var(--green-ok); }
+  .feasibility-card.mid .feas-badge { background: var(--yellow-bg); color: var(--yellow-prog); }
+  .feasibility-card.mid-low .feas-badge { background: var(--orange-bg); color: var(--orange); }
+  .feasibility-card .feas-row {
+    display: flex;
+    gap: 4px;
+    margin: 3px 0;
+    align-items: flex-start;
+  }
+  .feasibility-card .feas-label {
+    font-weight: 600;
+    color: var(--wine);
+    min-width: 72px;
+    font-size: 12px;
+  }
+  .feasibility-card .feas-val {
+    color: var(--warm-gray-dark);
+    font-size: 12px;
+    flex: 1;
+  }
+
+  /* Need/Pain point */
+  .need-item {
+    background: var(--beige);
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .need-item .need-type {
+    display: inline-block;
+    font-size: 11px;
+    padding: 1px 6px;
+    border-radius: 4px;
+    margin-right: 6px;
+    font-weight: 600;
+  }
+  .need-type.surface { background: var(--blue-bg); color: var(--blue-plan); }
+  .need-type.deep { background: var(--purple-bg); color: var(--purple); }
+  .need-type.pain { background: var(--red-bg); color: var(--red-alert); }
+
+  /* Market/Industry section card */
+  .ind-card {
+    background: var(--beige);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .ind-card .ind-name {
+    font-weight: 700;
+    color: var(--wine);
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+  .ind-card .ind-row {
+    display: flex;
+    gap: 4px;
+    margin: 3px 0;
+    align-items: flex-start;
+  }
+  .ind-card .ind-label {
+    font-weight: 600;
+    color: var(--wine);
+    min-width: 60px;
+    font-size: 12px;
+  }
+  .ind-card .ind-val {
+    color: var(--warm-gray-dark);
+    font-size: 12px;
+    flex: 1;
+  }
+
+  /* Policy card */
+  .policy-card {
+    background: var(--beige);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .policy-card .pol-title {
+    font-weight: 700;
+    color: var(--wine);
+    margin-bottom: 4px;
+  }
+  .policy-card .pol-row {
+    display: flex;
+    gap: 4px;
+    margin: 3px 0;
+    align-items: flex-start;
+  }
+  .policy-card .pol-label {
+    font-weight: 600;
+    min-width: 40px;
+    font-size: 12px;
+    color: var(--wine);
+  }
+  .policy-card .pol-support { color: var(--green-ok); font-size: 12px; }
+  .policy-card .pol-restrict { color: var(--red-alert); font-size: 12px; }
+  .policy-card .pol-zone { color: var(--blue-plan); font-size: 12px; }
+  .policy-card .pol-opportunity { color: var(--blue-plan); font-size: 12px; }
+
+  /* ROI benchmark card */
+  .roi-card {
+    background: var(--beige);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .roi-card .roi-name {
+    font-weight: 700;
+    color: var(--wine);
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+  .roi-card .roi-row {
+    display: flex;
+    gap: 4px;
+    margin: 2px 0;
+    align-items: flex-start;
+  }
+  .roi-card .roi-label {
+    font-weight: 600;
+    color: var(--wine);
+    min-width: 64px;
+    font-size: 12px;
+  }
+  .roi-card .roi-val {
+    color: var(--warm-gray-dark);
+    font-size: 12px;
+    flex: 1;
+  }
+
+  /* Benchmark case card */
+  .case-card {
+    background: var(--beige);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .case-card .case-name {
+    font-weight: 700;
+    color: var(--wine);
+    margin-bottom: 4px;
+  }
+  .case-card .case-row {
+    display: flex;
+    gap: 4px;
+    margin: 2px 0;
+    align-items: flex-start;
+  }
+  .case-card .case-label {
+    font-weight: 600;
+    color: var(--wine);
+    min-width: 48px;
+    font-size: 12px;
+  }
+  .case-card .case-val {
+    color: var(--warm-gray-dark);
+    font-size: 12px;
+    flex: 1;
+  }
+
+  /* Risk list */
+  .risk-list {
+    list-style: none;
+    padding: 0;
+  }
+  .risk-list li {
+    padding: 6px 12px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-bottom: 1px solid var(--beige-dark);
+    color: var(--warm-gray-dark);
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .risk-list li:last-child { border-bottom: none; }
+  .risk-list .risk-icon {
+    font-size: 12px;
+    min-width: 16px;
+  }
+
+  /* Logic summary card */
+  .logic-card {
+    background: var(--beige);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .logic-card .logic-name {
+    font-weight: 700;
+    color: var(--wine);
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+  .logic-card .logic-text {
+    color: var(--warm-gray-dark);
+    font-size: 12px;
+  }
+
+  /* Agenda priority card */
+  .agenda-card {
+    background: var(--beige);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+    border-left: 3px solid var(--warm-gray);
+  }
+  .agenda-card.rank1 { border-left-color: var(--red-alert); }
+  .agenda-card.rank2 { border-left-color: var(--blue-plan); }
+  .agenda-card.rank3 { border-left-color: var(--warm-gray); }
+  .agenda-card .ag-rank {
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--wine);
+    margin-right: 8px;
+  }
+  .agenda-card .ag-topic {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--wine);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .agenda-card .ag-row {
+    display: flex;
+    gap: 4px;
+    margin: 3px 0;
+    align-items: flex-start;
+  }
+  .agenda-card .ag-label {
+    font-weight: 600;
+    color: var(--wine);
+    min-width: 52px;
+    font-size: 12px;
+  }
+  .agenda-card .ag-val {
+    color: var(--warm-gray-dark);
+    font-size: 12px;
+    flex: 1;
+  }
+
+  /* Meeting info card */
+  .meeting-card {
+    background: var(--beige);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .meeting-card .mtg-row {
+    display: flex;
+    gap: 4px;
+    margin: 3px 0;
+  }
+  .meeting-card .mtg-label {
+    font-weight: 600;
+    color: var(--wine);
+    min-width: 72px;
+    font-size: 12px;
+  }
+  .meeting-card .mtg-val {
+    color: var(--warm-gray-dark);
+    font-size: 12px;
+    flex: 1;
+  }
+
+  /* Opening script card */
+  .opening-card {
+    background: var(--green-bg);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .opening-card .op-script {
+    font-size: 12px;
+    color: var(--wine);
+    font-style: italic;
+    padding: 8px;
+    background: var(--white);
+    border-radius: 6px;
+    margin-top: 6px;
+    line-height: 1.7;
+  }
+  .opening-card .op-row {
+    display: flex;
+    gap: 4px;
+    margin: 3px 0;
+  }
+  .opening-card .op-label {
+    font-weight: 600;
+    color: var(--wine);
+    min-width: 52px;
+    font-size: 12px;
+  }
+  .opening-card .op-val {
+    color: var(--warm-gray-dark);
+    font-size: 12px;
+    flex: 1;
+  }
+
+  /* Deliverable list */
+  .deliverable-list {
+    list-style: none;
+    padding: 0;
+  }
+  .deliverable-list li {
+    padding: 5px 12px;
+    font-size: 12px;
+    border-bottom: 1px solid var(--beige-dark);
+    color: var(--warm-gray-dark);
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+  }
+  .deliverable-list li:last-child { border-bottom: none; }
+  .deliverable-list .dl-icon { color: var(--blue-plan); font-size: 12px; }
+
+  /* Business map tag */
+  .biz-tag {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin: 2px 4px 2px 0;
+    background: var(--beige-dark);
+    color: var(--wine);
+    font-weight: 500;
+  }
+  .biz-tag.core { background: var(--red-bg); color: var(--red-alert); }
+  .biz-tag.planned { background: var(--yellow-bg); color: var(--yellow-prog); }
+
+  /* Key person card */
+  .person-card {
+    background: var(--beige);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .person-card .person-name {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--wine);
+    margin-bottom: 2px;
+  }
+  .person-card .person-role {
+    font-size: 11px;
+    color: var(--warm-gray);
+    margin-bottom: 6px;
+  }
+  .person-card .person-row {
+    display: flex;
+    gap: 4px;
+    margin: 3px 0;
+    align-items: flex-start;
+  }
+  .person-card .person-label {
+    font-weight: 600;
+    color: var(--wine);
+    min-width: 64px;
+    font-size: 12px;
+  }
+  .person-card .person-val {
+    color: var(--warm-gray-dark);
+    font-size: 12px;
+    flex: 1;
+  }
+
+  /* Recommendation banner */
+  .rec-banner {
+    background: var(--green-bg);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    line-height: 1.6;
+    border-left: 3px solid var(--green-ok);
+  }
+  .rec-banner .rec-title {
+    font-weight: 700;
+    color: var(--green-ok);
+    margin-bottom: 4px;
+  }
+  .rec-banner .rec-text {
+    color: var(--wine);
+    font-size: 12px;
+  }
+
+  /* Sub-section heading */
+  .sub-heading {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--warm-gray-dark);
+    margin: 10px 0 6px;
+    padding-left: 4px;
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-top">
+    <div>
+      <div class="header-title">总裁每日工作看板</div>
+      <div class="header-subtitle" id="dateSubtitle"></div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-refresh" onclick="refreshData()" title="刷新数据">🔄 刷新</button>
+    </div>
+  </div>
+  <div class="day-progress">
+    <div class="day-progress-bar" id="progressBar" style="width: 0%"></div>
+  </div>
+</div>
+
+<!-- 📅 日程板块 -->
+<div class="card-section" id="scheduleCard">
+  <div class="card-header" onclick="toggleCard('scheduleCard')">
+    <span class="icon">📅</span>
+    <span class="title">今日日程</span>
+    <span class="count" id="scheduleCount">0场</span>
+    <span class="toggle">▼</span>
+  </div>
+  <div class="card-body" id="scheduleBody">
+    <div class="free-block" id="freeTimeBlock"></div>
+    <div id="scheduleList"></div>
+  </div>
+</div>
+
+<!-- 🚗 差旅板块 -->
+<div class="card-section" id="travelCard">
+  <div class="card-header" onclick="toggleCard('travelCard')">
+    <span class="icon">🚗</span>
+    <span class="title">差旅方案</span>
+    <span class="toggle">▼</span>
+  </div>
+  <div class="card-body" id="travelBody">
+    <div class="travel-prompt" style="padding:12px 16px;">
+      <div style="font-size:13px;color:var(--warm-gray);margin-bottom:8px;">告诉我要去哪里、什么时候，我来设计最佳行程方案</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;" id="travelQuickBtns">
+        <span style="font-size:12px;color:var(--blue-plan);padding:4px 10px;border:1px solid var(--blue-plan);border-radius:16px;">6月28日 · 出差巴色</span>
+      </div>
+    </div>
+    <div id="internationalFlights"></div>
+    <div id="domesticTravel"></div>
+    <div id="travelResult"></div>
+  </div>
+</div>
+
+<!-- 🔍 洞察面板弹窗 -->
+<div class="insight-overlay" id="insightOverlay" onclick="closeInsight(event)">
+  <div class="insight-panel" id="insightPanel">
+    <div class="insight-header">
+      <div class="insight-title" id="insightTitle"></div>
+      <button class="insight-close" onclick="closeInsight()">✕</button>
+    </div>
+    <div class="insight-tabs">
+      <button class="insight-tab active" data-tab="negotiation" onclick="switchTab('negotiation', this)">🎯 谈判作战包</button>
+      <button class="insight-tab" data-tab="investment" onclick="switchTab('investment', this)">📊 行业投资逻辑</button>
+      <button class="insight-tab" data-tab="battleplan" onclick="switchTab('battleplan', this)">⚔️ 今日作战计划</button>
+    </div>
+    <div class="insight-content" id="insightContent"></div>
+  </div>
+</div>
+
+<!-- 🏃 运动板块 -->
+<div class="card-section" id="exerciseCard">
+  <div class="card-header" onclick="toggleCard('exerciseCard')">
+    <span class="icon">🏃</span>
+    <span class="title">今日运动 + 茶饮</span>
+    <span class="toggle">▼</span>
+  </div>
+  <div class="card-body" id="exerciseBody">
+    <div id="teaSection"></div>
+    <div id="exerciseList"></div>
+  </div>
+</div>
+
+<!-- 📝 笔记板块 -->
+<div class="card-section" id="notesCard">
+  <div class="card-header" onclick="toggleCard('notesCard')">
+    <span class="icon">📝</span>
+    <span class="title">今日笔记</span>
+    <span class="toggle">▼</span>
+  </div>
+  <div class="card-body" id="notesBody">
+    <div class="notes-area">
+      <textarea class="notes-input" id="notesInput" placeholder="记录今日想法、备忘、谈话要点..."></textarea>
+      <div class="notes-hint">自动保存到本地 · 每日清零或手动保留</div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <div>总裁每日工作看板</div>
+  <div class="last-update" id="lastUpdate">最后更新: --</div>
+</div>
+
+<script>
+// ====== CONFIG ======
+const CONFIG = {
+  name: '陈海俊',
+  role: '四千岛特区金融总裁',
+  timezone: 'UTC+7',
+};
+
+// ====== DATA ======
+let scheduleData = [];
+let travelData = { international: [], domestic: [] };
+let exerciseData = [];
+let teaData = {};
+let notes = '';
+
+// ====== INSIGHT DATA (完整谈判作战包数据) ======
+const INSIGHT_DATA = {
+  'IHC投资集团': {
+    // ===== Tab1: 谈判作战包 =====
+    negotiation: {
+      // 板块1: 客户概况
+      overview: {
+        company_name: "IHC投资集团",
+        full_name: "INVESTMENT AND HYDRO POWER CONSULTANT SOLE CO., LTD（投资和水电咨询有限公司）",
+        founded: "2007",
+        registered_capital: "400万美元",
+        employees: "1100余人",
+        industry: "能源投资为核心，工程承包+矿业+多元化布局",
+        positioning: "老挝华人创立的综合性企业集团，立足老挝、依托中国、面向世界",
+        revenue_scale: "非上市公司，营收未公开。注册资本400万美元+员工1100人，推测年营收在数千万至1亿美元级别",
+        website: "ihclaos.com",
+        business_map: [
+          { name: "电力能源", tag: "core", detail: "核心主业，与风范股份合作水电站" },
+          { name: "金矿", tag: "core", detail: "阿速坡省普翁金矿，与国防部合作" },
+          { name: "煤炭", tag: "core", detail: "与四川嘉阳集团合作" },
+          { name: "大理石", tag: "core", detail: "华潘省大理石开采加工，2019年签约，目标建成老挝和东南亚最大石材企业" },
+          { name: "渔业", tag: "planned", detail: "拟投巴沙鱼二期" },
+          { name: "汽车", tag: "planned", detail: "拟落地授权产线" }
+        ],
+        core_advantage: "老挝华人资源+中老合作通道+多元化产业协同+政府关系（国防部+能矿部+华潘省计划投资厅）+1100人团队执行能力"
+      },
+      // 板块2: 关键人物
+      keyPeople: {
+        decision_maker: {
+          name: "谢易兵（Pisasai KEOSAYACHAK）",
+          title: "董事长/创始人",
+          role: "最终决策者",
+          background: "老挝华人，2007年创立IHC（注册资本400万美元），以能源投资起家。公司理念：'立足老挝，依托中国，面向世界'",
+          decision_style: "多元化扩张型——从电力起家→金矿→煤炭→大理石→拟投渔业+汽车，擅长跨界资源整合，善借政府关系拿资源特许权",
+          past_decisions: [
+            "2007年创立IHC，以能源投资为核心",
+            "2015年与常熟风范股份(601700)签署老挝水电站项目合作协议，IHC为唯一受托方",
+            "2019年与老挝国防部签署阿速坡省普翁金矿合作开发协议",
+            "2019年3月IHC矿业与华潘省计划投资厅签署大理石开采加工投资协议",
+            "与四川嘉阳集团合作煤炭能源",
+            "与中国武汉国际商会建立商务通道",
+            "2024年接待中国企业家商务文化考察团——主动向中国企业靠拢"
+          ],
+          relationship_with_laos: "老挝华人，与国防部（金矿）+ 能矿部（电力）+ 华潘省计划投资厅（大理石）有直接合作",
+          relationship_with_china: "与中国武汉国际商会、四川嘉阳集团、常熟风范股份(601700)有合作。理念明确：依托中国。2024年接待中国企业考察团=主动向中国企业靠拢"
+        },
+        influencers: [
+          { name: "待补充", title: "GM/副总/财务总监", role: "执行层/影响层", influence_area: "投资评估/财务测算/运营执行" }
+        ],
+        decision_chain: "谢易兵拍板 → 待补充（谁评估？谁执行？）"
+      },
+      // 板块3: 合作网络
+      network: {
+        government: [
+          { name: "老挝国防部", project: "阿速坡省普翁金矿合作开发", year: "2019" },
+          { name: "老挝能矿部", project: "电力能源项目", year: "待补充" },
+          { name: "华潘省计划投资厅", project: "大理石开采加工投资协议", year: "2019.3" },
+          { name: "老挝国家电力公司", project: "水电站工程总承包（与风范股份合作）", year: "2015" }
+        ],
+        chamber: [
+          { name: "中国武汉国际商会", project: "商务文化考察团接待", year: "2024" }
+        ],
+        enterprise: [
+          { name: "常熟风范股份(601700)", project: "老挝水电站项目合作协议，IHC为唯一受托方", year: "2015" },
+          { name: "四川嘉阳集团", project: "煤炭能源合作", year: "待补充" }
+        ],
+        core_alliances: "老挝国防部（金矿）+ 能矿部（电力）+ 华潘省（大理石）= 政府资源型联盟。IHC的核心壁垒是政府关系拿资源特许权，而非技术能力",
+        relationship_insight: "IHC的模式=拿政府特许权→引入中国企业做技术和执行。风范股份案例就是典型：IHC拿老挝水电站项目→委托风范股份做工程总承包。巴沙鱼二期可能是同样模式：IHC拿四千岛渔业资源→引入中国企业做养殖加工"
+      },
+      // 板块4: 近期动态
+      recentEvents: {
+        major_events: [
+          { date: "2024", event: "接待中国企业家商务文化考察团——主动向中国企业靠拢" },
+          { date: "2019", event: "与老挝国防部签署金矿合作开发协议" }
+        ],
+        investment_tracking: "从多元化布局看：电力（主业）→金矿（资源）→煤炭（能源）→现在拟投渔业+汽车+产线=从能源资源向产业多元化扩张",
+        capital_flow: "待补充——需关注IHC近2年资金流向",
+        strategic_direction: "扩张——从单一能源资源向多产业布局，主动对接中国企业寻求合作"
+      },
+      // 板块5: 对方需求痛点
+      needs: {
+        surface_needs: [
+          "巴沙鱼二期扩产——需要渔业资源和配额",
+          "汽车授权落地——需要产线和政策支持",
+          "产线建设——需要土地、电力、劳动力"
+        ],
+        deep_needs: [
+          "产能扩张——湄公鲜生一期年产值3.3亿元，二期需更大产能",
+          "资源获取——四千岛的渔业配额+电力资源+土地资源",
+          "政策套利——特区税收优惠和特许经营权（安美德工业园30年免税先例在前）",
+          "出海跳板——老挝作为东南亚布局的桥头堡，中老铁路通车后物流成本降40-50%"
+        ],
+        pain_points: [
+          "越南巴沙鱼塘头价3年新高（33,000+ VND/kg），成本上升12-15%——IHC如果在越南做，成本优势在消失",
+          "越南反补贴税从46%降至20%——美国市场重新打开，越南产能可能优先供美，中国买家需要替代源",
+          "老挝目前仅1家GACC注册水产品企业（湄公鲜生）——IHC要自己做需要独立注册，周期长",
+          "中国海关2026年6月1日水产品境外企业注册新规——合规门槛提高，需要老挝农林部推荐+海关总署审批"
+        ],
+        our_match: "四千岛能解决：渔业资源✅（湄公河流域巴沙鱼产区）+ 土地✅（特区配套）+ 电力✅（中广核1GW+南方电网500kV联网，电力充裕且成本低）+ 税收优惠✅（安美德30年免税先例）+ 特许经营✅"
+      },
+      // 板块6: 我方筹码清单
+      chips: {
+        items: [
+          {
+            category: "税收优惠",
+            icon: "💰",
+            detail: "安美德工业园先例：免征30年利润税。四千岛特区可参照或超越此条件。4个特殊促进领域含农产品加工业（巴沙鱼加工=农产品加工）",
+            legal_basis: "530号总理令(2025.8.11)设立投资促进委员会+安美国会通过30年免税",
+            value_level: "高",
+            exclusivity: "特区独有，非特区不适用"
+          },
+          {
+            category: "渔业资源",
+            icon: "🐟",
+            detail: "湄公河流域巴沙鱼产区，老挝巴沙鱼产业园总规划2,863公顷，一期年产商品鱼~2万吨，加工成品~1.2万吨，年产值~3.3亿元",
+            legal_basis: "中老2024.12签署《输华养殖水产品检验和卫生要求议定书》，2025.1海关总署第8号公告正式允许进口",
+            value_level: "高",
+            exclusivity: "四千岛独有渔业资源+已有GACC注册先例（湄公鲜生DLF 001）"
+          },
+          {
+            category: "电力成本",
+            icon: "⚡",
+            detail: "中广核1GW光伏并网（年均发电16.5亿kWh）+南方电网500kV联网（互济能力150万千瓦，30倍提升）+EDL屋顶太阳能购电992基普/kWh(约$0.04)。老挝水电资源丰富，电价低于越南/柬埔寨",
+            legal_basis: "中广核一期100万kW已并网，二期1000MW光伏+556MW风电已签PDA",
+            value_level: "高",
+            exclusivity: "老挝水电+光伏成本优势，四千岛可直供"
+          },
+          {
+            category: "出口关税红利",
+            icon: "🚢",
+            detail: "中国对老挝100%税目产品零关税(2024.12起)+RCEP水产品100%零关税+FORM E原产地证0%关税。巴沙鱼片综合税率从16.63%(MFN)降至9%(仅VAT)",
+            legal_basis: "海关总署令+RCEP原产地累积规则：老挝产品可用越南鱼苗+中国饲料原料仍获原产资格",
+            value_level: "高",
+            exclusivity: "老挝作为最不发达国家享100%零关税，越南/泰国不享此待遇"
+          },
+          {
+            category: "物流通道",
+            icon: "🚂",
+            detail: "中老铁路2025年货运2448万吨(↑24.6%)，万象至昆明陆运费用下降40-50%，磨憨口岸通关从40小时压缩至2-5小时，跨境列车每日最高23列",
+            legal_basis: "中老铁路沿线综合开发三年行动计划(2025-2027)",
+            value_level: "中高",
+            exclusivity: "中老铁路是老挝独有通道，越南/柬埔寨无此优势"
+          },
+          {
+            category: "金融便利",
+            icon: "🏦",
+            detail: "中老本币互换30亿元/6万亿基普+跨境人民币结算299.6亿元(↑150.7%)+CIPS直达秒级到账+数字人民币跨境试点启动",
+            legal_basis: "2026.6.8通伦访华期间续签本币互换",
+            value_level: "中",
+            exclusivity: "中老双边金融基础设施升级，降低汇率风险"
+          },
+          {
+            category: "劳动力成本",
+            icon: "👷",
+            detail: "老挝人均GDP目标3,104美元(2030)，劳动力成本低于越南/泰国。湄公鲜生已创造200+就业岗位",
+            legal_basis: "老挝十五五计划(2026-2030)",
+            value_level: "中",
+            exclusivity: "老挝劳动力成本优势"
+          },
+          {
+            category: "特许经营权",
+            icon: "📋",
+            detail: "特区可授权特殊经营范围/年限，Siphandone特别经济区90亿美元项目先例（9,846公顷，分六阶段2018-2050）",
+            legal_basis: "530号总理令+特区法规",
+            value_level: "高",
+            exclusivity: "特区独有"
+          }
+        ],
+        tradeable: ["税收优惠可谈判年限（安美德30年先例）", "土地价格可谈判", "渔业配额可谈判吨数", "特许经营可谈判范围"],
+        non_tradeable: ["外汇法红线（境内支付须用LAK）", "环保底线（渔业法第38条禁止捕捞方法）", "劳工权益底线"]
+      },
+      // 板块7: 竞争对标
+      competition: {
+        competitors: [
+          {
+            region: "越南",
+            fishery_advantages: ["产业链成熟（VHC年营收VND12,026亿）", "加工能力全球领先", "港口物流便利"],
+            fishery_disadvantages: ["塘头价3年新高（33,000+ VND/kg，同比↑20%）", "成本上升12-15%", "反补贴税从46%降至20%但仍有税", "美国市场分流产能"],
+            investment_conditions: "外资准入改革中：有条件行业从198项压减至142项(2026.7.1生效)，非敏感行业3天拿照。但企业所得税20%无特区30年免税",
+            fishery_specific: "越南巴沙鱼出口额22亿美元(↑8%)，对华出口5.6亿美元，占中国进口92%+"
+          },
+          {
+            region: "柬埔寨",
+            fishery_advantages: ["水产品已完成输华准入", "投资政策宽松"],
+            fishery_disadvantages: ["基础设施差", "电力不稳定", "无中老铁路级别物流通道"],
+            investment_conditions: "待补充具体税收优惠",
+            fishery_specific: "注册企业Cambodian Tienit International Trading，规模远小于越南"
+          },
+          {
+            region: "泰国",
+            fishery_advantages: ["产业链成熟", "FTA推广项目启动(2026.6)", "尖吻鲈鱼获准对华出口"],
+            fishery_disadvantages: ["土地成本高", "电力成本高于老挝", "劳动力成本高于老挝"],
+            investment_conditions: "企业所得税20%",
+            fishery_specific: "20家企业入围对华出口Boot Camp，可能分流白鱼肉市场"
+          },
+          {
+            region: "缅甸",
+            fishery_advantages: ["资源丰富", "劳动力成本最低"],
+            fishery_disadvantages: ["政局不稳", "制裁风险", "基础设施极差"],
+            investment_conditions: "投资环境不确定性极高",
+            fishery_specific: "2026.6.16刚签署食用水生动物对华出口协议，起步阶段"
+          }
+        ],
+        our_advantage: "四千岛5大独有优势：①100%零关税（最不发达国家待遇，越南/泰国不享）②电力成本（中广核1GW+南方电网500kV，低于越南/柬埔寨）③渔业资源（湄公河巴沙鱼产区+GACC注册先例）④物流通道（中老铁路，通关2-5小时，越南/柬埔寨无）⑤税收优惠（安美德30年免税先例）",
+        our_disadvantage: "基础设施不如越南，劳动力技能待提升，加工产业链不成熟（仅1家GACC注册企业）",
+        positioning: "不跟越南拼产业链成熟度，拼'零关税+电力成本+物流通道+税收优惠'组合拳。越南的成本在涨（塘头价3年新高+成本↑12-15%），四千岛的成本在降（中老铁路物流↓40-50%+电力充裕）——此消彼长"
+      },
+      // 板块8: 谈判策略建议
+      strategy: {
+        strategy_a: {
+          name: "保守方案（标准条款）",
+          core_trade: "标准税收优惠+标准土地价格+渔业配额 → 换取IHC标准投资额",
+          expected_reaction: "IHC可能觉得条件一般但风险低，会对比越南条件后再决定",
+          bottom_line: "税收优惠不低于10年，配额不低于年产1万吨",
+          best_for: "IHC投资意愿不强、试探性接触阶段"
+        },
+        strategy_b: {
+          name: "进取方案（绑定排他）",
+          core_trade: "超额税收优惠（参照安美德30年免税）+低价土地+优先配额+电力优惠 → 换取IHC排他性投资+全产业链承诺+就业承诺",
+          expected_reaction: "IHC获得超越南条件的优惠，但需承诺全产业链（养殖+加工+出口）落地四千岛。对IHC有吸引力但约束感强",
+          bottom_line: "排他范围限定四千岛（非全老挝），产能承诺不低于年产2万吨，就业不低于200人",
+          best_for: "IHC投资意愿强、四千岛需要标杆项目阶段"
+        },
+        strategy_c: {
+          name: "共赢方案（资源换产业）",
+          core_trade: "渔业配额+特许经营权+电力优惠+税收优惠 → 换取IHC全产业链落地（巴沙鱼二期+加工产线+汽车授权）+技术转移+本地就业+出口创汇",
+          expected_reaction: "IHC获得长期资源保障（配额+电力+特许经营），四千岛获得产业升级（从原料输出到加工制造），双方利益深度绑定",
+          bottom_line: "技术转移条款必须可执行，本地就业比例不低于60%，出口创汇不低于年$1000万",
+          best_for: "长期战略合作、IHC有全产业链能力"
+        },
+        recommended: "strategy_c",
+        reason: "IHC需要资源（渔业配额+电力+特许经营），四千岛需要产业（巴沙鱼二期+汽车+产线）。IHC已有多元化布局能力（电力+金矿+煤炭），具备做全产业链的基因。资源换产业=双方利益最大化=最可持续的合作模式。且IHC已有政府关系基因（国防部+能矿部），与特区招商逻辑天然匹配。"
+      },
+      // 板块9: 合规风险检查
+      compliance: {
+        investment_compliance: {
+          item: "投资款入境路径",
+          requirement: "外商投资注册资本必须汇入老挝本地银行，获BOL确认函。2823号通知(2025.11)规定了外资有条件经营类别（最低/最高注册资本、外资持股比例）",
+          risk: "若IHC通过境外账户直投，违反外汇法No.15/NA",
+          action: "谈判中明确：投资款必须走老挝本地银行（BCEL或JDB），合同条款写入"
+        },
+        forex_compliance: {
+          item: "外汇审批",
+          requirement: "资本出境需BOL审批，超$10,000现金出境需《外币出境许可证》(140/BOL决定)。出口收入必须汇入指定进出口账户",
+          risk: "IHC后续利润汇出/资本退出可能受阻。但中老本币互换30亿元+CIPS直达秒级到账+数字人民币跨境试点=通道在打通",
+          action: "提前与BOL沟通投资项目的汇出通道。利用中老人民币/基普本币互换降低汇率风险。合同中写明汇出条款"
+        },
+        fishery_compliance: {
+          item: "渔业合规",
+          requirement: "渔业法No.03/NA第38条禁止某些捕捞方法和设备。出口中国需GACC注册（海关总署令第280号，2026.6.1施行），注册有效期5年。需老挝农林部推荐+海关总署审批",
+          risk: "IHC如未获GACC注册，巴沙鱼无法出口中国。注册流程：老挝农林部审核→出具推荐函→海关总署评估审查（书面/视频/现场）→予注册",
+          action: "谈判中明确：IHC需在投资协议中承诺完成GACC注册，老挝农林部推荐函由特区协助对接。参考湄公鲜生注册路径（2025.2.15注册生效，耗时约2个月）"
+        },
+        tax_compliance: {
+          item: "税收安排反避税检查",
+          requirement: "税收优惠须符合老挝税法，安美德30年免税是国会特别批准（96.71%赞成），非通用政策。530号总理令设立IPMC整合审批",
+          risk: "过度优惠可能需国会特别批准，审批周期长",
+          action: "税收优惠条款须经老挝税务部门书面确认。参照安美德先例申请，但需预留3-6个月审批周期"
+        },
+        export_compliance: {
+          item: "中国进出口管制新规",
+          requirement: "国务院令第837号(2026.7.1施行)首部对外投资行政法规，第13条禁止以跨境派遣技术人员方式转移限制出口技术。对水产加工技术输出有直接影响",
+          risk: "IHC如从中国引入加工技术/设备/人员，可能触发837号令审查",
+          action: "技术引进路径需提前合规审查。ODI备案流程：发改7-15工作日→商务5-10工作日→外汇登记1-3工作日，整体13-28工作日"
+        }
+      },
+      // 板块9b: 项目可行性预判
+      feasibility: {
+        project_1: {
+          name: "巴沙鱼二期",
+          investment_scale: "一期约6亿美元（Siphandone项目参考），二期规模待确认",
+          payback_period: "3-5年（渔业养殖+加工+出口全产业链）",
+          market_data: "中国巴沙鱼进口16.76万吨/年(↓19.3%但金额↑2%=量降价升)。越南对华出口5.6亿美元但占比从30%降至25%=多元化机会。酸菜鱼市场2024年790亿元，预计2026年达2150亿元，复合增速33.7%",
+          key_dependencies: ["GACC注册完成", "渔业配额充足", "加工产线到位", "冷链物流（占巴塞→越南胡志明港→海运→中国，或中老铁路→昆明）"],
+          biggest_risk: "GACC注册周期+合规成本（100%查验+兽药残留零容忍+合规成本增2-3美元/吨）",
+          feasibility_level: "高",
+          price_advantage: "老挝0%关税(最不发达国家待遇) vs 越南0%(FORM E)——关税持平，但越南塘头价3年新高+成本↑12-15%=老挝有成本窗口"
+        },
+        project_2: {
+          name: "汽车授权",
+          investment_scale: "待确认IHC拿的什么品牌授权",
+          payback_period: "5-8年（汽车产线）",
+          market_data: "安美德工业园4个特殊促进领域含'汽车及零配件制造'=政策明确支持。越南外资准入改革后非敏感行业3天拿照=竞争加剧",
+          key_dependencies: ["授权品牌确认", "供应链配套（老挝无汽车产业链基础）", "目标市场明确（老挝700万人口市场太小，须面向东南亚转口）"],
+          biggest_risk: "老挝无汽车产业链基础，供应链100%依赖进口，物流成本高。市场容量小=产线利用率不足",
+          feasibility_level: "中低",
+          alternative: "建议IHC考虑摩托车/农机组装而非汽车——老挝农村市场有需求，技术门槛低，投资额小"
+        },
+        project_3: {
+          name: "产线落地（含算力中心可能）",
+          investment_scale: "待确认产线类型",
+          payback_period: "取决于产线类型",
+          market_data: "东南亚数据中心市场2026年突破100亿美元，IT负载从1.7GW增至3.1GW。TikTok 250亿美元东南亚投资刷新纪录。老挝电力成本优势（中广核1GW+南方电网500kV）=算力中心天然优势",
+          key_dependencies: ["基建配套（道路/电力/水）", "网络带宽", "技术人才"],
+          biggest_risk: "基建不足导致建设延期。网络带宽可能不足以支撑数据中心",
+          feasibility_level: "中",
+          strategic_opportunity: "华为昇腾生态加速+H200中国企业不下单=国产算力出海窗口。四千岛可定位'中国AI算力东南亚备份节点'"
+        }
+      }
+    },
+    // ===== Tab2: 行业投资逻辑 =====
+    investment: {
+      // 板块1: 行业规模与增长
+      marketSize: {
+        fishery: {
+          name: "渔业（巴沙鱼）",
+          market_size: "中国巴沙鱼进口16.76万吨/年（2025），越南对华出口5.6亿美元。全球巴沙鱼市场越南出口22亿美元(↑8%)",
+          growth_rate: "中国进口量↓19.3%但金额↑2%=量降价升=品质升级趋势。酸菜鱼市场2024年790亿元，预计2026年达2150亿元（复合增速33.7%），连锁门店从3万家增至8万家",
+          export_trend: "越南对华占比从30%降至25%=多元化机会窗口。老挝刚起步（2025年累计442吨出口中国）但增速可观",
+          key_driver: "预制菜赛道爆发（复合调理类巴沙鱼年复合增长率21.4%）+C端零售从21.6%飙升至34.2%+太二/江边城外等巨头年吞18万吨"
+        },
+        automotive: {
+          name: "汽车",
+          market_size: "老挝人口700万，汽车市场有限。东南亚整体汽车市场待补充",
+          growth_rate: "安美德工业园将'汽车及零配件制造'列为4个特殊促进领域之一=政策明确支持",
+          trend: "越南外资准入大松绑（有条件行业从198项压至142项）=竞争加剧。老挝无汽车产业基础",
+          key_driver: "中老铁路通车降物流成本40-50%+RCEP原产地累积规则=零部件进口成本降低"
+        },
+        computing: {
+          name: "算力/数据中心",
+          market_size: "东南亚数据中心市场2025年87亿美元，2026年突破100亿美元。2026-2031年累计投资超860亿美元",
+          growth_rate: "IT负载从2023年1.7GW增至2025年3.1GW（近1倍增幅）。在运营290个，135个在规划/建设",
+          trend: "TikTok 250亿美元东南亚投资刷新纪录。阿里云泰国第二DC启用。华为昇腾生态加速",
+          key_driver: "老挝电力成本低（$0.04/kWh）+土地便宜+中广核1GW光伏+南方电网500kV联网=算力中心天然优势"
+        }
+      },
+      // 板块2: 政策风向
+      policy: {
+        fishery_policy: {
+          title: "渔业政策",
+          support: "中国对老挝100%税目零关税(2024.12起)+RCEP水产品100%零关税+中老签署养殖水产品议定书(2024.12)+海关总署第8号公告允许进口(2025.1)",
+          restriction: "渔业法第38条禁止捕捞方法+GACC注册新规(2026.6.1)+兽药残留零容忍+100%查验+合规成本增2-3美元/吨",
+          special_zone: "四千岛已有湄公鲜生GACC注册先例（DLF 001），可参照"
+        },
+        investment_policy: {
+          title: "投资政策",
+          support: "530号总理令设立IPMC整合审批+安美德30年免税先例+2823号通知规范外资准入+老挝十五五计划农业年均增长4.6%",
+          restriction: "外汇法No.15/NA+总理令+140/BOL决定（三线合规红线）",
+          special_zone: "特区可提供超出一般法律的特许优惠，Siphandone 90亿美元项目先例"
+        },
+        trade_policy: {
+          title: "贸易政策",
+          support: "中国-东盟FTA 3.0版签署(2025.10)+RCEP原产地累积规则+中老铁路通关2-5小时+中老贸易协定升级谈判(2026.5)",
+          restriction: "中国837号令(2026.7.1)首部对外投资行政法规，第13条限制技术输出。ODI备案13-28工作日",
+          opportunity: "中老贸易额从43.4亿(2021)增至88亿美元(2025)翻倍。跨境人民币结算299.6亿元(↑150.7%)"
+        }
+      },
+      // 板块3: 投资回报基准
+      roiBenchmarks: [
+        {
+          industry: "渔业（巴沙鱼养殖+加工+出口）",
+          typical_roi: "IRR 15-25%",
+          payback: "3-5年",
+          reference_revenue: "湄公鲜生一期年产值3.3亿元，月出口250吨→500吨→1000吨爬坡中",
+          key_success_factor: "GACC注册+配额+全产业链（养殖→加工→出口）+冷链物流",
+          reference_case: "越南VHC永环集团2025年营收VND12,026亿（↓3.9%），利润VND1,451亿（↑11.4%）——利润逆势增长证明价值导向战略有效"
+        },
+        {
+          industry: "算力/数据中心",
+          typical_roi: "IRR 12-20%",
+          payback: "4-6年",
+          reference_market: "东南亚市场2026年100亿美元，2026-2031累计投资860亿美元",
+          key_success_factor: "电力成本+网络带宽+客户需求+技术人才",
+          reference_case: "TikTok 250亿美元东南亚投资；阿里云泰国第二DC启用"
+        },
+        {
+          industry: "汽车CKD组装",
+          typical_roi: "IRR 8-15%",
+          payback: "5-8年",
+          reference_market: "安美德工业园30年免税含汽车制造，但老挝无产业基础",
+          key_success_factor: "品牌授权+市场规模+供应链+政策支持",
+          reference_case: "越南外资准入松绑（3天拿照）=竞争加剧。泰国年产200万辆=东南亚汽车中心"
+        }
+      ],
+      // 板块4: 对标案例
+      benchmarkCases: [
+        {
+          case: "越南巴沙鱼产业",
+          scale: "年出口22亿美元，对华5.6亿美元，占中国进口92%+",
+          lesson: "VHC利润逆势增长（营收↓3.9%但利润↑11.4%）——从产量导向转向价值导向，深加工产品↑13%，ASC可持续认证推进。降低对中国单一市场依赖",
+          implication: "四千岛应要求IHC做全产业链+价值导向（原切鱼片0%关税 vs 深加工12%关税），而非单纯养殖"
+        },
+        {
+          case: "湄公鲜生（四千岛已有案例）",
+          scale: "一期年产商品鱼~2万吨，加工成品~1.2万吨，年产值~3.3亿元。月出口从250吨爬坡至1000吨",
+          lesson: "GACC注册是门槛（耗时~2个月）+全封闭恒温车间(20℃)+GMP认证+老挝农林部表彰=已验证可行",
+          implication: "IHC巴沙鱼二期可直接参照湄公鲜生路径，四千岛已有成熟的渔业加工基础"
+        },
+        {
+          case: "安美德工业园（老挝投资政策先例）",
+          scale: "国会96.71%赞成通过，投资者免征30年利润税",
+          lesson: "4个特殊促进领域：农产品加工+太阳能/可再生能源制造+汽车零配件+电气电子。=四千岛招商的政策参照",
+          implication: "IHC的3个项目（渔业+汽车+产线）全部命中安美德4个促进领域，可参照申请30年免税"
+        },
+        {
+          case: "Siphandone特别经济区（四千岛本地标杆）",
+          scale: "90亿美元总投资，9,846公顷，分六阶段(2018-2050)，年均向政府贡献1.07亿美元税收",
+          lesson: "12万㎡仓储物流中心（距老挝-柬埔寨边境3km）=已建成的物流基础设施，IHC可直接利用",
+          implication: "四千岛不是从零开始，已有大型项目落地+物流枢纽在建，IHC是加入已有生态而非拓荒"
+        },
+        {
+          case: "马来西亚数据中心热潮",
+          scale: "东南亚2026年突破100亿美元，TikTok 250亿美元投资",
+          lesson: "电力成本+土地成本是选址核心。老挝$0.04/kWh+中广核1GW=天然优势",
+          implication: "四千岛可定位'中国AI算力东南亚备份节点'，引入算力中心作为第二增长曲线"
+        }
+      ],
+      // 板块5: 行业风险
+      risks: {
+        fishery_risks: [
+          "越南塘头价3年新高但仍在涨——如果老挝养殖成本也跟涨，价格窗口会缩小",
+          "中国海关100%查验+兽药残留零容忍——一批次不合格可能影响整体注册资格",
+          "GACC注册新规(2026.6.1)提高门槛——IHC需独立注册，周期约2-6个月",
+          "中国国产巴沙鱼崛起（80万亩/200家加工厂/5万吨产量/每吨便宜1000元）——长期可能分流进口",
+          "湄公河鱼类数量下降+传统捕鱼法被禁——需确保养殖而非捕捞"
+        ],
+        automotive_risks: [
+          "老挝无汽车产业链基础，供应链100%进口",
+          "市场容量小（人口700万），产线利用率不足风险高",
+          "品牌授权方可能随时撤回授权",
+          "越南外资准入松绑（3天拿照）=汽车投资可能流向越南而非老挝"
+        ],
+        computing_risks: [
+          "网络带宽可能不足以支撑数据中心",
+          "技术人才短缺",
+          "H200对华销售条件苛刻（25%收入上缴+配额1:4+美方审计）——影响中国算力出海",
+          "地缘政治风险——大国博弈可能影响跨境数据业务"
+        ]
+      },
+      // 板块6: 投资逻辑总结
+      logicSummary: {
+        fishery_logic: "四千岛有资源（渔业配额+水域+GACC先例）+ IHC有资金和政府关系 → 全产业链布局是关键 → 0%关税+RCEP原产地累积规则=出口成本优势 → 3-5年回本可行。越南成本在涨（塘头价3年新高+成本↑12-15%），四千岛成本在降（物流↓40-50%+电力充裕）——此消彼长的窗口期",
+        automotive_logic: "四千岛无产业基础 → IHC需自带品牌授权和供应链 → 市场容量是最大瓶颈 → 建议面向东南亚转口而非老挝内需 → 中老铁路+RCEP可降低零部件进口成本，但与泰国/越南竞争激烈 → 建议IHC考虑摩托车/农机而非汽车",
+        computing_logic: "四千岛有电力成本优势（$0.04/kWh+中广核1GW）→ 东南亚算力市场2026年100亿美元 → 但需解决带宽和人才 → 华为昇腾生态+H200限制=中国算力出海窗口 → 4-6年回本，需大额前期投资",
+        priority_recommendation: "①巴沙鱼二期（资源支撑+已有GACC先例+成本窗口+市场缺口）> ②算力中心（电力优势+趋势+国产算力出海窗口）> ③汽车授权（产业链不足+市场小+竞争激烈）",
+        packaging_strategy: "建议打包谈：巴沙鱼二期（核心）+加工产线（配套，与渔业协同）+算力中心（第二增长曲线，利用电力优势）。汽车授权作为条件交换筹码——'如果要汽车项目，需加大渔业+产线投资额'"
+      }
+    },
+    // ===== Tab3: 今日作战计划 =====
+    battleplan: {
+      // 板块1: 会议基本信息
+      meeting: {
+        time: "10:00-12:00",
+        location: "万象",
+        counterparty: "IHC投资集团",
+        counterparty_attendees: "谢易兵（董事长）+ 待确认其他人",
+        our_attendees: "陈海俊 + 待确认",
+        meeting_type: "投资洽谈",
+        agenda_items: ["巴沙鱼二期", "汽车授权", "产线落地"]
+      },
+      // 板块2: 开场策略
+      opening: {
+        approach: "以资源+成本窗口切入，不以政策优惠切入",
+        script: "谢总，四千岛有三个IHC需要的东西：湄公河巴沙鱼资源、全老挝最便宜的电、和中老铁路直达的物流通道。越南的塘头价已经3年新高了，成本还在涨12-15%。今天我们不只是谈渔业，三个项目一起看怎么打包最划算。",
+        rationale: "先亮资源牌（IHC最需要的）+点出竞争对手的成本痛点（越南在涨）+带出多项目打包（增加谈判筹码）+暗示'打包更优惠'（引导IHC接受绑定方案）",
+        tone: "自信但不急切。把四千岛定位为'资源方'而非'招商引资方'——是IHC需要我们的资源（渔业配额+电力+物流），不是我们求IHC来投。用数据说话：越南塘头价33,000+ VND/kg（同比↑20%）vs 老挝0%关税+电力$0.04/kWh+物流↓40-50%"
+      },
+      // 板块3: 核心议题排序
+      agendaPriority: [
+        {
+          rank: 1,
+          topic: "巴沙鱼二期",
+          reason: "IHC已有投资基础（或可参照湄公鲜生路径），市场缺口明确（越南占比从30%降至25%），是最容易达成共识的项目",
+          our_goal: "锁定二期投资额+扩产规模+全产业链承诺（养殖+加工+出口）",
+          key_data: "中国进口16.76万吨/年，酸菜鱼市场2026年达2150亿元。湄公鲜生一期年产值3.3亿元。老挝0%关税 vs 越南FORM E 0%——关税持平但越南成本在涨",
+          key_argument: "越南成本涨12-15%+塘头价3年新高=老挝的价格窗口正在打开。越晚进成本优势越小"
+        },
+        {
+          rank: 2,
+          topic: "产线落地（加工产线）",
+          reason: "产线是巴沙鱼加工的配套，与二期天然关联，可打包谈。同时为算力中心埋伏笔",
+          our_goal: "IHC承诺产线建在四千岛（而非其他地区）+引入算力中心作为第二增长曲线",
+          key_data: "中广核1GW光伏+南方电网500kV=电力充裕且便宜（$0.04/kWh）。东南亚数据中心市场2026年100亿美元",
+          key_argument: "四千岛电力成本全老挝最低+中老铁路物流——产线和算力中心都可以用同一套电力基础设施"
+        },
+        {
+          rank: 3,
+          topic: "汽车授权",
+          reason: "最复杂且可行性最低，放最后，作为'条件交换'的筹码",
+          our_goal: "如IHC要汽车项目，需以加大渔业+产线投资为交换。或建议IHC考虑摩托车/农机替代",
+          key_data: "安美德30年免税含汽车制造，但老挝无产业链基础+市场700万人太小",
+          key_argument: "汽车可以做，但建议先做巴沙鱼+产线跑通模式，汽车作为二期规划。或者考虑摩托车/农机——门槛低、市场有需求"
+        }
+      ],
+      // 板块4: 交换条件清单
+      tradeItems: [
+        {
+          we_give: "渔业配额优先权（参照湄公鲜生一期年产2万吨规模）",
+          we_want: "IHC承诺全产业链落地（养殖+加工+出口），不只做养殖",
+          priority: "高",
+          data_support: "湄公鲜生一期年产商品鱼~2万吨，加工成品~1.2万吨——IHC二期应不低于此规模"
+        },
+        {
+          we_give: "税收优惠（参照安美德30年免税先例申请）",
+          we_want: "IHC承诺最低投资额+就业人数+出口创汇指标",
+          priority: "高",
+          data_support: "安美德免征30年利润税+4个促进领域含农产品加工。Siphandone年均贡献税收1.07亿美元=政府预期"
+        },
+        {
+          we_give: "电力成本优惠（$0.04/kWh+中广核直供）",
+          we_want: "IHC引入算力中心项目（利用电力优势做第二增长曲线）",
+          priority: "中高",
+          data_support: "东南亚DC市场2026年100亿美元。华为昇腾+H200限制=中国算力出海窗口"
+        },
+        {
+          we_give: "土地优惠价格+物流通道（中老铁路通关2-5小时）",
+          we_want: "产线建在四千岛（排他），利用Siphandone 12万㎡仓储物流中心",
+          priority: "中",
+          data_support: "Siphandone已建12万㎡仓储物流中心（距老柬边境3km）。中老铁路物流↓40-50%"
+        },
+        {
+          we_give: "汽车项目特许经营（如IHC坚持要）",
+          we_want: "IHC加大渔业+产线+算力投资额（打包条件）",
+          priority: "低（作为筹码，非核心诉求）",
+          data_support: "安美德4个促进领域含汽车零配件——政策支持但市场不支撑"
+        }
+      ],
+      // 板块5: 对方可能反应+应对
+      scenarios: [
+        {
+          title: "IHC要求对比越南条件",
+          likelihood: "最可能",
+          response: "直接展示数据：①关税持平（都是0%），但越南成本在涨（塘头价3年新高+成本↑12-15%）②老挝有100%零关税（最不发达国家待遇，越南也有FORM E但老挝还有RCEP叠加）③电力成本老挝<越南（$0.04/kWh+中广核1GW）④物流成本老挝在降（中老铁路↓40-50%）⑤税收优惠老挝可给30年免税（安美德先例）——打差异化，不打价格战",
+          bottom_line: "不跟越南拼产业链成熟度，拼'成本下降趋势+政策组合拳'"
+        },
+        {
+          title: "IHC担心GACC注册周期和合规风险",
+          likelihood: "可能",
+          response: "湄公鲜生已验证路径：2025.2.15注册生效（耗时约2个月）。特区可协助对接老挝农林部推荐函。合规成本2-3美元/吨可控。100%查验是常态不是风险——只要品质达标",
+          bottom_line: "注册周期2-6个月，合同中写明注册完成为投资款到位前提"
+        },
+        {
+          title: "IHC只投巴沙鱼二期，不要产线和汽车",
+          likelihood: "可能",
+          response: "二期可以单独谈，但税收优惠力度低于打包方案（参照安美德30年免税=需要承诺多项目投资才能申请）。引导IHC看到打包的综合成本优势：同一块地+同一套电力+同一条物流=边际成本递减",
+          bottom_line: "单独二期可行，但不是最优解。最低税收优惠10年（非30年）"
+        },
+        {
+          title: "IHC担心外汇/资本出境风险",
+          likelihood: "可能",
+          response: "中老本币互换30亿元+CIPS直达秒级到账+数字人民币跨境试点启动=通道在打通。出口创汇可走老挝本地银行。利润汇出需BOL审批但流程已优化。2025年云南对老挝跨境人民币结算76.6亿元(↑150.7%)=已大量在跑",
+          bottom_line: "必须解决，否则IHC不会投。提前与BOL沟通，合同写明汇出条款"
+        },
+        {
+          title: "IHC要求独家/排他渔业配额",
+          likelihood: "可能",
+          response: "可以谈，但排他范围限定四千岛（非全老挝），且需绑定产能承诺和就业指标。排他期限与投资进度挂钩",
+          bottom_line: "排他可给但必须有对价——投资额+就业+出口创汇"
+        }
+      ],
+      // 板块6: 底线清单
+      bottomLines: {
+        hard: [
+          "投资款必须走老挝本地银行（外汇法No.15/NA红线）",
+          "GACC注册必须完成才能出口中国（海关总署令第280号）",
+          "税收优惠须经老挝税务部门/IPMC书面确认（不能口头承诺）",
+          "渔业捕捞不得违反渔业法第38条（禁止捕捞方法）",
+          "837号令合规：中国技术输出需ODI备案（13-28工作日）"
+        ],
+        soft: [
+          "税收优惠不低于10年（单项目）/可申请30年（打包多项目参照安美德先例）",
+          "产线优先建在四千岛（非强制排他，但优先）",
+          "本地就业比例不低于60%（参照湄公鲜生200+就业岗位）",
+          "出口创汇不低于年$1000万"
+        ],
+        walk_away: [
+          "IHC要求超出法律框架的优惠（无法执行）",
+          "IHC不愿走老挝本地银行（合规风险）",
+          "IHC投资额低于最低门槛（不值得配套优惠）",
+          "IHC不愿做全产业链（只做养殖不加工=对四千岛价值不够）"
+        ]
+      },
+      // 板块7: 收尾路径
+      closing: {
+        best_case: "会议结束前达成3项目打包投资框架协议 → 2周内出正式合同草案 → 1个月内完成GACC注册启动+ODI备案",
+        likely_case: "巴沙鱼二期达成初步共识（最容易）→ 产线和算力作为后续议题 → 汽车暂缓或转为摩托车/农机 → 1个月内出二期合同",
+        worst_case: "IHC需要回去评估对比越南/柬埔寨 → 约定2周后给答复 → 我们准备差异化竞争材料跟进（重点：成本趋势对比+政策组合拳）",
+        follow_up: "无论哪种结果，会后24小时内发送会议纪要+下一步时间表+差异化竞争数据包",
+        deliverables: [
+          "会议纪要（含达成共识项+待确认项+下次会面时间）",
+          "四千岛 vs 越南/柬埔寨/泰国投资条件对比表（更新版）",
+          "GACC注册流程指南（含时间线）",
+          "税收优惠申请路径（参照安美德先例）",
+          "ODI备案流程指南（837号令合规）"
+        ]
+      }
+    }
+  },
+
+  '老挝资讯网·陶总': {
+    negotiation: {
+      overview: {
+        company_name: "老挝资讯网",
+        full_name: "58lao.com",
+        founded: "待补充",
+        registered_capital: "待补充",
+        employees: "待补充",
+        industry: "中老商业信息服务",
+        positioning: "老挝华人商业资讯平台",
+        revenue_scale: "待补充",
+        website: "58lao.com",
+        business_map: [
+          { name: "商业资讯", tag: "core", detail: "中老双向商业信息平台" },
+          { name: "年刊杂志", tag: "core", detail: "《老中商业资讯》年刊经营许可" },
+          { name: "东盟分社", tag: "planned", detail: "东盟头条老挝分社" }
+        ],
+        core_advantage: "老挝华人圈影响力最大+政府背书+商会资源"
+      },
+      keyPeople: {
+        decision_maker: {
+          name: "陶蔚 (SOMVANG PHOLSENA / 宋旺·奔舍那)",
+          title: "总经理",
+          role: "运营负责人",
+          background: "老挝资讯网GM，老中企业服务有限公司",
+          decision_style: "待补充",
+          past_decisions: ["2025年签约老挝中国总商会", "2025年获年刊经营许可", "2025年签约东盟头条"],
+          relationship_with_laos: "与老挝中国总商会+老中合作委员会有直接合作",
+          relationship_with_china: "信息中介角色，连接中国企业与老挝市场"
+        },
+        influencers: [],
+        decision_chain: "待补充"
+      },
+      network: {
+        government: [],
+        chamber: [
+          { name: "老挝中国总商会", project: "签约合作", year: "2025" },
+          { name: "东盟头条", project: "老挝分社", year: "2025" },
+          { name: "老中合作委员会", project: "合作", year: "待补充" }
+        ],
+        enterprise: [],
+        core_alliances: "商会+媒体联盟",
+        relationship_insight: "陶总角色=信息中介而非投资方"
+      },
+      recentEvents: {
+        major_events: [
+          { date: "2025.1", event: "与老挝中国总商会签署合作协议" },
+          { date: "2025.6", event: "获颁《老中商业资讯》年刊经营许可证" },
+          { date: "2025.11", event: "与东盟头条签约成立老挝分社" }
+        ],
+        investment_tracking: "媒体扩张",
+        capital_flow: "待补充",
+        strategic_direction: "扩张——从资讯平台向媒体联盟发展"
+      },
+      needs: {
+        surface_needs: ["品牌传播渠道", "招商引资信息平台", "政策解读平台"],
+        deep_needs: ["四千岛特区品牌曝光", "中企对接渠道", "政府关系中介"],
+        pain_points: ["信息中介角色定位", "非直接投资方"],
+        our_match: "四千岛可提供：品牌传播✅+招商引资✅+政策解读✅"
+      },
+      chips: { items: [], tradeable: ["专栏合作", "专题报道"], non_tradeable: [] },
+      competition: { competitors: [], our_advantage: "", our_disadvantage: "", positioning: "" },
+      strategy: {
+        strategy_a: { name: "媒体合作（标准）", core_trade: "专栏合作+定期政策解读", expected_reaction: "陶总乐于合作", bottom_line: "互利共赢", best_for: "初步接触" },
+        strategy_b: { name: "深度绑定", core_trade: "独家招商信息+品牌传播 → 换取陶总全力推荐四千岛", expected_reaction: "有吸引力但需承诺长期合作", bottom_line: "信息真实+定期更新", best_for: "长期合作" },
+        strategy_c: { name: "共赢方案", core_trade: "四千岛品牌+政策 → 换取陶总对接国企老总+投资方", expected_reaction: "双赢", bottom_line: "中介价值需验证", best_for: "陶总有实际投资方资源" },
+        recommended: "strategy_b",
+        reason: "陶总的核心价值是信息渠道和商会关系，深度绑定可最大化中介价值"
+      },
+      compliance: {},
+      feasibility: {}
+    },
+    investment: {
+      marketSize: {
+        media: { name: "媒体/资讯", market_size: "老挝华人圈", growth_rate: "扩张中", key_driver: "中老贸易增长" }
+      },
+      policy: {},
+      roiBenchmarks: [],
+      benchmarkCases: [],
+      risks: { media_risks: ["陶总角色=信息中介而非投资方", "中介价值需验证"] },
+      logicSummary: { media_logic: "陶总价值=信息渠道+商会关系→深度绑定最大化中介价值→验证能否直接带来投资" }
+    },
+    battleplan: {
+      meeting: { time: "18:00-21:00", location: "万象", counterparty: "陶总+国企老总", meeting_type: "晚餐商谈" },
+      opening: { approach: "观察为主", script: "今晚重点是观察陶总与其他国企老总的关系深浅", rationale: "评估中介价值", tone: "轻松社交" },
+      agendaPriority: [{ rank: 1, topic: "观察关系网络", reason: "评估中介价值", our_goal: "判断能否直接带来投资", key_data: "", key_argument: "" }],
+      tradeItems: [{ we_give: "四千岛专栏+品牌传播", we_want: "陶总对接国企老总", priority: "中", data_support: "" }],
+      scenarios: [{ title: "陶总纯社交无投资", likelihood: "可能", response: "建立关系为后续合作铺垫", bottom_line: "不急于成交" }],
+      bottomLines: { hard: [], soft: ["观察为主不急于成交"], walk_away: ["陶总无实际投资方资源"] },
+      closing: { best_case: "获得国企老总联系方式", likely_case: "建立关系+后续跟进", worst_case: "纯社交无收获", follow_up: "会后联系陶总确认中介价值", deliverables: ["关系网络评估"] }
+    }
+  }
+};
+
+let currentInsightKey = '';
+let currentTab = 'negotiation';
+
+// ====== UTILS ======
+function laoNow() {
+  const now = new Date();
+  const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+  return new Date(utc + 7 * 3600000);
+}
+
+function formatDate(d) {
+  const weekdays = ['周日','周一','周二','周三','周四','周五','周六'];
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')} ${weekdays[d.getDay()]}`;
+}
+
+function formatTime(h, m) {
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+}
+
+function saveLocal(key, val) {
+  try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {}
+}
+
+function loadLocal(key) {
+  try { return JSON.parse(localStorage.getItem(key)); } catch(e) { return null; }
+}
+
+// ====== DATE DISPLAY ======
+function updateDateDisplay() {
+  const now = laoNow();
+  document.getElementById('dateSubtitle').textContent = formatDate(now);
+  const todayKey = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`;
+  const savedDay = loadLocal('ops_day');
+  if (savedDay !== todayKey) {
+    localStorage.removeItem('ops_notes');
+    saveLocal('ops_day', todayKey);
+  }
+}
+
+// ====== SCHEDULE ======
+function renderSchedule() {
+  const now = laoNow();
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+  const listEl = document.getElementById('scheduleList');
+  const freeEl = document.getElementById('freeTimeBlock');
+  const countEl = document.getElementById('scheduleCount');
+
+  countEl.textContent = `${scheduleData.length}场`;
+
+  let doneCount = 0;
+  let html = '';
+  scheduleData.forEach((item, i) => {
+    const isDone = loadLocal(`ops_done_${i}`) || false;
+    if (isDone) doneCount++;
+    const startMin = item.startH * 60 + item.startM;
+    const endMin = item.endH * 60 + item.endM;
+    const hasInsight = item.insightKey && INSIGHT_DATA[item.insightKey];
+    const clickClass = hasInsight ? 'clickable' : '';
+    const clickFn = hasInsight ? `onclick="openInsight('${item.insightKey}')"` : '';
+
+    html += `
+    <div class="schedule-item ${isDone ? 'done' : ''} ${clickClass}" data-index="${i}" ${clickFn}>
+      <div class="time-col">
+        <div class="time-start">${formatTime(item.startH, item.startM)}</div>
+        <div class="time-end">${formatTime(item.endH, item.endM)}</div>
+      </div>
+      <div class="item-content">
+        <div class="item-title">${item.title}${hasInsight ? ' 🔍' : ''}</div>
+        <div class="item-location">${item.location || ''}</div>
+        <div class="item-tags">
+          ${item.tags ? item.tags.map(t => `<span class="item-tag ${t.type}">${t.label}</span>`).join('') : ''}
+        </div>
+      </div>
+      <div class="item-actions">
+        <button class="btn-icon ${isDone ? 'active' : ''}" onclick="event.stopPropagation();toggleDone(${i})" title="标记完成">✓</button>
+      </div>
+    </div>`;
+  });
+
+  listEl.innerHTML = html;
+
+  let freeSlots = [];
+  let sorted = scheduleData.sort((a,b) => (a.startH*60+a.startM) - (b.startH*60+b.startM));
+  let lastEnd = 8 * 60;
+  sorted.forEach(item => {
+    const start = item.startH * 60 + item.startM;
+    if (start > lastEnd + 30) {
+      freeSlots.push({ start: lastEnd, end: start });
+    }
+    lastEnd = item.endH * 60 + item.endM;
+  });
+  if (lastEnd < 20 * 60) freeSlots.push({ start: lastEnd, end: 20*60 });
+
+  if (freeSlots.length > 0) {
+    freeEl.innerHTML = '🟢 空闲时段: ' + freeSlots.map(s =>
+      `${formatTime(Math.floor(s.start/60), s.start%60)}-${formatTime(Math.floor(s.end/60), s.end%60)}`
+    ).join(' · ');
+    freeEl.style.display = '';
+  } else {
+    freeEl.style.display = 'none';
+  }
+
+  const totalMin = 12 * 60;
+  const elapsed = Math.min(currentMinutes - 8*60, totalMin);
+  const pct = Math.max(0, Math.round((elapsed / totalMin) * 100));
+  document.getElementById('progressBar').style.width = pct + '%';
+}
+
+function toggleDone(idx) {
+  const current = loadLocal(`ops_done_${idx}`) || false;
+  saveLocal(`ops_done_${idx}`, !current);
+  renderSchedule();
+}
+
+// ====== TRAVEL ======
+function renderTravel() {
+  const intlEl = document.getElementById('internationalFlights');
+  const domEl = document.getElementById('domesticTravel');
+
+  if (travelData.international.length > 0) {
+    let html = '<div style="padding:8px 16px;font-size:13px;font-weight:600;color:var(--blue-plan)">🌍 国际航班</div>';
+    travelData.international.forEach(f => {
+      html += `
+      <div class="flight-item">
+        <div class="flight-airline">${f.airline}</div>
+        <div class="flight-route">
+          <div class="flight-time">${f.depart} → ${f.arrive}</div>
+          <div class="flight-duration">${f.duration}</div>
+        </div>
+        <div class="flight-price">¥${f.price}</div>
+      </div>`;
+    });
+    intlEl.innerHTML = html;
+  } else {
+    intlEl.innerHTML = '';
+  }
+
+  if (travelData.domestic.length > 0) {
+    let html = '<div style="padding:8px 16px;font-size:13px;font-weight:600;color:var(--orange)">🇨🇳 国内出行</div>';
+    travelData.domestic.forEach(d => {
+      html += `
+      <div class="travel-domestic-item">
+        <div class="domestic-option">
+          <span class="domestic-icon">${d.icon}</span>
+          <div class="domestic-detail">
+            <div style="font-weight:500">${d.type}: ${d.route}</div>
+            <div style="font-size:12px;color:var(--warm-gray)">${d.time} · ¥${d.price || '--'}</div>
+          </div>
+        </div>
+      </div>`;
+    });
+    domEl.innerHTML = html;
+  } else {
+    domEl.innerHTML = '';
+  }
+}
+
+// ====== EXERCISE ======
+const EXERCISES = [
+  { icon: '🧘', name: '晨间冥想', desc: '15分钟 · 静坐调息 · 道法自然', duration: 15 },
+  { icon: '🏃', name: '午间快走', desc: '20分钟 · 出差友好 · 酒店周边', duration: 20 },
+  { icon: '💪', name: '晚间拉伸', desc: '15分钟 · 酒店房间 · 释放肩颈', duration: 15 },
+];
+
+const TEAS = [
+  { name: '沉香茶', effect: '安神定心·助眠', days: [0,3,5] },
+  { name: '普洱熟茶', effect: '暖胃消食·降脂', days: [1,4,6] },
+  { name: '白茶(白毫银针)', effect: '清热润肺·抗衰', days: [2] },
+  { name: '绿茶(龙井)', effect: '提神醒脑·抗氧化', days: [] },
+];
+
+function renderExercise() {
+  const now = laoNow();
+  const dayOfWeek = now.getDay();
+
+  const tea = TEAS.find(t => t.days.includes(dayOfWeek)) || TEAS[1];
+  document.getElementById('teaSection').innerHTML = `
+    <div class="tea-recommend">
+      <span class="tea-icon">🍵</span>
+      <span class="tea-name">${tea.name}</span>
+      <span class="tea-effect">${tea.effect}</span>
+    </div>`;
+
+  let html = '';
+  EXERCISES.forEach((ex, i) => {
+    const isDone = loadLocal(`ops_ex_${i}`) || false;
+    html += `
+    <div class="exercise-item">
+      <span class="exercise-icon">${ex.icon}</span>
+      <div class="exercise-detail">
+        <div class="exercise-name">${ex.name}</div>
+        <div class="exercise-desc">${ex.desc}</div>
+      </div>
+      <button class="exercise-status ${isDone ? 'done' : ''}" onclick="toggleExercise(${i})">${isDone ? '✅ 已完成' : '待完成'}</button>
+    </div>`;
+  });
+  document.getElementById('exerciseList').innerHTML = html;
+}
+
+function toggleExercise(idx) {
+  const current = loadLocal(`ops_ex_${idx}`) || false;
+  saveLocal(`ops_ex_${idx}`, !current);
+  renderExercise();
+}
+
+// ====== NOTES ======
+function initNotes() {
+  const saved = loadLocal('ops_notes') || '';
+  document.getElementById('notesInput').value = saved;
+  document.getElementById('notesInput').addEventListener('input', (e) => {
+    saveLocal('ops_notes', e.target.value);
+  });
+}
+
+// ====== CARD TOGGLE ======
+function toggleCard(cardId) {
+  const body = document.querySelector(`#${cardId} .card-body`);
+  const toggle = document.querySelector(`#${cardId} .toggle`);
+  if (body.classList.contains('collapsed')) {
+    body.classList.remove('collapsed');
+    toggle.textContent = '▼';
+  } else {
+    body.classList.add('collapsed');
+    toggle.textContent = '▶';
+  }
+}
+
+// ====== REFRESH ======
+function refreshData() {
+  document.getElementById('lastUpdate').textContent = `最后更新: ${formatTime(laoNow().getHours(), laoNow().getMinutes())}`;
+  renderSchedule();
+  renderTravel();
+  renderExercise();
+}
+
+// ====== INSIGHT PANEL ======
+function openInsight(key) {
+  if (!INSIGHT_DATA[key]) return;
+  currentInsightKey = key;
+  currentTab = 'negotiation';
+  const data = INSIGHT_DATA[key];
+  const name = data.negotiation ? data.negotiation.overview.company_name : key;
+  document.getElementById('insightTitle').textContent = name + ' · 谈判作战包';
+  document.getElementById('insightOverlay').classList.add('show');
+  // Reset tabs
+  document.querySelectorAll('.insight-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector('.insight-tab[data-tab="negotiation"]').classList.add('active');
+  renderInsightContent();
+}
+
+function closeInsight(e) {
+  if (e && e.target !== document.getElementById('insightOverlay')) return;
+  document.getElementById('insightOverlay').classList.remove('show');
+  currentInsightKey = '';
+}
+
+function switchTab(tab, btn) {
+  currentTab = tab;
+  document.querySelectorAll('.insight-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  // Update title
+  const data = INSIGHT_DATA[currentInsightKey];
+  const name = data.negotiation ? data.negotiation.overview.company_name : currentInsightKey;
+  const titles = { negotiation: '谈判作战包', investment: '行业投资逻辑', battleplan: '今日作战计划' };
+  document.getElementById('insightTitle').textContent = name + ' · ' + titles[tab];
+  renderInsightContent();
+}
+
+// ====== RENDER INSIGHT CONTENT ======
+function renderInsightContent() {
+  const data = INSIGHT_DATA[currentInsightKey];
+  if (!data) return;
+  const el = document.getElementById('insightContent');
+
+  if (currentTab === 'negotiation') {
+    renderNegotiationTab(data, el);
+  } else if (currentTab === 'investment') {
+    renderInvestmentTab(data, el);
+  } else if (currentTab === 'battleplan') {
+    renderBattleplanTab(data, el);
+  }
+}
+
+// ====== Tab1: 谈判作战包 ======
+function renderNegotiationTab(data, el) {
+  const n = data.negotiation;
+  if (!n) { el.innerHTML = '<div class="insight-card">数据待补充</div>'; return; }
+
+  let html = '';
+
+  // Layer 1 separator
+  html += '<div class="layer-sep">── 第一层：知己知彼 ──</div>';
+
+  // 板块1: 客户概况
+  html += renderSection(1, '客户概况', renderOverview(n.overview));
+
+  // 板块2: 关键人物
+  html += renderSection(2, '关键人物', renderKeyPeople(n.keyPeople));
+
+  // 板块3: 合作网络
+  html += renderSection(3, '合作网络', renderNetwork(n.network));
+
+  // 板块4: 近期动态
+  html += renderSection(4, '近期动态', renderRecentEvents(n.recentEvents));
+
+  // Layer 2 separator
+  html += '<div class="layer-sep">── 第二层：谈判武器 ──</div>';
+
+  // 板块5: 对方需求痛点
+  html += renderSection(5, '对方需求痛点', renderNeeds(n.needs));
+
+  // 板块6: 我方筹码清单
+  html += renderSection(6, '我方筹码清单', renderChips(n.chips));
+
+  // 板块7: 竞争对标
+  html += renderSection(7, '竞争对标', renderCompetition(n.competition));
+
+  // 板块8: 谈判策略建议
+  html += renderSection(8, '谈判策略建议', renderStrategy(n.strategy));
+
+  // Layer 3 separator
+  html += '<div class="layer-sep">── 第三层：风险兜底 ──</div>';
+
+  // 板块9a: 合规风险检查
+  html += renderSection('9a', '合规风险检查', renderCompliance(n.compliance));
+
+  // 板块9b: 项目可行性预判
+  html += renderSection('9b', '项目可行性预判', renderFeasibility(n.feasibility));
+
+  el.innerHTML = html;
+}
+
+function renderSection(num, title, contentHtml) {
+  return `
+  <div class="insight-section">
+    <div class="insight-section-title">
+      <span class="section-num">${num}</span>
+      <span class="dot"></span>
+      ${title}
+    </div>
+    ${contentHtml}
+  </div>`;
+}
+
+function renderOverview(o) {
+  let html = `<div class="insight-card">
+    <div><strong>${o.company_name}</strong> ${o.full_name ? '('+o.full_name+')' : ''}</div>
+    <div style="color:var(--warm-gray);font-size:12px;">成立${o.founded} · 注册资本${o.registered_capital} · 员工${o.employees}</div>
+    <div style="color:var(--warm-gray);font-size:12px;">${o.industry}</div>
+    <div style="margin-top:6px;font-size:12px;color:var(--warm-gray-dark)">${o.positioning}</div>
+    <div style="margin-top:6px;font-size:12px;color:var(--warm-gray)">${o.revenue_scale}</div>
+    ${o.website ? `<div style="font-size:11px;color:var(--blue-plan)">官网: ${o.website}</div>` : ''}
+  </div>`;
+
+  // Business map
+  html += '<div class="sub-heading">业务版图</div>';
+  html += '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;">';
+  o.business_map.forEach(b => {
+    html += `<span class="biz-tag ${b.tag}">${b.name}: ${b.detail}</span>`;
+  });
+  html += '</div>';
+
+  // Core advantage
+  html += `<div class="insight-card"><span class="highlight">核心竞争优势：</span>${o.core_advantage}</div>`;
+  return html;
+}
+
+function renderKeyPeople(kp) {
+  let html = '';
+  const dm = kp.decision_maker;
+  html += `<div class="person-card">
+    <div class="person-name">${dm.name}</div>
+    <div class="person-role">${dm.title} · ${dm.role}</div>
+    <div class="person-row"><span class="person-label">背景</span><span class="person-val">${dm.background}</span></div>
+    <div class="person-row"><span class="person-label">决策风格</span><span class="person-val">${dm.decision_style}</span></div>
+    <div class="person-row"><span class="person-label">老挝关系</span><span class="person-val">${dm.relationship_with_laos}</span></div>
+    <div class="person-row"><span class="person-label">中国关系</span><span class="person-val">${dm.relationship_with_china}</span></div>
+  </div>`;
+
+  // Past decisions
+  html += '<div class="sub-heading">过往关键决策</div>';
+  html += '<ul class="insight-list">';
+  dm.past_decisions.forEach(d => {
+    html += `<li><span class="bullet"></span><span class="val">${d}</span></li>`;
+  });
+  html += '</ul>';
+
+  // Influencers
+  if (kp.influencers && kp.influencers.length > 0) {
+    html += '<div class="sub-heading">影响层</div>';
+    kp.influencers.forEach(inf => {
+      html += `<div class="person-card">
+        <div class="person-name">${inf.name}</div>
+        <div class="person-role">${inf.title} · ${inf.role} · ${inf.influence_area}</div>
+      </div>`;
+    });
+  }
+
+  // Decision chain
+  html += `<div class="insight-card"><span class="label">决策链：</span>${kp.decision_chain}</div>`;
+  return html;
+}
+
+function renderNetwork(net) {
+  let html = '';
+
+  // Government
+  if (net.government && net.government.length > 0) {
+    html += '<div class="sub-heading">政府关系</div>';
+    html += '<ul class="insight-list">';
+    net.government.forEach(g => {
+      html += `<li><span class="bullet" style="background:var(--red-alert)"></span><span class="label">${g.name}</span><span class="val">${g.project} (${g.year})</span></li>`;
+    });
+    html += '</ul>';
+  }
+
+  // Chamber
+  if (net.chamber && net.chamber.length > 0) {
+    html += '<div class="sub-heading">商会/组织</div>';
+    html += '<ul class="insight-list">';
+    net.chamber.forEach(c => {
+      html += `<li><span class="bullet" style="background:var(--blue-plan)"></span><span class="label">${c.name}</span><span class="val">${c.project} (${c.year})</span></li>`;
+    });
+    html += '</ul>';
+  }
+
+  // Enterprise
+  if (net.enterprise && net.enterprise.length > 0) {
+    html += '<div class="sub-heading">企业合作</div>';
+    html += '<ul class="insight-list">';
+    net.enterprise.forEach(e => {
+      html += `<li><span class="bullet" style="background:var(--green-ok)"></span><span class="label">${e.name}</span><span class="val">${e.project} (${e.year})</span></li>`;
+    });
+    html += '</ul>';
+  }
+
+  // Core alliances
+  html += `<div class="insight-card"><span class="highlight">核心联盟：</span>${net.core_alliances}</div>`;
+  html += `<div class="insight-card"><span class="key-num">关系洞察：</span>${net.relationship_insight}</div>`;
+  return html;
+}
+
+function renderRecentEvents(re) {
+  let html = '<ul class="insight-list">';
+  re.major_events.forEach(e => {
+    html += `<li><span class="bullet"></span><span class="label">${e.date}</span><span class="val">${e.event}</span></li>`;
+  });
+  html += '</ul>';
+  html += `<div class="insight-card"><span class="label">投资动向：</span>${re.investment_tracking}</div>`;
+  html += `<div class="insight-card"><span class="label">资金流向：</span>${re.capital_flow}</div>`;
+  html += `<div class="insight-card"><span class="label">战略方向：</span><span class="highlight">${re.strategic_direction}</span></div>`;
+  return html;
+}
+
+function renderNeeds(needs) {
+  let html = '';
+
+  html += '<div class="sub-heading">表面需求</div>';
+  needs.surface_needs.forEach(n => {
+    html += `<div class="need-item"><span class="need-type surface">表面</span>${n}</div>`;
+  });
+
+  html += '<div class="sub-heading">深层需求</div>';
+  needs.deep_needs.forEach(n => {
+    html += `<div class="need-item"><span class="need-type deep">深层</span>${n}</div>`;
+  });
+
+  html += '<div class="sub-heading">痛点</div>';
+  needs.pain_points.forEach(p => {
+    html += `<div class="need-item"><span class="need-type pain">痛点</span>${p}</div>`;
+  });
+
+  html += `<div class="insight-card" style="background:var(--green-bg);"><span class="highlight">我方匹配度：</span>${needs.our_match}</div>`;
+  return html;
+}
+
+function renderChips(chips) {
+  let html = '';
+  chips.items.forEach(c => {
+    const levelClass = c.value_level === '高' ? 'high' : c.value_level === '中高' ? 'mid-high' : 'mid';
+    html += `<div class="chip-card">
+      <div class="chip-cat"><span class="chip-icon">${c.icon}</span>${c.category}<span class="chip-level ${levelClass}">${c.value_level}</span></div>
+      <div class="chip-detail">${c.detail}</div>
+      <div class="chip-basis">法律依据: ${c.legal_basis}</div>
+      ${c.exclusivity ? `<div class="chip-exclusive">独有性: ${c.exclusivity}</div>` : ''}
+    </div>`;
+  });
+
+  html += '<div class="sub-heading">可谈判筹码</div>';
+  html += '<ul class="insight-list">';
+  chips.tradeable.forEach(t => {
+    html += `<li><span class="bullet" style="background:var(--green-ok)"></span><span class="val">${t}</span></li>`;
+  });
+  html += '</ul>';
+
+  html += '<div class="sub-heading">不可谈判红线</div>';
+  html += '<ul class="insight-list">';
+  chips.non_tradeable.forEach(t => {
+    html += `<li><span class="bullet" style="background:var(--red-alert)"></span><span class="val">${t}</span></li>`;
+  });
+  html += '</ul>';
+  return html;
+}
+
+function renderCompetition(comp) {
+  let html = '';
+
+  html += '<table class="cmp-table"><thead><tr><th>地区</th><th>渔业优势</th><th>渔业劣势</th><th>投资条件</th><th>渔业规模</th></tr></thead><tbody>';
+  comp.competitors.forEach(c => {
+    html += `<tr>
+      <td>${c.region}</td>
+      <td>${c.fishery_advantages.join('; ')}</td>
+      <td>${c.fishery_disadvantages.join('; ')}</td>
+      <td>${c.investment_conditions}</td>
+      <td>${c.fishery_specific}</td>
+    </tr>`;
+  });
+  html += '</tbody></table>';
+
+  html += `<div class="insight-card"><span class="key-num">我方优势：</span>${comp.our_advantage}</div>`;
+  html += `<div class="insight-card"><span class="highlight">我方劣势：</span>${comp.our_disadvantage}</div>`;
+  html += `<div class="insight-card" style="background:var(--green-bg);border-left:3px solid var(--green-ok);"><span class="highlight">定位策略：</span>${comp.positioning}</div>`;
+  return html;
+}
+
+function renderStrategy(strat) {
+  let html = '';
+
+  const keys = ['strategy_a', 'strategy_b', 'strategy_c'];
+  const labels = ['A', 'B', 'C'];
+  keys.forEach((k, i) => {
+    const s = strat[k];
+    const isRec = strat.recommended === k;
+    html += `<div class="strategy-card ${isRec ? 'recommended' : ''}">
+      <div class="strat-name">方案${labels[i]}：${s.name}${isRec ? '<span class="rec-badge">推荐</span>' : ''}</div>
+      <div class="strat-row"><span class="strat-label">核心交换</span><span class="strat-val">${s.core_trade}</span></div>
+      <div class="strat-row"><span class="strat-label">预期反应</span><span class="strat-val">${s.expected_reaction}</span></div>
+      <div class="strat-row"><span class="strat-label">底线</span><span class="strat-val">${s.bottom_line}</span></div>
+      <div class="strat-row"><span class="strat-label">适用场景</span><span class="strat-val">${s.best_for}</span></div>
+    </div>`;
+  });
+
+  html += `<div class="rec-banner">
+    <div class="rec-title">推荐方案理由</div>
+    <div class="rec-text">${strat.reason}</div>
+  </div>`;
+  return html;
+}
+
+function renderCompliance(comp) {
+  let html = '';
+  const keys = Object.keys(comp);
+  keys.forEach(k => {
+    const c = comp[k];
+    if (!c || !c.item) return;
+    html += `<div class="compliance-card">
+      <div class="comp-title"><span class="comp-icon">⚠️</span>${c.item}</div>
+      <div class="comp-row"><span class="comp-label">要求</span><span class="comp-val">${c.requirement}</span></div>
+      <div class="comp-row"><span class="comp-label">风险</span><span class="comp-risk">${c.risk}</span></div>
+      <div class="comp-action">应对: ${c.action}</div>
+    </div>`;
+  });
+  return html;
+}
+
+function renderFeasibility(feas) {
+  let html = '';
+  const keys = Object.keys(feas);
+  keys.forEach(k => {
+    const f = feas[k];
+    if (!f || !f.name) return;
+    const levelClass = f.feasibility_level === '高' ? 'high' : f.feasibility_level === '中' ? 'mid' : f.feasibility_level === '中低' ? 'mid-low' : 'mid';
+    html += `<div class="feasibility-card ${levelClass}">
+      <div class="feas-name">${f.name}<span class="feas-badge">可行性: ${f.feasibility_level}</span></div>
+      <div class="feas-row"><span class="feas-label">投资规模</span><span class="feas-val">${f.investment_scale}</span></div>
+      <div class="feas-row"><span class="feas-label">回本周期</span><span class="feas-val">${f.payback_period}</span></div>
+      <div class="feas-row"><span class="feas-label">市场数据</span><span class="feas-val">${f.market_data}</span></div>
+      <div class="feas-row"><span class="feas-label">关键依赖</span><span class="feas-val">${f.key_dependencies.join('; ')}</span></div>
+      <div class="feas-row"><span class="feas-label">最大风险</span><span class="feas-val" style="color:var(--red-alert)">${f.biggest_risk}</span></div>
+      ${f.price_advantage ? `<div class="feas-row"><span class="feas-label">价格优势</span><span class="feas-val">${f.price_advantage}</span></div>` : ''}
+      ${f.alternative ? `<div class="feas-row"><span class="feas-label">替代方案</span><span class="feas-val">${f.alternative}</span></div>` : ''}
+      ${f.strategic_opportunity ? `<div class="feas-row"><span class="feas-label">战略机遇</span><span class="feas-val" style="color:var(--green-ok)">${f.strategic_opportunity}</span></div>` : ''}
+    </div>`;
+  });
+  return html;
+}
+
+// ====== Tab2: 行业投资逻辑 ======
+function renderInvestmentTab(data, el) {
+  const inv = data.investment;
+  if (!inv) { el.innerHTML = '<div class="insight-card">数据待补充</div>'; return; }
+
+  let html = '';
+
+  // 板块1: 行业规模与增长
+  html += renderSection(1, '行业规模与增长', renderMarketSize(inv.marketSize));
+
+  // 板块2: 政策风向
+  html += renderSection(2, '政策风向', renderPolicy(inv.policy));
+
+  // 板块3: 投资回报基准
+  html += renderSection(3, '投资回报基准', renderROIBenchmarks(inv.roiBenchmarks));
+
+  // 板块4: 对标案例
+  html += renderSection(4, '对标案例', renderBenchmarkCases(inv.benchmarkCases));
+
+  // 板块5: 行业风险
+  html += renderSection(5, '行业风险', renderRisks(inv.risks));
+
+  // 板块6: 投资逻辑总结
+  html += renderSection(6, '投资逻辑总结', renderLogicSummary(inv.logicSummary));
+
+  el.innerHTML = html;
+}
+
+function renderMarketSize(ms) {
+  let html = '';
+  const keys = Object.keys(ms);
+  keys.forEach(k => {
+    const m = ms[k];
+    html += `<div class="ind-card">
+      <div class="ind-name">${m.name}</div>
+      <div class="ind-row"><span class="ind-label">市场规模</span><span class="ind-val">${m.market_size}</span></div>
+      <div class="ind-row"><span class="ind-label">增长率</span><span class="ind-val">${m.growth_rate}</span></div>
+      ${m.export_trend ? `<div class="ind-row"><span class="ind-label">出口趋势</span><span class="ind-val">${m.export_trend}</span></div>` : ''}
+      ${m.trend ? `<div class="ind-row"><span class="ind-label">趋势</span><span class="ind-val">${m.trend}</span></div>` : ''}
+      <div class="ind-row"><span class="ind-label">核心驱动</span><span class="ind-val">${m.key_driver}</span></div>
+    </div>`;
+  });
+  return html;
+}
+
+function renderPolicy(pol) {
+  let html = '';
+  const keys = Object.keys(pol);
+  keys.forEach(k => {
+    const p = pol[k];
+    if (!p || !p.title) return;
+    html += `<div class="policy-card">
+      <div class="pol-title">${p.title}</div>
+      <div class="pol-row"><span class="pol-label">支持</span><span class="pol-support">${p.support}</span></div>
+      <div class="pol-row"><span class="pol-label">限制</span><span class="pol-restrict">${p.restriction}</span></div>
+      ${p.special_zone ? `<div class="pol-row"><span class="pol-label">特区</span><span class="pol-zone">${p.special_zone}</span></div>` : ''}
+      ${p.opportunity ? `<div class="pol-row"><span class="pol-label">机遇</span><span class="pol-opportunity">${p.opportunity}</span></div>` : ''}
+    </div>`;
+  });
+  return html;
+}
+
+function renderROIBenchmarks(benchmarks) {
+  let html = '';
+  benchmarks.forEach(b => {
+    html += `<div class="roi-card">
+      <div class="roi-name">${b.industry}</div>
+      <div class="roi-row"><span class="roi-label">典型ROI</span><span class="roi-val" style="color:var(--green-ok);font-weight:700">${b.typical_roi}</span></div>
+      <div class="roi-row"><span class="roi-label">回本周期</span><span class="roi-val" style="font-weight:700">${b.payback}</span></div>
+      ${b.reference_revenue ? `<div class="roi-row"><span class="roi-label">参考营收</span><span class="roi-val">${b.reference_revenue}</span></div>` : ''}
+      ${b.reference_market ? `<div class="roi-row"><span class="roi-label">参考市场</span><span class="roi-val">${b.reference_market}</span></div>` : ''}
+      <div class="roi-row"><span class="roi-label">成功要素</span><span class="roi-val">${b.key_success_factor}</span></div>
+      ${b.reference_case ? `<div class="roi-row"><span class="roi-label">对标案例</span><span class="roi-val">${b.reference_case}</span></div>` : ''}
+    </div>`;
+  });
+  return html;
+}
+
+function renderBenchmarkCases(cases) {
+  let html = '';
+  cases.forEach(c => {
+    html += `<div class="case-card">
+      <div class="case-name">${c.case}</div>
+      <div class="case-row"><span class="case-label">规模</span><span class="case-val">${c.scale}</span></div>
+      <div class="case-row"><span class="case-label">启示</span><span class="case-val">${c.lesson}</span></div>
+      <div class="case-row"><span class="case-label">对我们的意义</span><span class="case-val" style="color:var(--wine);font-weight:500">${c.implication}</span></div>
+    </div>`;
+  });
+  return html;
+}
+
+function renderRisks(risks) {
+  let html = '';
+  const riskCategories = [
+    { key: 'fishery_risks', title: '渔业风险', icon: '🐟' },
+    { key: 'automotive_risks', title: '汽车风险', icon: '🚗' },
+    { key: 'computing_risks', title: '算力风险', icon: '💻' },
+    { key: 'media_risks', title: '媒体风险', icon: '📰' }
+  ];
+  riskCategories.forEach(rc => {
+    if (!risks[rc.key] || risks[rc.key].length === 0) return;
+    html += `<div class="sub-heading">${rc.icon} ${rc.title}</div>`;
+    html += '<ul class="risk-list">';
+    risks[rc.key].forEach(r => {
+      html += `<li><span class="risk-icon">⚠️</span>${r}</li>`;
+    });
+    html += '</ul>';
+  });
+  return html;
+}
+
+function renderLogicSummary(logic) {
+  let html = '';
+  const logicItems = [
+    { key: 'fishery_logic', title: '渔业投资逻辑' },
+    { key: 'automotive_logic', title: '汽车投资逻辑' },
+    { key: 'computing_logic', title: '算力投资逻辑' },
+    { key: 'media_logic', title: '媒体投资逻辑' }
+  ];
+  logicItems.forEach(li => {
+    if (!logic[li.key]) return;
+    html += `<div class="logic-card">
+      <div class="logic-name">${li.title}</div>
+      <div class="logic-text">${logic[li.key]}</div>
+    </div>`;
+  });
+
+  if (logic.priority_recommendation) {
+    html += `<div class="rec-banner">
+      <div class="rec-title">优先级推荐</div>
+      <div class="rec-text">${logic.priority_recommendation}</div>
+    </div>`;
+  }
+
+  if (logic.packaging_strategy) {
+    html += `<div class="insight-card" style="background:var(--blue-bg);border-left:3px solid var(--blue-plan);">
+      <span class="key-num">打包策略：</span>${logic.packaging_strategy}
+    </div>`;
+  }
+  return html;
+}
+
+// ====== Tab3: 今日作战计划 ======
+function renderBattleplanTab(data, el) {
+  const bp = data.battleplan;
+  if (!bp) { el.innerHTML = '<div class="insight-card">数据待补充</div>'; return; }
+
+  let html = '';
+
+  // 板块1: 会议基本信息
+  html += renderSection(1, '会议基本信息', renderMeeting(bp.meeting));
+
+  // 板块2: 开场策略
+  html += renderSection(2, '开场策略', renderOpening(bp.opening));
+
+  // 板块3: 核心议题排序
+  html += renderSection(3, '核心议题排序', renderAgendaPriority(bp.agendaPriority));
+
+  // 板块4: 交换条件清单
+  html += renderSection(4, '交换条件清单', renderTradeItems(bp.tradeItems));
+
+  // 板块5: 对方可能反应+应对
+  html += renderSection(5, '对方可能反应+应对', renderScenarios(bp.scenarios));
+
+  // 板块6: 底线清单
+  html += renderSection(6, '底线清单', renderBottomLines(bp.bottomLines));
+
+  // 板块7: 收尾路径
+  html += renderSection(7, '收尾路径', renderClosing(bp.closing));
+
+  el.innerHTML = html;
+}
+
+function renderMeeting(mtg) {
+  let html = `<div class="meeting-card">
+    <div class="mtg-row"><span class="mtg-label">时间</span><span class="mtg-val">${mtg.time}</span></div>
+    <div class="mtg-row"><span class="mtg-label">地点</span><span class="mtg-val">${mtg.location}</span></div>
+    <div class="mtg-row"><span class="mtg-label">对方</span><span class="mtg-val">${mtg.counterparty}</span></div>
+    <div class="mtg-row"><span class="mtg-label">对方参会</span><span class="mtg-val">${mtg.counterparty_attendees}</span></div>
+    <div class="mtg-row"><span class="mtg-label">我方参会</span><span class="mtg-val">${mtg.our_attendees}</span></div>
+    <div class="mtg-row"><span class="mtg-label">会议类型</span><span class="mtg-val">${mtg.meeting_type}</span></div>
+  </div>`;
+  html += '<div class="sub-heading">议题</div>';
+  html += '<ul class="insight-list">';
+  mtg.agenda_items.forEach(a => {
+    html += `<li><span class="bullet" style="background:var(--blue-plan)"></span><span class="val">${a}</span></li>`;
+  });
+  html += '</ul>';
+  return html;
+}
+
+function renderOpening(op) {
+  let html = `<div class="opening-card">
+    <div class="op-row"><span class="op-label">切入策略</span><span class="op-val">${op.approach}</span></div>
+    <div class="op-row"><span class="op-label">策略逻辑</span><span class="op-val">${op.rationale}</span></div>
+    <div class="op-row"><span class="op-label">语气基调</span><span class="op-val">${op.tone}</span></div>
+    <div class="sub-heading">开场话术</div>
+    <div class="op-script">${op.script}</div>
+  </div>`;
+  return html;
+}
+
+function renderAgendaPriority(agenda) {
+  let html = '';
+  agenda.forEach(a => {
+    const rankClass = `rank${a.rank}`;
+    html += `<div class="agenda-card ${rankClass}">
+      <div class="ag-topic"><span class="ag-rank">${a.rank}</span>${a.topic}</div>
+      <div class="ag-row"><span class="ag-label">理由</span><span class="ag-val">${a.reason}</span></div>
+      <div class="ag-row"><span class="ag-label">我方目标</span><span class="ag-val">${a.our_goal}</span></div>
+      <div class="ag-row"><span class="ag-label">核心数据</span><span class="ag-val">${a.key_data}</span></div>
+      <div class="ag-row"><span class="ag-label">核心论点</span><span class="ag-val" style="font-weight:600;color:var(--wine)">${a.key_argument}</span></div>
+    </div>`;
+  });
+  return html;
+}
+
+function renderTradeItems(items) {
+  let html = '';
+  items.forEach(t => {
+    const priClass = t.priority.includes('高') ? 'high' : t.priority.includes('中高') ? 'mid-high' : t.priority.includes('中') ? 'mid' : 'low';
+    html += `<div class="trade-item">
+      <span class="trade-priority ${priClass}">${t.priority}</span>
+      <div class="trade-row"><span class="trade-label">我们给</span><span class="trade-val">${t.we_give}</span></div>
+      <div class="trade-row"><span class="trade-label">我们换</span><span class="trade-val">${t.we_want}</span></div>
+      <div class="trade-data">数据支撑: ${t.data_support}</div>
+    </div>`;
+  });
+  return html;
+}
+
+function renderScenarios(scenarios) {
+  let html = '';
+  scenarios.forEach((s, i) => {
+    html += `<div class="scenario-card">
+      <div class="sc-title"><span class="sc-num">${i+1}</span>${s.title} <span style="font-size:11px;color:var(--warm-gray)">${s.likelihood}</span></div>
+      <div class="sc-row"><span class="sc-label">应对</span><span class="sc-val">${s.response}</span></div>
+      <div class="sc-bl">底线: ${s.bottom_line}</div>
+    </div>`;
+  });
+  return html;
+}
+
+function renderBottomLines(bl) {
+  let html = '';
+
+  html += '<div class="sub-heading">硬底线（不可逾越）</div>';
+  html += '<div style="margin-bottom:8px;">';
+  bl.hard.forEach(h => {
+    html += `<span class="bl-tag hard">${h}</span>`;
+  });
+  html += '</div>';
+
+  html += '<div class="sub-heading">软底线（可谈判但有最低要求）</div>';
+  html += '<div style="margin-bottom:8px;">';
+  bl.soft.forEach(s => {
+    html += `<span class="bl-tag soft">${s}</span>`;
+  });
+  html += '</div>';
+
+  html += '<div class="sub-heading">离场条件（遇到就终止谈判）</div>';
+  html += '<div>';
+  bl.walk_away.forEach(w => {
+    html += `<span class="bl-tag walk">${w}</span>`;
+  });
+  html += '</div>';
+
+  return html;
+}
+
+function renderClosing(closing) {
+  let html = '';
+
+  html += `<div class="close-card best">
+    <div class="close-label">最好结果</div>
+    ${closing.best_case}
+  </div>`;
+
+  html += `<div class="close-card likely">
+    <div class="close-label">最可能结果</div>
+    ${closing.likely_case}
+  </div>`;
+
+  html += `<div class="close-card worst">
+    <div class="close-label">最差结果</div>
+    ${closing.worst_case}
+  </div>`;
+
+  html += `<div class="insight-card" style="background:var(--blue-bg);border-left:3px solid var(--blue-plan);">
+    <span class="key-num">会后跟进：</span>${closing.follow_up}
+  </div>`;
+
+  if (closing.deliverables && closing.deliverables.length > 0) {
+    html += '<div class="sub-heading">会后交付物</div>';
+    html += '<ul class="deliverable-list">';
+    closing.deliverables.forEach(d => {
+      html += `<li><span class="dl-icon">📄</span>${d}</li>`;
+    });
+    html += '</ul>';
+  }
+
+  return html;
+}
+
+// ====== INIT ======
+function init() {
+  updateDateDisplay();
+
+  scheduleData = [
+    { startH: 10, startM: 0, endH: 12, endM: 0, title: 'IHC投资集团·巴沙鱼二期+汽车授权+产线落地', location: '万象', tags: [{label:'投资', type:'client'}, {label:'重要', type:'urgent'}], insightKey: 'IHC投资集团' },
+    { startH: 18, startM: 0, endH: 21, endM: 0, title: '陶总+国企老总·晚餐商谈', location: '万象', tags: [{label:'商谈', type:'client'}, {label:'重要', type:'urgent'}], insightKey: '老挝资讯网·陶总' },
+  ];
+
+  travelData = {
+    international: [],
+    domestic: [
+      { icon: '✈️', type: '老挝国内航班', route: '万象→巴色', time: '约1.5h', price: '待查' },
+      { icon: '🚗', type: '自驾/大巴', route: '万象→巴色', time: '约6-8h', price: '--' },
+    ],
+  };
+
+  renderSchedule();
+  renderTravel();
+  renderExercise();
+  initNotes();
+  refreshData();
+}
+
+init();
+</script>
+</body>
+</html>
