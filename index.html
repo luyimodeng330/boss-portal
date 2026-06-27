@@ -2157,7 +2157,9 @@ const INSIGHT_DATA = {
     },
   },
   '华为老挝公司·陈祎靖': {
+    // ===== Tab1: 谈判作战包 =====
     negotiation: {
+      // 板块1: 客户概况
       overview: {
         company_name: "华为技术有限公司老挝子公司",
         full_name: "华为老挝公司（Huawei Technologies Laos Co., Ltd）",
@@ -2169,110 +2171,396 @@ const INSIGHT_DATA = {
         revenue_scale: "华为全球营收约7000亿人民币，老挝业务占比较小但战略地位重要",
         website: "www.huawei.com",
         business_map: [
-          { area: "5G网络", detail: "老挝主要运营商（LTC/Unitel/Planet）核心设备供应商" },
-          { area: "智慧城市", detail: "万象智慧城市建设参与方" },
-          { area: "AI算力", detail: "昇腾AI芯片+算力中心解决方案" },
-          { area: "数据中心", detail: "东南亚算力出海节点布局" },
-          { area: "智能矿山", detail: "亚钾国际老挝矿区首个东南亚智能矿山样板" },
+          { name: "5G网络", tag: "core", detail: "老挝主要运营商（LTC/Unitel/Planet）核心设备供应商" },
+          { name: "智慧城市", tag: "core", detail: "万象智慧城市建设参与方" },
+          { name: "AI算力", tag: "core", detail: "昇腾AI芯片+算力中心解决方案" },
+          { name: "数据中心", tag: "planned", detail: "东南亚算力出海节点布局" },
+          { name: "智能矿山", tag: "core", detail: "亚钾国际老挝矿区首个东南亚智能矿山样板" },
         ],
+        core_advantage: "全球ICT技术领导力+昇腾AI芯片自主可控+老挝15年深耕积累的政府关系(MPTC/运营商)+海外算力中心落地经验(沙特/中东)"
       },
-      key_persons: [
-        { name: "陈祎靖", title: "CEO / 老挝公司负责人", phone: "17701332119", background: "华为老挝公司CEO，多次代表华为出席中老高层合作活动", role: "最终决策者", influence: "极高——直接汇报华为东南亚区总部" },
-      ],
+      // 板块2: 关键人物
+      keyPeople: {
+        decision_maker: {
+          name: "陈祎靖",
+          title: "CEO / 老挝公司负责人",
+          role: "最终决策者",
+          background: "华为老挝公司CEO，多次代表华为出席中老高层合作活动",
+          decision_style: "待补充——需了解陈总决策风格（是否偏向数据驱动/关系驱动/技术驱动）",
+          past_decisions: [
+            "多次代表华为出席中老高层合作活动",
+            "联合亚钾国际打造东南亚首个智能矿山(2022-12)",
+            "推进华为在老挝5G网络部署（LTC/Unitel/Planet核心设备供应商）"
+          ],
+          relationship_with_laos: "直接对接老挝科技通信部(MPTC)和老挝主要运营商(LTC/Unitel/Planet)，老挝副总理兼外交部长曾考察华为展台",
+          relationship_with_china: "直接汇报华为东南亚区总部，执行华为中国总部海外战略"
+        },
+        influencers: [
+          { name: "待补充", title: "华为东南亚区总部领导", role: "战略指导/审批层", influence_area: "海外业务战略方向和预算审批" }
+        ],
+        decision_chain: "陈祎靖拍板老挝本地决策 → 华为东南亚区总部审批重大投资 → 华为中国总部最终决策大型海外项目"
+      },
+      // 板块3: 合作网络
       network: {
-        partners: ["老挝科技通信部(MPTC)", "老挝电力公司(EDL)", "LTC(老挝电信)", "亚钾国际", "中国驻老挝大使馆"],
-        competitors: ["中兴(ZTE)", "爱立信(Ericsson)", "诺基亚(Nokia)"],
-        ecosystem: "华为生态链=设备供应商→运营商→政企客户→行业解决方案",
+        government: [
+          { name: "老挝科技通信部(MPTC)", project: "5G网络建设+数字化转型合作", year: "2011年起" },
+          { name: "老挝电力公司(EDL)", project: "数据中心电力供应合作", year: "待补充" },
+          { name: "中国驻老挝大使馆", project: "中老高层合作活动参与", year: "待补充" }
+        ],
+        chamber: [
+          { name: "待补充", project: "待补充", year: "待补充" }
+        ],
+        enterprise: [
+          { name: "LTC(老挝电信)", project: "核心设备供应商", year: "待补充" },
+          { name: "亚钾国际", project: "东南亚首个智能矿山", year: "2022" }
+        ],
+        core_alliances: "华为生态链=设备供应商→运营商→政企客户→行业解决方案。核心壁垒是ICT技术领导力+与运营商的长期绑定",
+        relationship_insight: "华为在老挝的核心壁垒是ICT技术领导力+与运营商的长期绑定关系。进入四千岛需要特区提供算力中心落地场景，华为提供技术+品牌+运营——与IHC'拿政府特许权→引入中国企业'模式互补，华为是'自带技术→需要落地场景'"
       },
-      recent_dynamics: [
+      // 板块4: 近期动态
+      recentEvents: {
+        major_events: [
           { date: "2024-01", event: "老挝副总理兼外交部长考察华为展台，高度评价5G/ICT贡献" },
           { date: "2023-09", event: "老挝总理表示希望华为深入参与老挝数字化转型" },
           { date: "2022-12", event: "联合亚钾国际打造东南亚首个智能矿山" },
           { date: "2025-09", event: "华为全联接大会发布昇腾2026-2028路线图" },
-      ],
-      needs_analysis: { deep_needs: ["东南亚算力市场拓展节点", "一带一路数字化标杆案例", "昇腾生态海外落地"], surface_needs: ["寻找合适算力中心落地场景", "政府关系支持"] },
-      our_chips: [
-          { chip: "四千岛特区资源整合能力", value: "高", detail: "可提供土地+电力+政策一站式配套" },
-          { chip: "电力成本优势($0.04/kWh)", value: "极高", detail: "中广核1GW光伏+南方电网500kV联网，低于越南/柬埔寨30%+" },
-          { chip: "中老铁路物流通道", value: "高", detail: "设备运输成本↓40-50%，通关2-5小时" },
-          { chip: "RCEP零关税", value: "中", detail: "设备进口零关税降低建设成本" },
-          { chip: "政府关系对接", value: "高", detail: "可直接对接特区管委会+能矿部" },
-          { chip: "数据合规友好环境", value: "高", detail: "特区可提供数据本地化+安全合规框架" },
-          { chip: "气候条件适宜", value: "中", detail: "需解决散热问题（热带气候）但水电充裕" },
-          { chip: "人才储备待建", value: "低", detail: "本地技术人才稀缺，需华为培训投入" },
-      ],
+        ],
+        investment_tracking: "华为在老挝以ICT基础设施为主，正拓展AI算力和数据中心方向。昇腾2026-2028路线图发布=海外算力生态扩张信号",
+        capital_flow: "待补充——需关注华为在东南亚算力投资流向",
+        strategic_direction: "扩张——从ICT基础设施向AI算力+数据中心+智慧解决方案多元化布局，海外昇腾生态落地是战略重点"
+      },
+      // 板块5: 对方需求痛点
+      needs: {
+        surface_needs: [
+          "寻找合适算力中心落地场景",
+          "政府关系支持"
+        ],
+        deep_needs: [
+          "东南亚算力市场拓展节点",
+          "一带一路数字化标杆案例",
+          "昇腾生态海外落地"
+        ],
+        pain_points: [
+          "美国实体清单限制——华为海外业务面临政治风险",
+          "H200禁令虽然打开昇腾替代窗口，但也增加了地缘政治不确定性",
+          "东南亚已有数据中心集群（泰国/新加坡/马来）竞争激烈",
+          "热带散热成本高于预期+本地技术人才稀缺"
+        ],
+        our_match: "四千岛能解决：算力中心落地场景✅（特区配套）+ 电力成本✅（$0.04/kWh，低于新加坡30%+）+ 物流通道✅（中老铁路设备运输↓40-50%）+ 政府关系✅（特区管委会+能矿部对接）+ 税收优惠✅（RCEP+特区政策）+ 数据合规✅（特区可提供数据本地化+安全合规框架）"
+      },
+      // 板块6: 我方筹码清单
+      chips: {
+        items: [
+          {
+            category: "特区资源整合",
+            icon: "🤝",
+            detail: "可提供土地+电力+政策一站式配套",
+            legal_basis: "530号总理令+特区法规",
+            value_level: "高",
+            exclusivity: "特区独有配套"
+          },
+          {
+            category: "电力成本",
+            icon: "⚡",
+            detail: "中广核1GW光伏+南方电网500kV联网，电价$0.04/kWh，低于越南/柬埔寨30%+",
+            legal_basis: "中广核一期100万kW已并网，二期1000MW光伏+556MW风电已签PDA",
+            value_level: "极高",
+            exclusivity: "四千岛电力成本优势，数据中心选址核心考量"
+          },
+          {
+            category: "物流通道",
+            icon: "🚂",
+            detail: "中老铁路设备运输成本↓40-50%，通关2-5小时",
+            legal_basis: "中老铁路沿线综合开发三年行动计划(2025-2027)",
+            value_level: "高",
+            exclusivity: "中老铁路是老挝独有通道"
+          },
+          {
+            category: "RCEP零关税",
+            icon: "💰",
+            detail: "设备进口零关税降低建设成本",
+            legal_basis: "RCEP原产地规则+中国对老挝100%税目零关税",
+            value_level: "中",
+            exclusivity: "老挝作为最不发达国家享100%零关税"
+          },
+          {
+            category: "政府关系对接",
+            icon: "🏛️",
+            detail: "可直接对接特区管委会+能矿部",
+            legal_basis: "530号总理令设立IPMC整合审批",
+            value_level: "高",
+            exclusivity: "特区管委会统一协调"
+          },
+          {
+            category: "数据合规环境",
+            icon: "🔒",
+            detail: "特区可提供数据本地化+安全合规框架",
+            legal_basis: "待补充——需确认特区数据合规具体法规",
+            value_level: "高",
+            exclusivity: "特区可定制合规框架"
+          },
+          {
+            category: "气候散热",
+            icon: "🌡️",
+            detail: "需解决散热问题（热带气候）但水电充裕可支持液冷方案",
+            legal_basis: "待补充",
+            value_level: "中",
+            exclusivity: "热带气候挑战但水电充裕是优势"
+          },
+          {
+            category: "人才储备",
+            icon: "👨‍💻",
+            detail: "本地技术人才稀缺，需华为培训投入",
+            legal_basis: "待补充",
+            value_level: "低",
+            exclusivity: "全老挝共性挑战"
+          }
+        ],
+        tradeable: ["土地价格可谈判", "税收优惠可谈判年限", "电力价格可谈判阶梯方案", "政府关系对接深度可谈判"],
+        non_tradeable: ["中老铁路运力上限", "电力供应物理上限(中广核1GW+南方电网500kV)", "老挝数据保护法规底线"]
+      },
+      // 板块7: 竞争对标
       competition: {
-        players: [
-            { name: "泰国/新加坡数据中心集群", pros: "成熟生态+带宽优势", cons: "电价高+土地贵+竞争激烈" },
-            { name: "越南云服务商(VNG/FPT)", cons: "政治风险+美国制裁影响" },
-            { name: "马来西亚赛城(Cyberjaya)", pros: "成熟IDC集群", cons: "价格战激烈" },
-        ]
+        competitors: [
+          {
+            region: "泰国/新加坡数据中心集群",
+            fishery_advantages: ["成熟生态+带宽优势", "数据中心产业链完整", "客户资源丰富"],
+            fishery_disadvantages: ["电价高($0.15+/kWh)", "土地贵", "竞争激烈"],
+            investment_conditions: "成熟市场但成本高，企业所得税20%无特区30年免税",
+            fishery_specific: "新加坡是东南亚数据中心核心节点，带宽和网络基础设施领先"
+          },
+          {
+            region: "越南云服务商(VNG/FPT)",
+            fishery_advantages: ["本土市场理解", "软件开发能力"],
+            fishery_disadvantages: ["政治风险+美国制裁影响", "算力基础设施不足"],
+            investment_conditions: "有条件行业从198项压减至142项(2026.7.1生效)，但政治风险较高",
+            fishery_specific: "VNG/FPT以软件服务为主，硬件算力能力有限"
+          },
+          {
+            region: "马来西亚赛城(Cyberjaya)",
+            fishery_advantages: ["成熟IDC集群", "政府数字经济政策支持"],
+            fishery_disadvantages: ["价格战激烈", "电力成本高于老挝"],
+            investment_conditions: "数字经济政策支持但竞争激烈，利润空间压缩",
+            fishery_specific: "赛城是东南亚成熟IDC集群，但面临价格战和利润压缩"
+          }
+        ],
+        our_advantage: "四千岛3大独有优势：①电力成本（$0.04/kWh vs 新加坡$0.15+/kWh，低于30%+）②物流通道（中老铁路直达，设备运输↓40-50%）③政策组合拳（特区配套+RCEP零关税+政府关系对接）",
+        our_disadvantage: "基础设施不如泰国/新加坡，网络带宽待升级，本地技术人才稀缺",
+        positioning: "不跟泰国/新加坡拼成熟生态，拼'电力成本+政策组合拳+中老铁路物流'差异化。华为昇腾生态+H200禁令=国产算力出海窗口，四千岛可定位'中国AI算力东南亚备份节点'"
       },
-      strategy_suggestions: {
-          conservative: { core_trade: "四千岛提供电力+土地 → 华为做技术方案可行性评估", expected_reaction: "愿意了解但不承诺", bottom_line: "不投入前期费用", best_for: "初次接触建立信任" },
-          aggressive: { core_trade: "四千岛提供全套配套(土地+电力+免税) → 要求华为独家落地算力中心", expected_reaction: "可能觉得条件不够吸引力", bottom_line: "至少获得书面意向", best_for: "对方已有落地意愿" },
-          recommended_winwin: { name: "共赢方案(推荐)", core_trade: "四千岛提供电力+土地+政府关系 → 华为负责技术+品牌+运营，双方联合打造'东南亚昇腾算力示范中心'", expected_reaction: "最有吸引力——华为获得低成本落地标杆，四千岛获得产业升级", bottom_line: "排他期12个月，产能不低于100P算力", best_for: "长期战略合作+产业标杆" }
+      // 板块8: 谈判策略建议
+      strategy: {
+        strategy_a: {
+          name: "保守方案（建立信任）",
+          core_trade: "四千岛提供电力+土地 → 华为做技术方案可行性评估",
+          expected_reaction: "愿意了解但不承诺",
+          bottom_line: "不投入前期费用",
+          best_for: "初次接触建立信任"
+        },
+        strategy_b: {
+          name: "进取方案（绑定排他）",
+          core_trade: "四千岛提供全套配套(土地+电力+免税) → 要求华为独家落地算力中心",
+          expected_reaction: "可能觉得条件不够吸引力",
+          bottom_line: "至少获得书面意向",
+          best_for: "对方已有落地意愿"
+        },
+        strategy_c: {
+          name: "共赢方案（资源换产业）",
+          core_trade: "四千岛提供电力+土地+政府关系 → 华为负责技术+品牌+运营，双方联合打造'东南亚昇腾算力示范中心'",
+          expected_reaction: "最有吸引力——华为获得低成本落地标杆，四千岛获得产业升级",
+          bottom_line: "排他期12个月，产能不低于100P算力",
+          best_for: "长期战略合作+产业标杆"
+        },
+        recommended: "strategy_c",
+        reason: "华为需要海外昇腾生态落地点(避开美国制裁)+四千岛有极低电力成本($0.04/kWh)+中老铁路设备运输便利+老挝政府支持数字化转型=双方利益高度契合。共赢方案让华为获得低成本标杆案例，四千岛获得产业升级+技术品牌背书"
       },
-      compliance_risks: [
-          { risk: "美国实体清单限制", level: "高", mitigation: "算力中心定位为商业服务而非出口管制物项" },
-          { risk: "数据跨境合规", level: "中", mitigation: "数据本地化存储，符合老挝数据保护法规" },
-          { risk: "外汇进出管制", level: "低", mitigation: "通过正规银行渠道+BCEL合作" },
-          { risk: "土地使用权限", level: "中", mitigation: "通过特区管委会统一协调，避免单独拿地复杂流程" },
-      ],
+      // 板块9: 合规风险检查
+      compliance: {
+        us_sanction: {
+          item: "美国实体清单限制",
+          requirement: "华为在美实体清单上，部分技术和产品受限",
+          risk: "算力中心可能被视为出口管制物项",
+          action: "定位为商业服务而非出口管制物项，明确服务对象为东南亚本地企业"
+        },
+        data_compliance: {
+          item: "数据跨境合规",
+          requirement: "数据本地化存储，符合老挝数据保护法规",
+          risk: "跨境数据传输可能触发合规审查",
+          action: "数据本地化存储，符合老挝数据保护法规，特区可提供合规框架"
+        },
+        forex_compliance: {
+          item: "外汇进出管制",
+          requirement: "投资款入境和利润汇出需合规",
+          risk: "外汇进出可能受限",
+          action: "通过正规银行渠道+BCEL合作"
+        },
+        land_compliance: {
+          item: "土地使用权限",
+          requirement: "数据中心用地需合规取得",
+          risk: "单独拿地流程复杂",
+          action: "通过特区管委会统一协调，避免单独拿地复杂流程"
+        }
+      },
+      // 板块9b: 项目可行性预判
       feasibility: {
         items: [
           { project: "华为昇腾算力中心落地四千岛", feasibility: "中高", reason: "电力成本极低+土地便宜+政策支持+中老铁路物流，但需解决散热和人才问题。华为有海外落地经验（沙特/中东），模式可复制", timeline: "6-12月可行性评估，12-24月建设一期" },
         ]
       }
     },
-    industry: {
-      marketSize: { ai_computing: { name: "东南亚AI算力市场", market_size: "约100亿美元(2026)", growth_rate: "年增40%+", key_driver: "生成式AI爆发+中国企业出海+数据主权需求" } },
+    // ===== Tab2: 行业投资逻辑 =====
+    investment: {
+      // 板块1: 行业规模与增长
+      marketSize: {
+        ai_computing: {
+          name: "东南亚AI算力市场",
+          market_size: "约100亿美元(2026)",
+          growth_rate: "年增40%+",
+          key_driver: "生成式AI爆发+中国企业出海+数据主权需求"
+        }
+      },
+      // 板块2: 政策风向
       policy: {
-        policies: [
-          { policy: "老挝数字经济发展战略(2021-2030)", impact: "利好——国家层面推动数字化转型" },
-          { policy: "H200禁令(美国对华芯片出口管制)", impact: "重大利好——华为昇腾替代窗口打开" },
-          { policy: "'东数西算'延伸至东南亚", impact: "利好——中国企业寻求海外算力节点" },
-          { policy: "中老铁路通车+RCEP生效", impact: "利好——设备运输+数据流动便利" },
+        digital_policy: {
+          title: "数字化/算力政策",
+          support: "老挝数字经济发展战略(2021-2030)——国家层面推动数字化转型+H200禁令打开华为昇腾替代窗口+'东数西算'延伸至东南亚——中国企业寻求海外算力节点",
+          restriction: "美国实体清单限制华为部分技术出口+数据跨境合规要求+老挝数据保护法规",
+          special_zone: "四千岛特区可提供数据本地化+安全合规框架+税收优惠"
+        },
+        trade_policy: {
+          title: "贸易/物流政策",
+          support: "中老铁路通车+RCEP生效——设备运输+数据流动便利+中国对老挝100%税目零关税",
+          restriction: "RCEP原产地规则限制+中国837号令(2026.7.1)限制技术输出",
+          special_zone: "中老铁路是老挝独有物流通道+特区可提供超出一般法律的特许优惠"
+        }
+      },
+      // 板块3: 投资回报基准
+      roiBenchmarks: [
+        {
+          industry: "算力/数据中心",
+          typical_roi: "IRR 12-20%",
+          payback: "4-6年(满载运营)",
+          reference_market: "东南亚AI算力市场约100亿美元(2026)，年增40%+",
+          key_success_factor: "电力成本+网络带宽+客户需求+技术人才",
+          reference_case: "华为沙特AI算力中心——政府合资模式可行。万国数据(GDS)东南亚布局——新加坡+马来是主流选择"
+        }
+      ],
+      // 板块4: 对标案例
+      benchmarkCases: [
+        {
+          case: "华为沙特AI算力中心",
+          scale: "政府合资模式",
+          lesson: "政府合资模式可行，但需明确数据主权",
+          implication: "四千岛可与华为合资打造东南亚算力标杆，模式可复制"
+        },
+        {
+          case: "亚钾国际智能矿山(老挝)",
+          scale: "首个东南亚智能矿山样板",
+          lesson: "华为已在老挝验证过技术落地能力",
+          implication: "华为老挝技术团队有本地经验，算力中心落地有执行基础"
+        },
+        {
+          case: "万国数据(GDS)东南亚布局",
+          scale: "新加坡+马来数据中心集群",
+          lesson: "新加坡+马来是主流选择，老挝需差异化竞争",
+          implication: "四千岛不拼成熟生态，拼电力成本+政策组合拳差异化"
+        }
+      ],
+      // 板块5: 行业风险
+      risks: {
+        computing_risks: [
+          "热带散热成本高于预期",
+          "人才招聘困难(需从万象/外派)",
+          "美国制裁扩大到算力服务",
+          "初期客户获取慢于预期"
         ]
       },
-      roiBenchmarks: [
-          { metric: "算力中心建设成本(P级)", range: "$5-10亿人民币", source: "行业基准" },
-          { metric: "PUE(能源效率)", target: "<1.3", note: " tropical climate requires advanced cooling" },
-          { metric: "回本周期", range: "4-6年(满载运营)", note: "取决于客户签约率" },
-      ],
-      benchmarkCases: [
-          { case: "华为沙特AI算力中心", lesson: "政府合资模式可行，但需明确数据主权" },
-          { case: "亚钾国际智能矿山(老挝)", lesson: "华为已在老挝验证过技术落地能力" },
-          { case: "万国数据(GDS)东南亚布局", lesson: "新加坡+马来是主流选择，老挝需差异化竞争" },
-      ],
-      risks: { computing_risks: ["热带散热成本高于预期", "人才招聘困难(需从万象/外派)", "美国制裁扩大到算力服务", "初期客户获取慢于预期"] },
-      logicSummary: { computing_logic: "华为需要海外昇腾生态落地点(避开美国制裁)+四千岛有极低电力成本($0.04/kWh)+中老铁路设备运输便利+老挝政府支持数字化转型=双方利益高度契合。关键变量=能否在12个月内签约首批企业级客户锁定收入。" }
+      // 板块6: 投资逻辑总结
+      logicSummary: {
+        computing_logic: "华为需要海外昇腾生态落地点(避开美国制裁)+四千岛有极低电力成本($0.04/kWh)+中老铁路设备运输便利+老挝政府支持数字化转型=双方利益高度契合。关键变量=能否在12个月内签约首批企业级客户锁定收入。",
+        priority_recommendation: "昇腾算力中心是四千岛第二增长曲线（电力成本优势+国产算力出海窗口），优先级仅次于巴沙鱼渔业项目"
+      }
     },
+    // ===== Tab3: 今日作战计划 =====
     battleplan: {
-      meeting: { time: "16:00-17:30", location: "万象", counterparty: "陈祎靖(华为老挝公司CEO)", meeting_type: "战略会晤" },
-      opening: { approach: "价值定位", script: "陈总，四千岛有三个华为可能感兴趣的东西：全老挝最低的电费（$0.04/kWh）、中老铁路直达的物流、和一个可以做东南亚算力标杆的完整特区配套。今天不只是聊ICT，是想看看怎么把昇腾算力中心落到四千岛来。", rationale: "开门见山展示独特价值，用数据说话", tone: "专业自信" },
-      agenda: [
-        { order: 1, topic: "华为老挝业务现状及未来规划", priority: "高", time: "15min", goal: "了解华为在老挝的战略优先级" },
-        { order: 2, topic: "四千岛特区介绍及算力中心落地条件", priority: "高", time: "20min", goal: "展示四千岛的核心竞争力(电力+土地+政策)" },
-        { order: 3, topic: "昇腾算力中心合作模式探讨", priority: "高", time: "25min", goal: "确定合作框架和下一步行动" },
-        { order: 4, topic: "其他潜在合作领域(IoT/智慧农业/矿山智能化)", priority: "中", time: "15min", goal: "探索多元化合作可能" },
-        { order: 5, topic: "下一步行动计划", priority: "高", time: "5min", goal: "明确后续跟进机制" },
+      // 板块1: 会议基本信息
+      meeting: {
+        time: "16:00-17:30",
+        location: "万象",
+        counterparty: "陈祎靖(华为老挝公司CEO)",
+        meeting_type: "战略会晤"
+      },
+      // 板块2: 开场策略
+      opening: {
+        approach: "价值定位",
+        script: "陈总，四千岛有三个华为可能感兴趣的东西：全老挝最低的电费（$0.04/kWh）、中老铁路直达的物流、和一个可以做东南亚算力标杆的完整特区配套。今天不只是聊ICT，是想看看怎么把昇腾算力中心落到四千岛来。",
+        rationale: "开门见山展示独特价值，用数据说话",
+        tone: "专业自信"
+      },
+      // 板块3: 核心议题排序
+      agendaPriority: [
+        {
+          rank: 1,
+          topic: "华为老挝业务现状及未来规划",
+          reason: "了解华为在老挝的战略优先级是确定合作方向的前提",
+          our_goal: "了解华为在老挝的战略优先级",
+          key_data: "华为在老挝深耕15年，5G/ICT/智能矿山已有布局",
+          key_argument: "华为在老挝已有成熟业务基础，算力中心是自然延伸"
+        },
+        {
+          rank: 2,
+          topic: "四千岛特区介绍及算力中心落地条件",
+          reason: "展示四千岛核心竞争力(电力+土地+政策)是促成合作的关键",
+          our_goal: "展示四千岛的核心竞争力(电力+土地+政策)",
+          key_data: "电力$0.04/kWh vs 新加坡$0.15+/kWh，中老铁路物流↓40-50%",
+          key_argument: "电力成本全东南亚最低+中老铁路直达=算力中心选址最优"
+        },
+        {
+          rank: 3,
+          topic: "昇腾算力中心合作模式探讨",
+          reason: "确定合作框架是本次会晤的核心目标",
+          our_goal: "确定合作框架和下一步行动",
+          key_data: "华为昇腾2026-2028路线图+海外落地经验(沙特)",
+          key_argument: "共赢模式：四千岛提供配套，华为提供技术+品牌+运营"
+        },
+        {
+          rank: 4,
+          topic: "其他潜在合作领域(IoT/智慧农业/矿山智能化)",
+          reason: "探索多元化合作可能增加合作深度",
+          our_goal: "探索多元化合作可能",
+          key_data: "华为智能矿山已在老挝落地(亚钾国际)",
+          key_argument: "多元化合作可增加绑定深度"
+        },
+        {
+          rank: 5,
+          topic: "下一步行动计划",
+          reason: "明确后续跟进机制确保会晤成果落地",
+          our_goal: "明确后续跟进机制",
+          key_data: "待确认",
+          key_argument: "行动比承诺更重要"
+        }
       ],
+      // 板块4: 交换条件清单
       tradeItems: [
         { we_give: "土地+电力+政策配套+政府关系", we_want: "华为昇腾算力中心落地四千岛(排他12月)", priority: "最高", data_support: "电力$0.04/kWh vs 新加坡$0.15+/kWh" },
         { we_give: "特区品牌作为标杆案例", we_want: "华为引入上下游生态伙伴", priority: "高", data_support: "" },
       ],
+      // 板块5: 对方可能反应+应对
       scenarios: [
         { title: "华为已有其他落地计划", likelihood: "可能", response: "询问具体计划，看是否有协同空间或四千岛作为备选", bottom_line: "争取列入候选名单" },
         { title: "华为对四千岛感兴趣但需内部审批", likelihood: "较可能", response: "提供详细方案书+邀请实地考察", bottom_line: "获得考察承诺+内部推进时间表" },
         { title: "华为暂无海外算力扩张计划", likelihood: "较低", response: "保持联系，关注昇腾海外动态，等待时机", bottom_line: "建立定期沟通机制(季度)" },
       ],
+      // 板块6: 底线清单
       bottomLines: { hard: ["排他期限不低于12个月", "算力产能不低于100P", "必须包含本地人才培养计划"], soft: ["希望华为引入至少2家生态伙伴", "联合品牌推广四千岛算力中心"], walk_away: ["华为不愿做任何形式的排他承诺", "华为要求我方承担全部建设资金而无任何技术投入"] },
+      // 板块7: 收尾路径
       closing: { best_case: "获得书面合作意向+安排实地考察", likely_case: "达成初步共识+约定下次会议", worst_case: "仅建立联系无实质性进展", follow_up: "会后48h内发送四千岛算力中心方案书(PDF)", deliverables: ["算力中心初步方案书", "电力成本对比分析表", "特区优惠政策汇总"] }
     }
   },
   '中能建国际建设集团·白健': {
+    // ===== Tab1: 谈判作战包 =====
     negotiation: {
+      // 板块1: 客户概况
       overview: {
         company_name: "中能建国际建设集团有限公司（CEEC）老挝代表处",
         full_name: "China Energy Engineering Corporation International Construction Group Co., Ltd.",
@@ -2284,59 +2572,240 @@ const INSIGHT_DATA = {
         revenue_scale: "中能建集团年营收超4000亿人民币，国际业务占比约15%",
         website: "www.ceec.net.cn | www.gjjt.ceec.net.cn",
         business_map: [
-          { area: "清洁能源EPC", detail: "光伏/风电/水电/储能一体化解决方案" },
-          { area: "输变电工程", detail: "500kV/220kV变电站及输电线路建设" },
-          { area: "综合能源", detail: "多能互补+电网互联互通项目" },
-          { area: "投资开发", detail: "BOT/BOO模式能源项目投资" },
-          { area: "矿业配套能源", detail: "矿山供电+余热利用" },
+          { name: "清洁能源EPC", tag: "core", detail: "光伏/风电/水电/储能一体化解决方案" },
+          { name: "输变电工程", tag: "core", detail: "500kV/220kV变电站及输电线路建设" },
+          { name: "综合能源", tag: "core", detail: "多能互补+电网互联互通项目" },
+          { name: "投资开发", tag: "planned", detail: "BOT/BOO模式能源项目投资" },
+          { name: "矿业配套能源", tag: "planned", detail: "矿山供电+余热利用" },
         ],
+        core_advantage: "中国最大电力工程央企+EPC全产业链能力(设计院+施工+设备)+东南亚最大光伏项目经验(1000MW)+央企融资渠道(国开行/进出口银行)+老挝已有成功交付案例(南塔河1号水电站+北部1000MW光伏)"
       },
-      key_persons: [
-        { name: "白健(Bai Jian)", title: "首席代表 / 老挝代表处负责人", phone: "+86 185 0294 0411 / +856 20 2942 4288", email: "jbai4313@ceec.net.cn", background: "中能建国际集团老挝代表处首席代表，常驻万象远洋国际中心F座", role: "对外联络+项目信息收集", influence: "高——可直接向总部汇报项目机会，但重大决策需总部审批" },
-        { name: "张德良", title: "中能建国际集团高层领导", background: "2025年11月率团访问老挝，会见老挝能源矿产部部长占沙旺", role: "决策层", influence: "极高" },
-        { name: "倪真", title: "中能建党委副书记/总经理", background: "2024年12月赴老挝开展系列商务活动", role: "集团最高决策层之一", influence: "最高" },
-      ],
+      // 板块2: 关键人物
+      keyPeople: {
+        decision_maker: {
+          name: "倪真",
+          title: "中能建党委副书记/总经理",
+          role: "集团最高决策层之一",
+          background: "中能建党委副书记/总经理，2024年12月赴老挝开展系列商务活动",
+          decision_style: "央企稳健型——重大决策需总部审批，风险厌恶但重视战略布局",
+          past_decisions: [
+            "2024年12月赴老挝开展系列商务活动",
+            "推动中能建国际业务占比提升至15%"
+          ],
+          relationship_with_laos: "2024年12月赴老挝开展商务活动，高度重视老挝市场",
+          relationship_with_china: "央企决策体系，需总部审批重大投资"
+        },
+        influencers: [
+          { name: "白健(Bai Jian)", title: "首席代表/老挝代表处负责人", role: "对外联络+项目信息收集", influence_area: "项目信息收集+总部汇报+对外联络" },
+          { name: "张德良", title: "中能建国际集团高层领导", role: "决策层", influence_area: "重大项目审批+总部战略方向" }
+        ],
+        decision_chain: "白健收集项目信息 → 张德良评估审核 → 倪真(总经理)最终审批重大投资 → 集团董事会决议"
+      },
+      // 板块3: 合作网络
       network: {
-        partners: ["老挝能源矿产部(MEM)", "老挝电力公司(EDL)", "中广核", "南方电网", "XAYSANA集团", "APX电力公司", "老挝亚太电力"],
-        competitors: ["中国电建(POWERCHINA)", "中国中铁", "泰国EGAT", "日本JICA项目"],
-        ecosystem: "中能建生态=EPC总包+设计院(华北院/云南院等)+设备供应商+融资机构(国开行/进出口银行)",
+        government: [
+          { name: "老挝能源矿产部(MEM)", project: "能源项目合作+部长会见(占沙旺)", year: "2025-11" },
+          { name: "老挝电力公司(EDL)", project: "电力项目合作", year: "待补充" }
+        ],
+        chamber: [
+          { name: "待补充", project: "待补充", year: "待补充" }
+        ],
+        enterprise: [
+          { name: "中广核", project: "老挝北部1000MW光伏项目(云南院EPC)", year: "近期" },
+          { name: "南方电网", project: "500kV输变电联网合作", year: "待补充" },
+          { name: "XAYSANA集团", project: "老挝南部综合能源项目合作", year: "2024-10" },
+          { name: "APX电力公司", project: "老挝南部综合能源项目合作", year: "2024-10" },
+          { name: "老挝亚太电力", project: "电力项目合作", year: "待补充" }
+        ],
+        core_alliances: "中能建生态=EPC总包+设计院(华北院/云南院等)+设备供应商+融资机构(国开行/进出口银行)",
+        relationship_insight: "中能建在老挝的模式=央企资源+本地合作伙伴+设计院执行。南部综合能源项目与XAYSANA/APX合作=本地伙伴提供关系+中能建提供技术+融资"
       },
-      recent_dynamics: [
+      // 板块4: 近期动态
+      recentEvents: {
+        major_events: [
           { date: "2025-09", event: "中能建老挝代表处组织成员企业参加老挝电力论坛" },
           { date: "2025-11", event: "张德良赴老挝开展系列商务活动，会见占沙旺部长" },
           { date: "2024-10", event: "中电工程与XAYSANA/APX签署老挝南部综合能源项目合作协议" },
           { date: "近期", event: "云南院中标中广核老挝北部1000MW光伏项目(东南亚最大单体)" },
           { date: "2026-03", event: "北部光伏项目500kV升压站一次带电成功" },
-      ],
-      needs_analysis: { deep_needs: ["老挝新能源市场份额扩张", "南部综合能源基地项目落地", "电力出口(老挝→柬埔寨/泰国/中国)通道建设"], surface_needs: ["寻找新的项目机会", "地方政府关系支持"] },
-      our_chips: [
-          { chip: "四千岛地理位置(老柬泰交界)", value: "极高", detail: "南部电力枢纽位置——可辐射柬埔寨(2000MW购电协议)+泰国+中国回送" },
-          { chip: "电力资源禀赋", value: "极高", detail: "湄公河水电+中广核1GW光伏+太阳能资源丰富" },
-          { chip: "特区政策优惠", value: "高", detail: "安美德工业园30年免税先例可参照" },
-          { chip: "土地资源充足", value: "高", detail: "特区大面积工业用地可供建设电站/变电站" },
-          { chip: "中老铁路物流", value: "中高", detail: "大型设备运输便利（变压器/塔材等）" },
-          { chip: "金融合作潜力", value: "中", detail: "可通过特区平台引入中方金融机构融资" },
-          { chip: "已有多家能源企业入驻", value: "中", detail: "中广核已有项目在老挝北部，证明可行性" },
-          { chip: "水资源+渔业协同", value: "中", detail: "可探索渔光互补/水光互补新模式" },
-      ],
+        ],
+        investment_tracking: "从北部1000MW光伏成功→南部综合能源项目签约→总部高层频繁访老=中能建在老挝从单项目向区域战略升级",
+        capital_flow: "待补充——需关注中能建在老挝南部投资流向",
+        strategic_direction: "扩张——从北部单项目向南部区域战略升级，总部高度重视老挝市场(总经理/高层频繁访老)"
+      },
+      // 板块5: 对方需求痛点
+      needs: {
+        surface_needs: [
+          "寻找新的项目机会",
+          "地方政府关系支持"
+        ],
+        deep_needs: [
+          "老挝新能源市场份额扩张",
+          "南部综合能源基地项目落地",
+          "电力出口(老挝→柬埔寨/泰国/中国)通道建设"
+        ],
+        pain_points: [
+          "央企海外投资审批流程长(6-12个月)——需要完整的项目建议书才能启动内部流程",
+          "老挝南部已有项目在谈(与XAYSANA/APX)——需要差异化优势才能切入",
+          "跨国输电线路建设涉及多国政府协调——政治复杂性高",
+          "外汇波动(基普兑美元)——合同以美元计价但本地成本以基普支付"
+        ],
+        our_match: "四千岛能解决：地理位置✅（老柬泰交界，南部电力枢纽）+ 电力资源✅（湄公河水电+中广核1GW光伏）+ 土地✅（特区大面积工业用地）+ 政策优惠✅（安美德30年免税先例）+ 物流✅（中老铁路大型设备运输）+ 政府关系✅（特区管委会+能矿部对接）"
+      },
+      // 板块6: 我方筹码清单
+      chips: {
+        items: [
+          {
+            category: "地理位置",
+            icon: "🏛️",
+            detail: "四千岛地理位置(老柬泰交界)——南部电力枢纽位置，可辐射柬埔寨(2000MW购电协议)+泰国+中国回送",
+            legal_basis: "老挝-柬埔寨电力购买协议(PPA)+东盟电网互联计划",
+            value_level: "极高",
+            exclusivity: "四千岛独有地理位置优势"
+          },
+          {
+            category: "电力资源",
+            icon: "⚡",
+            detail: "湄公河水电+中广核1GW光伏+太阳能资源丰富",
+            legal_basis: "中广核一期100万kW已并网+二期PDA已签",
+            value_level: "极高",
+            exclusivity: "四千岛独有电力资源禀赋"
+          },
+          {
+            category: "税收优惠",
+            icon: "💰",
+            detail: "特区政策优惠，安美德工业园30年免税先例可参照",
+            legal_basis: "530号总理令+安美德30年免税国会特别批准",
+            value_level: "高",
+            exclusivity: "特区独有优惠"
+          },
+          {
+            category: "土地资源",
+            icon: "🤝",
+            detail: "特区大面积工业用地可供建设电站/变电站",
+            legal_basis: "特区法规+Siphandone特别经济区9,846公顷规划",
+            value_level: "高",
+            exclusivity: "特区独有土地资源"
+          },
+          {
+            category: "物流通道",
+            icon: "🚂",
+            detail: "中老铁路大型设备运输便利（变压器/塔材等）",
+            legal_basis: "中老铁路沿线综合开发三年行动计划(2025-2027)",
+            value_level: "中高",
+            exclusivity: "中老铁路是老挝独有通道"
+          },
+          {
+            category: "金融合作",
+            icon: "🏦",
+            detail: "可通过特区平台引入中方金融机构融资(国开行/进出口银行)",
+            legal_basis: "中老本币互换30亿元+CIPS直达+跨境人民币结算299.6亿元",
+            value_level: "中",
+            exclusivity: "特区金融对接平台"
+          },
+          {
+            category: "产业生态",
+            icon: "🔒",
+            detail: "已有多家能源企业入驻(中广核等)，证明可行性",
+            legal_basis: "中广核北部1000MW光伏项目已成功",
+            value_level: "中",
+            exclusivity: "四千岛已有能源产业基础"
+          },
+          {
+            category: "渔光互补",
+            icon: "🌡️",
+            detail: "可探索渔光互补/水光互补新模式",
+            legal_basis: "待补充——需确认渔光互补政策框架",
+            value_level: "中",
+            exclusivity: "四千岛独有渔业+能源协同模式"
+          }
+        ],
+        tradeable: ["税收优惠可谈判年限（安美德30年先例）", "土地价格可谈判", "政府关系对接深度可谈判", "EPC合作范围可谈判"],
+        non_tradeable: ["老挝环保审批底线（清洁能源优先）", "外汇法红线", "央企审批流程不可绕过"]
+      },
+      // 板块7: 竞争对标
       competition: {
-        players: [
-            { name: "中国电建(POWERCHINA)", pros: "在老挝深耕更久+水电站经验丰富", cons: "光伏领域中能建更有竞争力" },
-            { name: "泰国EGAT", pros: "资金实力强+区域影响力大", cons: "政治敏感性较高" },
-            { name: "本地企业(XAYSANA)", pros: "本土关系深", cons: "技术和资金依赖中方" },
-        ]
+        competitors: [
+          {
+            region: "中国电建(POWERCHINA)",
+            fishery_advantages: ["在老挝深耕更久", "水电站经验丰富"],
+            fishery_disadvantages: ["光伏领域中能建更有竞争力"],
+            investment_conditions: "央企同行，有类似融资渠道和政府关系",
+            fishery_specific: "水电领域传统强势，但光伏领域中能建有1000MW标杆项目"
+          },
+          {
+            region: "泰国EGAT",
+            fishery_advantages: ["资金实力强", "区域影响力大"],
+            fishery_disadvantages: ["政治敏感性较高"],
+            investment_conditions: "泰国国企，在老挝投资受政治因素影响",
+            fishery_specific: "泰国有区域电力贸易经验和渠道"
+          },
+          {
+            region: "本地企业(XAYSANA)",
+            fishery_advantages: ["本土关系深"],
+            fishery_disadvantages: ["技术和资金依赖中方"],
+            investment_conditions: "本地伙伴角色，不能独立承担大型EPC",
+            fishery_specific: "XAYSANA已与中能建合作南部项目=互补而非竞争"
+          }
+        ],
+        our_advantage: "四千岛3大独有优势：①地理位置（老柬泰交界，南部电力枢纽）②电力资源（湄公河水电+中广核1GW光伏）③政策组合拳（特区配套+安美德30年免税先例+政府关系对接）",
+        our_disadvantage: "基础设施不如泰国/越南，跨国输电协调复杂",
+        positioning: "不跟中国电建拼水电经验，拼'南部枢纽位置+光伏标杆+政策组合拳'差异化。中能建已有北部1000MW光伏标杆=南部复制模式天然契合"
       },
-      strategy_suggestions: {
-          conservative: { core_trade: "四千岛提供项目信息+政府引荐 → 中能建自行评估是否参与", expected_reaction: "标准流程——先收资料再评估", bottom_line: "获得项目纳入中能建项目库", best_for: "首次接触，建立信息通道" },
-          aggressive: { core_trade: "四千岛打包提供土地+电力+政策+部分前期资金 → 要求中能建承诺EPC总承包权排他", expected_reaction: "可能觉得条件过于激进", bottom_line: "获得EPC意向书", best_for: "急需推进项目时" },
-          recommended_winwin: { name: "共赢方案(推荐)", core_trade: "四千岛提供土地+政策+政府关系+项目包装 → 中能建负责EPC总包+技术+融资对接，双方联合开发南部综合能源基地", expected_reaction: "最符合央企操作模式——有政府支持+有技术保障+有融资渠道", bottom_line: "四千岛获得产业落地，中能建获得项目+利润，排他范围限定四千岛区域内", best_for: "长期能源基建合作+特区产业升级" }
+      // 板块8: 谈判策略建议
+      strategy: {
+        strategy_a: {
+          name: "保守方案（建立信息通道）",
+          core_trade: "四千岛提供项目信息+政府引荐 → 中能建自行评估是否参与",
+          expected_reaction: "标准流程——先收资料再评估",
+          bottom_line: "获得项目纳入中能建项目库",
+          best_for: "首次接触，建立信息通道"
+        },
+        strategy_b: {
+          name: "进取方案（绑定EPC排他）",
+          core_trade: "四千岛打包提供土地+电力+政策+部分前期资金 → 要求中能建承诺EPC总承包权排他",
+          expected_reaction: "可能觉得条件过于激进",
+          bottom_line: "获得EPC意向书",
+          best_for: "急需推进项目时"
+        },
+        strategy_c: {
+          name: "共赢方案（资源换产业）",
+          core_trade: "四千岛提供土地+政策+政府关系+项目包装 → 中能建负责EPC总包+技术+融资对接，双方联合开发南部综合能源基地",
+          expected_reaction: "最符合央企操作模式——有政府支持+有技术保障+有融资渠道",
+          bottom_line: "四千岛获得产业落地，中能建获得项目+利润，排他范围限定四千岛区域内",
+          best_for: "长期能源基建合作+特区产业升级"
+        },
+        recommended: "strategy_c",
+        reason: "共赢方案最符合央企决策模式——有政府背书+有技术保障+有融资渠道=降低总部审批风险。中能建需要的是'有人兜底'的项目，而非'从零拓荒'的机会"
       },
-      compliance_risks: [
-          { risk: "央企海外投资审批流程长", level: "中", mitigation: "提前准备完整的项目建议书+可行性研究报告" },
-          { risk: "老挝环保审批", level: "中", mitigation: "优先选择清洁能源项目(光伏/风电)，环评相对容易通过" },
-          { risk: "外汇波动(基普兑美元)", level: "中", mitigation: "合同以美元计价+汇率风险分担条款" },
-          { risk: "土地确权和拆迁", level: "低(特区已处理)", mitigation: "通过特区管委会统一协调" },
-      ],
+      // 板块9: 合规风险检查
+      compliance: {
+        investment_approval: {
+          item: "央企海外投资审批流程长",
+          requirement: "央企海外投资需总部审批，周期6-12个月",
+          risk: "审批周期长可能错失市场窗口",
+          action: "提前准备完整的项目建议书+可行性研究报告，让白健带回总部快速立项"
+        },
+        environmental_compliance: {
+          item: "老挝环保审批",
+          requirement: "能源项目需通过环评审批",
+          risk: "环评审批可能延期",
+          action: "优先选择清洁能源项目(光伏/风电)，环评相对容易通过"
+        },
+        forex_compliance: {
+          item: "外汇波动(基普兑美元)",
+          requirement: "合同以美元计价+汇率风险分担条款",
+          risk: "基普贬值可能影响项目收益",
+          action: "合同以美元计价+汇率风险分担条款+利用中老本币互换降低汇率风险"
+        },
+        land_compliance: {
+          item: "土地确权和拆迁",
+          requirement: "项目建设用地需合规取得",
+          risk: "单独拿地流程复杂",
+          action: "通过特区管委会统一协调，特区已处理土地确权"
+        }
+      },
+      // 板块9b: 项目可行性预判
       feasibility: {
         items: [
           { project: "四千岛光伏+储能综合能源项目", feasibility: "高", reason: "四千岛光照资源极佳(日均5.5kWh/m²)+中能建有东南亚最大光伏项目经验(1000MW)+老挝向柬埔寨出口电力需求明确(2028年2000MW+)", timeline: "6个月可研+12-18个月建设" },
@@ -2345,51 +2814,153 @@ const INSIGHT_DATA = {
         ]
       }
     },
-    industry: {
-      marketSize: { energy: { name: "老挝清洁能源市场", market_size: "约50亿美元(2025-2030规划投资)", growth_rate: "年增15-20%", key_driver: "东盟电力互联互通+中国'一带一路'+老挝'蓄电池'战略" } },
+    // ===== Tab2: 行业投资逻辑 =====
+    investment: {
+      // 板块1: 行业规模与增长
+      marketSize: {
+        energy: {
+          name: "老挝清洁能源市场",
+          market_size: "约50亿美元(2025-2030规划投资)",
+          growth_rate: "年增15-20%",
+          key_driver: "东盟电力互联互通+中国'一带一路'+老挝'蓄电池'战略"
+        }
+      },
+      // 板块2: 政策风向
       policy: {
-        policies: [
-          { policy: "老挝电力发展规划(PDP2021-2030)", impact: "大利好——规划装机从当前10GW增至30GW+" },
-          { policy: "老挝-柬埔寨电力购买协议(PPA)", impact: "利好——2028年前向柬出口2000MW+" },
-          { policy: "东盟电网互联计划", impact: "利好——老挝定位为区域电力枢纽('东南亚蓄电池')" },
-          { policy: "中国-老挝命运共同体行动计划", impact: "利好——中资企业在老挝享受政策红利" },
-          { policy: "RCEP原产地规则", impact: "利好——设备进口关税减免" },
+        energy_policy: {
+          title: "能源政策",
+          support: "老挝电力发展规划(PDP2021-2030)——规划装机从10GW增至30GW+ + 老挝-柬埔寨电力购买协议(PPA)——2028年前向柬出口2000MW+ + 东盟电网互联计划——老挝定位区域电力枢纽('东南亚蓄电池')",
+          restriction: "PPA电价谈判不确定性+跨国输电线路建设涉及多国协调",
+          special_zone: "四千岛特区位于老柬泰交界=南部电力枢纽天然选址"
+        },
+        investment_policy: {
+          title: "投资政策",
+          support: "中国-老挝命运共同体行动计划——中资企业享受政策红利 + RCEP原产地规则——设备进口关税减免 + 530号总理令设立IPMC整合审批",
+          restriction: "央企海外投资审批流程长(6-12个月)+外汇法红线",
+          special_zone: "特区可提供安美德30年免税先例级别优惠+Siphandone 90亿美元项目参照"
+        }
+      },
+      // 板块3: 投资回报基准
+      roiBenchmarks: [
+        {
+          industry: "光伏EPC",
+          typical_roi: "IRR 10-15%(PPA模式)",
+          payback: "12-18个月建设周期",
+          reference_market: "老挝清洁能源市场约50亿美元(2025-2030规划投资)",
+          key_success_factor: "PPA电价+消纳保证+土地+电力资源",
+          reference_case: "中广核老挝北部1000MW光伏(中能建云南院EPC)——东南亚最大单体"
+        }
+      ],
+      // 板块4: 对标案例
+      benchmarkCases: [
+        {
+          case: "中广核老挝北部1000MW光伏(中能建云南院EPC)",
+          scale: "东南亚最大单体光伏项目，500kV送出+回送中国",
+          lesson: "模式可复制到南部——500kV送出+回送中国模式已验证",
+          implication: "北部模式可复制到四千岛南部，规模更大+出口需求明确(向柬出口2000MW+)"
+        },
+        {
+          case: "中能建老挝南部综合能源项目(签约中)",
+          scale: "已签MOU",
+          lesson: "总部对老挝南部有战略兴趣——已签MOU说明决策层已认可",
+          implication: "中能建已有南部布局意向，四千岛可切入现有项目组合"
+        },
+        {
+          case: "老挝南塔河1号水电站(中能建)",
+          scale: "中能建在老挝成功交付的水电项目",
+          lesson: "中能建在老挝有成功的水电项目交付经验",
+          implication: "中能建老挝交付能力已验证，南部项目执行有保障"
+        }
+      ],
+      // 板块5: 行业风险
+      risks: {
+        energy_risks: [
+          "PPA电价谈判不确定性",
+          "跨国输电线路建设复杂(涉及多国协调)",
+          "汇率风险(基普贬值)",
+          "央企内部审批周期长(6-12个月)"
         ]
       },
-      roiBenchmarks: [
-          { metric: "光伏项目EPC单价", range: "$0.6-0.9/Wp", source: "东南亚光伏EPC行情" },
-          { metric: "光伏项目IRR", range: "10-15%(PPA模式)", note: "取决于电价和消纳保证" },
-          { metric: "建设周期(100MW级别)", range: "12-18个月", note: "含审批+采购+施工" },
-      ],
-      benchmarkCases: [
-          { case: "中广核老挝北部1000MW光伏(中能建云南院EPC)", lesson: "东南亚最大单体光伏项目，500kV送出+回送中国，模式可复制到南部" },
-          { case: "中能建老挝南部综合能源项目(签约中)", lesson: "已签MOU，说明总部对老挝南部有战略兴趣" },
-          { case: "老挝南塔河1号水电站(中能建)", lesson: "中能建在老挝有成功的水电项目交付经验" },
-      ],
-      risks: { energy_risks: ["PPA电价谈判不确定性", "跨国输电线路建设复杂(涉及多国协调)", "汇率风险(基普贬值)", "央企内部审批周期长(6-12个月)"] },
-      logicSummary: { energy_logic: "中能建在老挝已有成功项目(北部1000MW光伏)+总部高度重视老挝市场(总经理/高层频繁访老)+四千岛的地理位置完美匹配老挝'蓄电池'战略(南部枢纽)=天然合作契合点。关键动作=尽快提供一份专业的项目建议书，让白健带回总部立项。" }
+      // 板块6: 投资逻辑总结
+      logicSummary: {
+        energy_logic: "中能建在老挝已有成功项目(北部1000MW光伏)+总部高度重视老挝市场(总经理/高层频繁访老)+四千岛的地理位置完美匹配老挝'蓄电池'战略(南部枢纽)=天然合作契合点。关键动作=尽快提供一份专业的项目建议书，让白健带回总部立项。",
+        priority_recommendation: "光伏+储能综合能源项目是首选（光照资源+中能建光伏经验+出口需求），渔光互补作为创新亮点，输变电枢纽作为长期战略布局"
+      }
     },
+    // ===== Tab3: 今日作战计划 =====
     battleplan: {
-      meeting: { time: "16:00-17:30", location: "万象", counterparty: "白健(CEEC老挝首席代表)", meeting_type: "能源基建合作洽谈" },
-      opening: { approach: "行业对标", script: "白总，中能建在老挝北部的1000MW光伏项目做得非常漂亮，东南亚最大单体。我们四千岛在南部，有一个类似的甚至更大的机会——老挝向南边柬埔寨和泰国卖电的必经之地，而且我们的电价比北部还便宜。想跟您聊聊怎么把这个机会变成中能建的下一个标杆项目。", rationale: "用中能建自己的成功案例开场，建立专业认同感", tone: "尊重同行+展现诚意" },
-      agenda: [
-        { order: 1, topic: "中能建在老挝的业务布局及未来重点方向", priority: "高", time: "10min", goal: "了解中能建战略优先级" },
-        { order: 2, topic: "四千岛特区介绍及能源资源禀赋", priority: "高", time: "15min", goal: "展示四千岛的独特区位+资源优势" },
-        { order: 3, topic: "南部综合能源基地合作机会", priority: "高", time: "25min", goal: "讨论具体项目类型和合作模式" },
-        { order: 4, topic: "融资模式和政府关系支持", priority: "高", time: "15min", goal: "确认融资路径和政府协调机制" },
-        { order: 5, topic: "下一步行动和时间表", priority: "高", time: "5min", goal: "明确推进节奏" },
+      // 板块1: 会议基本信息
+      meeting: {
+        time: "16:00-17:30",
+        location: "万象",
+        counterparty: "白健(CEEC老挝首席代表)",
+        meeting_type: "能源基建合作洽谈"
+      },
+      // 板块2: 开场策略
+      opening: {
+        approach: "行业对标",
+        script: "白总，中能建在老挝北部的1000MW光伏项目做得非常漂亮，东南亚最大单体。我们四千岛在南部，有一个类似的甚至更大的机会——老挝向南边柬埔寨和泰国卖电的必经之地，而且我们的电价比北部还便宜。想跟您聊聊怎么把这个机会变成中能建的下一个标杆项目。",
+        rationale: "用中能建自己的成功案例开场，建立专业认同感",
+        tone: "尊重同行+展现诚意"
+      },
+      // 板块3: 核心议题排序
+      agendaPriority: [
+        {
+          rank: 1,
+          topic: "中能建在老挝的业务布局及未来重点方向",
+          reason: "了解中能建战略优先级是确定合作方向的前提",
+          our_goal: "了解中能建战略优先级",
+          key_data: "北部1000MW光伏+南部综合能源项目签约中",
+          key_argument: "中能建已有老挝成功项目基础，南部是自然延伸"
+        },
+        {
+          rank: 2,
+          topic: "四千岛特区介绍及能源资源禀赋",
+          reason: "展示四千岛独特区位+资源优势是促成合作的关键",
+          our_goal: "展示四千岛的独特区位+资源优势",
+          key_data: "四千岛光照5.5kWh/m²+湄公河水电+老柬泰交界位置",
+          key_argument: "南部枢纽位置+电力资源禀赋=天然能源基地选址"
+        },
+        {
+          rank: 3,
+          topic: "南部综合能源基地合作机会",
+          reason: "讨论具体项目类型和合作模式是核心议题",
+          our_goal: "讨论具体项目类型和合作模式",
+          key_data: "老挝向柬出口2000MW+需求+北部1000MW可复制模式",
+          key_argument: "北部模式可复制到南部，规模更大+出口需求明确"
+        },
+        {
+          rank: 4,
+          topic: "融资模式和政府关系支持",
+          reason: "确认融资路径和政府协调机制是央企立项关键",
+          our_goal: "确认融资路径和政府协调机制",
+          key_data: "国开行/进出口银行融资渠道+特区管委会政府关系",
+          key_argument: "政府背书+融资渠道+技术保障=降低总部审批风险"
+        },
+        {
+          rank: 5,
+          topic: "下一步行动和时间表",
+          reason: "明确推进节奏确保会晤成果落地",
+          our_goal: "明确推进节奏",
+          key_data: "待确认",
+          key_argument: "央企决策需时间，尽早启动立项流程"
+        }
       ],
+      // 板块4: 交换条件清单
       tradeItems: [
         { we_give: "项目信息+土地+政策支持+政府关系协调", we_want: "中能建EPC总承包(四千岛区域内优先)", priority: "最高", data_support: "参考北部1000MW光伏项目的成功模式" },
         { we_give: "协助对接老挝EDL/能源部/MEM", we_want: "中能建总部层面的重视和资源倾斜", priority: "高", data_support: "" },
         { we_give: "联合品牌推广(四千岛×中能建)", we_want: "引入中能建的设计院/融资渠道资源", priority: "中", data_support: "" },
       ],
+      // 板块5: 对方可能反应+应对
       scenarios: [
         { title: "白健表示兴趣但需上报总部", likelihood: "最可能", response: "立即准备正式项目建议书，约定下次会议带上更多技术细节", bottom_line: "获得'值得推进'的口头确认+材料清单" },
         { title: "中能建已有南部项目在谈(与XAYSANA等)", likelihood: "可能", response: "询问项目进展和缺口，看四千岛能否补充或协同", bottom_line: "不排除加入现有项目组合的可能" },
         { title: "白健表示目前没有新项目预算", likelihood: "较低", response: "保持联系，关注中能建动态，等待窗口期", bottom_line: "建立季度沟通机制" },
       ],
+      // 板块6: 底线清单
       bottomLines: { hard: ["EPC总承包权必须在谈判桌上", "项目必须落在四千岛特区内", "合作模式必须包含联合品牌推广"], soft: ["希望中能建带动产业链上下游企业一同入驻", "希望获得中能建设计院的技术支持(前期可免费)"], walk_away: ["中能建只愿做纯咨询不给EPC承诺", "要求四千岛承担全部前期费用且无任何回报保障"] },
+      // 板块7: 收尾路径
       closing: { best_case: "白健同意将项目推荐给总部+约定总部视频会", likely_case: "达成初步共识+白健带回材料评估", worst_case: "仅交换名片无实质进展", follow_up: "会后72h内发送四千岛能源项目建议书(含资源数据+政策摘要+初步经济测算)", deliverables: ["四千岛能源项目建议书", "老挝南部电力市场需求分析", "特区优惠政策对照表"] }
     }
   }
@@ -2763,24 +3334,28 @@ function renderOverview(o) {
 }
 
 function renderKeyPeople(kp) {
+  if (!kp) return '<div class="insight-card">数据待补充</div>';
   let html = '';
   const dm = kp.decision_maker;
+  if (!dm) return '<div class="insight-card">关键人物信息待补充</div>';
   html += `<div class="person-card">
-    <div class="person-name">${dm.name}</div>
-    <div class="person-role">${dm.title} · ${dm.role}</div>
-    <div class="person-row"><span class="person-label">背景</span><span class="person-val">${dm.background}</span></div>
-    <div class="person-row"><span class="person-label">决策风格</span><span class="person-val">${dm.decision_style}</span></div>
-    <div class="person-row"><span class="person-label">老挝关系</span><span class="person-val">${dm.relationship_with_laos}</span></div>
-    <div class="person-row"><span class="person-label">中国关系</span><span class="person-val">${dm.relationship_with_china}</span></div>
+    <div class="person-name">${dm.name || '待补充'}</div>
+    <div class="person-role">${dm.title || ''} · ${dm.role || ''}</div>
+    <div class="person-row"><span class="person-label">背景</span><span class="person-val">${dm.background || '待补充'}</span></div>
+    <div class="person-row"><span class="person-label">决策风格</span><span class="person-val">${dm.decision_style || '待补充'}</span></div>
+    <div class="person-row"><span class="person-label">老挝关系</span><span class="person-val">${dm.relationship_with_laos || '待补充'}</span></div>
+    <div class="person-row"><span class="person-label">中国关系</span><span class="person-val">${dm.relationship_with_china || '待补充'}</span></div>
   </div>`;
 
   // Past decisions
-  html += '<div class="sub-heading">过往关键决策</div>';
-  html += '<ul class="insight-list">';
-  dm.past_decisions.forEach(d => {
-    html += `<li><span class="bullet"></span><span class="val">${d}</span></li>`;
-  });
-  html += '</ul>';
+  if (dm.past_decisions && dm.past_decisions.length > 0) {
+    html += '<div class="sub-heading">过往关键决策</div>';
+    html += '<ul class="insight-list">';
+    dm.past_decisions.forEach(d => {
+      html += `<li><span class="bullet"></span><span class="val">${d}</span></li>`;
+    });
+    html += '</ul>';
+  }
 
   // Influencers
   if (kp.influencers && kp.influencers.length > 0) {
@@ -2794,11 +3369,12 @@ function renderKeyPeople(kp) {
   }
 
   // Decision chain
-  html += `<div class="insight-card"><span class="label">决策链：</span>${kp.decision_chain}</div>`;
+  html += `<div class="insight-card"><span class="label">决策链：</span>${kp.decision_chain || '待补充'}</div>`;
   return html;
 }
 
 function renderNetwork(net) {
+  if (!net) return '<div class="insight-card">数据待补充</div>';
   let html = '';
 
   // Government
@@ -2832,95 +3408,116 @@ function renderNetwork(net) {
   }
 
   // Core alliances
-  html += `<div class="insight-card"><span class="highlight">核心联盟：</span>${net.core_alliances}</div>`;
-  html += `<div class="insight-card"><span class="key-num">关系洞察：</span>${net.relationship_insight}</div>`;
+  html += `<div class="insight-card"><span class="highlight">核心联盟：</span>${net.core_alliances || '待补充'}</div>`;
+  html += `<div class="insight-card"><span class="key-num">关系洞察：</span>${net.relationship_insight || '待补充'}</div>`;
   return html;
 }
 
 function renderRecentEvents(re) {
-  let html = '<ul class="insight-list">';
-  re.major_events.forEach(e => {
-    html += `<li><span class="bullet"></span><span class="label">${e.date}</span><span class="val">${e.event}</span></li>`;
-  });
-  html += '</ul>';
-  html += `<div class="insight-card"><span class="label">投资动向：</span>${re.investment_tracking}</div>`;
-  html += `<div class="insight-card"><span class="label">资金流向：</span>${re.capital_flow}</div>`;
-  html += `<div class="insight-card"><span class="label">战略方向：</span><span class="highlight">${re.strategic_direction}</span></div>`;
+  if (!re) return '<div class="insight-card">数据待补充</div>';
+  let html = '';
+  if (re.major_events && re.major_events.length > 0) {
+    html += '<ul class="insight-list">';
+    re.major_events.forEach(e => {
+      html += `<li><span class="bullet"></span><span class="label">${e.date}</span><span class="val">${e.event}</span></li>`;
+    });
+    html += '</ul>';
+  }
+  html += `<div class="insight-card"><span class="label">投资动向：</span>${re.investment_tracking || '待补充'}</div>`;
+  html += `<div class="insight-card"><span class="label">资金流向：</span>${re.capital_flow || '待补充'}</div>`;
+  html += `<div class="insight-card"><span class="label">战略方向：</span><span class="highlight">${re.strategic_direction || '待补充'}</span></div>`;
   return html;
 }
 
 function renderNeeds(needs) {
+  if (!needs) return '<div class="insight-card">数据待补充</div>';
   let html = '';
 
-  html += '<div class="sub-heading">表面需求</div>';
-  needs.surface_needs.forEach(n => {
-    html += `<div class="need-item"><span class="need-type surface">表面</span>${n}</div>`;
-  });
+  if (needs.surface_needs && needs.surface_needs.length > 0) {
+    html += '<div class="sub-heading">表面需求</div>';
+    needs.surface_needs.forEach(n => {
+      html += `<div class="need-item"><span class="need-type surface">表面</span>${n}</div>`;
+    });
+  }
 
-  html += '<div class="sub-heading">深层需求</div>';
-  needs.deep_needs.forEach(n => {
-    html += `<div class="need-item"><span class="need-type deep">深层</span>${n}</div>`;
-  });
+  if (needs.deep_needs && needs.deep_needs.length > 0) {
+    html += '<div class="sub-heading">深层需求</div>';
+    needs.deep_needs.forEach(n => {
+      html += `<div class="need-item"><span class="need-type deep">深层</span>${n}</div>`;
+    });
+  }
 
-  html += '<div class="sub-heading">痛点</div>';
-  needs.pain_points.forEach(p => {
-    html += `<div class="need-item"><span class="need-type pain">痛点</span>${p}</div>`;
-  });
+  if (needs.pain_points && needs.pain_points.length > 0) {
+    html += '<div class="sub-heading">痛点</div>';
+    needs.pain_points.forEach(p => {
+      html += `<div class="need-item"><span class="need-type pain">痛点</span>${p}</div>`;
+    });
+  }
 
-  html += `<div class="insight-card" style="background:var(--green-bg);"><span class="highlight">我方匹配度：</span>${needs.our_match}</div>`;
+  html += `<div class="insight-card" style="background:var(--green-bg);"><span class="highlight">我方匹配度：</span>${needs.our_match || '待补充'}</div>`;
   return html;
 }
 
 function renderChips(chips) {
+  if (!chips) return '<div class="insight-card">数据待补充</div>';
   let html = '';
-  chips.items.forEach(c => {
-    const levelClass = c.value_level === '高' ? 'high' : c.value_level === '中高' ? 'mid-high' : 'mid';
-    html += `<div class="chip-card">
-      <div class="chip-cat"><span class="chip-icon">${c.icon}</span>${c.category}<span class="chip-level ${levelClass}">${c.value_level}</span></div>
+  if (chips.items && chips.items.length > 0) {
+    chips.items.forEach(c => {
+      const levelClass = c.value_level === '高' ? 'high' : c.value_level === '中高' ? 'mid-high' : c.value_level === '极高' ? 'high' : 'mid';
+      html += `<div class="chip-card">
+      <div class="chip-cat"><span class="chip-icon">${c.icon || '📋'}</span>${c.category}<span class="chip-level ${levelClass}">${c.value_level}</span></div>
       <div class="chip-detail">${c.detail}</div>
-      <div class="chip-basis">法律依据: ${c.legal_basis}</div>
+      <div class="chip-basis">法律依据: ${c.legal_basis || '通用'}</div>
       ${c.exclusivity ? `<div class="chip-exclusive">独有性: ${c.exclusivity}</div>` : ''}
     </div>`;
   });
 
-  html += '<div class="sub-heading">可谈判筹码</div>';
-  html += '<ul class="insight-list">';
-  chips.tradeable.forEach(t => {
-    html += `<li><span class="bullet" style="background:var(--green-ok)"></span><span class="val">${t}</span></li>`;
-  });
-  html += '</ul>';
+  if (chips.tradeable && chips.tradeable.length > 0) {
+    html += '<div class="sub-heading">可谈判筹码</div>';
+    html += '<ul class="insight-list">';
+    chips.tradeable.forEach(t => {
+      html += `<li><span class="bullet" style="background:var(--green-ok)"></span><span class="val">${t}</span></li>`;
+    });
+    html += '</ul>';
+  }
 
-  html += '<div class="sub-heading">不可谈判红线</div>';
-  html += '<ul class="insight-list">';
-  chips.non_tradeable.forEach(t => {
-    html += `<li><span class="bullet" style="background:var(--red-alert)"></span><span class="val">${t}</span></li>`;
-  });
-  html += '</ul>';
+  if (chips.non_tradeable && chips.non_tradeable.length > 0) {
+    html += '<div class="sub-heading">不可谈判红线</div>';
+    html += '<ul class="insight-list">';
+    chips.non_tradeable.forEach(t => {
+      html += `<li><span class="bullet" style="background:var(--red-alert)"></span><span class="val">${t}</span></li>`;
+    });
+    html += '</ul>';
+  }
   return html;
 }
 
 function renderCompetition(comp) {
+  if (!comp) return '<div class="insight-card">数据待补充</div>';
   let html = '';
 
-  html += '<table class="cmp-table"><thead><tr><th>地区</th><th>渔业优势</th><th>渔业劣势</th><th>投资条件</th><th>渔业规模</th></tr></thead><tbody>';
-  comp.competitors.forEach(c => {
-    html += `<tr>
-      <td>${c.region}</td>
-      <td>${c.fishery_advantages.join('; ')}</td>
-      <td>${c.fishery_disadvantages.join('; ')}</td>
-      <td>${c.investment_conditions}</td>
-      <td>${c.fishery_specific}</td>
+  if (comp.competitors && comp.competitors.length > 0) {
+    html += '<table class="cmp-table"><thead><tr><th>竞争者</th><th>优势</th><th>劣势</th><th>条件</th><th>特色</th></tr></thead><tbody>';
+    comp.competitors.forEach(c => {
+      html += `<tr>
+      <td>${c.region || c.name || ''}</td>
+      <td>${c.fishery_advantages ? c.fishery_advantages.join('; ') : c.pros || '待补充'}</td>
+      <td>${c.fishery_disadvantages ? c.fishery_disadvantages.join('; ') : c.cons || '待补充'}</td>
+      <td>${c.investment_conditions || '待补充'}</td>
+      <td>${c.fishery_specific || '待补充'}</td>
     </tr>`;
-  });
-  html += '</tbody></table>';
+    });
+    html += '</tbody></table>';
+  }
 
-  html += `<div class="insight-card"><span class="key-num">我方优势：</span>${comp.our_advantage}</div>`;
-  html += `<div class="insight-card"><span class="highlight">我方劣势：</span>${comp.our_disadvantage}</div>`;
-  html += `<div class="insight-card" style="background:var(--green-bg);border-left:3px solid var(--green-ok);"><span class="highlight">定位策略：</span>${comp.positioning}</div>`;
+  html += `<div class="insight-card"><span class="key-num">我方优势：</span>${comp.our_advantage || '待补充'}</div>`;
+  html += `<div class="insight-card"><span class="highlight">我方劣势：</span>${comp.our_disadvantage || '待补充'}</div>`;
+  html += `<div class="insight-card" style="background:var(--green-bg);border-left:3px solid var(--green-ok);"><span class="highlight">定位策略：</span>${comp.positioning || '待补充'}</div>`;
   return html;
 }
 
 function renderStrategy(strat) {
+  if (!strat) return '<div class="insight-card">数据待补充</div>';
   let html = '';
 
   const keys = ['strategy_a', 'strategy_b', 'strategy_c'];
@@ -2939,14 +3536,16 @@ function renderStrategy(strat) {
 
   html += `<div class="rec-banner">
     <div class="rec-title">推荐方案理由</div>
-    <div class="rec-text">${strat.reason}</div>
+    <div class="rec-text">${strat.reason || '待补充'}</div>
   </div>`;
   return html;
 }
 
 function renderCompliance(comp) {
+  if (!comp) return '<div class="insight-card">数据待补充</div>';
   let html = '';
   const keys = Object.keys(comp);
+  if (keys.length === 0) return '<div class="insight-card">合规数据待补充</div>';
   keys.forEach(k => {
     const c = comp[k];
     if (!c || !c.item) return;
@@ -2961,24 +3560,39 @@ function renderCompliance(comp) {
 }
 
 function renderFeasibility(feas) {
+  if (!feas) return '<div class="insight-card">数据待补充</div>';
   let html = '';
-  const keys = Object.keys(feas);
-  keys.forEach(k => {
-    const f = feas[k];
-    if (!f || !f.name) return;
-    const levelClass = f.feasibility_level === '高' ? 'high' : f.feasibility_level === '中' ? 'mid' : f.feasibility_level === '中低' ? 'mid-low' : 'mid';
-    html += `<div class="feasibility-card ${levelClass}">
-      <div class="feas-name">${f.name}<span class="feas-badge">可行性: ${f.feasibility_level}</span></div>
-      <div class="feas-row"><span class="feas-label">投资规模</span><span class="feas-val">${f.investment_scale}</span></div>
-      <div class="feas-row"><span class="feas-label">回本周期</span><span class="feas-val">${f.payback_period}</span></div>
-      <div class="feas-row"><span class="feas-label">市场数据</span><span class="feas-val">${f.market_data}</span></div>
-      <div class="feas-row"><span class="feas-label">关键依赖</span><span class="feas-val">${f.key_dependencies.join('; ')}</span></div>
-      <div class="feas-row"><span class="feas-label">最大风险</span><span class="feas-val" style="color:var(--red-alert)">${f.biggest_risk}</span></div>
-      ${f.price_advantage ? `<div class="feas-row"><span class="feas-label">价格优势</span><span class="feas-val">${f.price_advantage}</span></div>` : ''}
-      ${f.alternative ? `<div class="feas-row"><span class="feas-label">替代方案</span><span class="feas-val">${f.alternative}</span></div>` : ''}
-      ${f.strategic_opportunity ? `<div class="feas-row"><span class="feas-label">战略机遇</span><span class="feas-val" style="color:var(--green-ok)">${f.strategic_opportunity}</span></div>` : ''}
-    </div>`;
-  });
+  // Handle two formats: IHC (keyed objects) or 华为/中能建 (items array)
+  if (feas.items && Array.isArray(feas.items)) {
+    feas.items.forEach(f => {
+      if (!f) return;
+      const levelClass = f.feasibility === '高' ? 'high' : f.feasibility === '中高' ? 'mid-high' : f.feasibility === '中' ? 'mid' : f.feasibility === '中低' ? 'mid-low' : 'mid';
+      html += `<div class="feasibility-card ${levelClass}">
+        <div class="feas-name">${f.project || '待补充'}<span class="feas-badge">可行性: ${f.feasibility || '待评估'}</span></div>
+        ${f.reason ? `<div class="feas-row"><span class="feas-label">分析</span><span class="feas-val">${f.reason}</span></div>` : ''}
+        ${f.timeline ? `<div class="feas-row"><span class="feas-label">时间线</span><span class="feas-val">${f.timeline}</span></div>` : ''}
+      </div>`;
+    });
+  } else {
+    const keys = Object.keys(feas);
+    keys.forEach(k => {
+      const f = feas[k];
+      if (!f || !f.name) return;
+      const levelClass = f.feasibility_level === '高' ? 'high' : f.feasibility_level === '中' ? 'mid' : f.feasibility_level === '中低' ? 'mid-low' : 'mid';
+      html += `<div class="feasibility-card ${levelClass}">
+        <div class="feas-name">${f.name}<span class="feas-badge">可行性: ${f.feasibility_level}</span></div>
+        <div class="feas-row"><span class="feas-label">投资规模</span><span class="feas-val">${f.investment_scale || '待补充'}</span></div>
+        <div class="feas-row"><span class="feas-label">回本周期</span><span class="feas-val">${f.payback_period || '待补充'}</span></div>
+        <div class="feas-row"><span class="feas-label">市场数据</span><span class="feas-val">${f.market_data || '待补充'}</span></div>
+        <div class="feas-row"><span class="feas-label">关键依赖</span><span class="feas-val">${f.key_dependencies ? f.key_dependencies.join('; ') : '待补充'}</span></div>
+        <div class="feas-row"><span class="feas-label">最大风险</span><span class="feas-val" style="color:var(--red-alert)">${f.biggest_risk || '待补充'}</span></div>
+        ${f.price_advantage ? `<div class="feas-row"><span class="feas-label">价格优势</span><span class="feas-val">${f.price_advantage}</span></div>` : ''}
+        ${f.alternative ? `<div class="feas-row"><span class="feas-label">替代方案</span><span class="feas-val">${f.alternative}</span></div>` : ''}
+        ${f.strategic_opportunity ? `<div class="feas-row"><span class="feas-label">战略机遇</span><span class="feas-val" style="color:var(--green-ok)">${f.strategic_opportunity}</span></div>` : ''}
+      </div>`;
+    });
+  }
+  if (!html) html = '<div class="insight-card">数据待补充</div>';
   return html;
 }
 
