@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- boss-portal v20260627-b -->
+<!-- boss-portal v20260627-c -->
 <title>Boss Portal · 总裁每日工作看板</title>
 <style>
   :root {
@@ -2147,7 +2147,7 @@ const INSIGHT_DATA = {
       logicSummary: { media_logic: "陶总价值=信息渠道+商会关系→深度绑定最大化中介价值→验证能否直接带来投资" }
     },
     battleplan: {
-      meeting: { time: "18:00-21:00", location: "万象", counterparty: "陶总+国企老总", meeting_type: "晚餐商谈" },
+      meeting: { time: "18:00-21:00", location: "万象", counterparty: "陶总+国企老总", counterparty_attendees: "陶总+待确认国企老总", our_attendees: "陈海俊", meeting_type: "晚餐商谈", agenda_items: ["观察陶总与国企老总关系", "评估中介价值", "探索合作机会"] },
       opening: { approach: "观察为主", script: "今晚重点是观察陶总与其他国企老总的关系深浅", rationale: "评估中介价值", tone: "轻松社交" },
       agendaPriority: [{ rank: 1, topic: "观察关系网络", reason: "评估中介价值", our_goal: "判断能否直接带来投资", key_data: "", key_argument: "" }],
       tradeItems: [{ we_give: "四千岛专栏+品牌传播", we_want: "陶总对接国企老总", priority: "中", data_support: "" }],
@@ -2488,7 +2488,10 @@ const INSIGHT_DATA = {
         time: "16:00-17:30",
         location: "万象",
         counterparty: "陈祎靖(华为老挝公司CEO)",
-        meeting_type: "战略会晤"
+        counterparty_attendees: "陈祎靖（CEO）+ 待确认其他人员",
+        our_attendees: "陈海俊 + 待确认",
+        meeting_type: "战略会晤",
+        agenda_items: ["华为老挝业务现状及规划", "算力中心合作模式探讨", "下一步行动计划"]
       },
       // 板块2: 开场策略
       opening: {
@@ -2894,7 +2897,10 @@ const INSIGHT_DATA = {
         time: "16:00-17:30",
         location: "万象",
         counterparty: "白健(CEEC老挝首席代表)",
-        meeting_type: "能源基建合作洽谈"
+        counterparty_attendees: "白健（首席代表）+ 待确认其他人员",
+        our_attendees: "陈海俊 + 待确认",
+        meeting_type: "能源基建合作洽谈",
+        agenda_items: ["中能建老挝业务布局", "四千岛能源合作机会", "融资模式与政府支持", "下一步行动时间表"]
       },
       // 板块2: 开场策略
       opening: {
@@ -3772,19 +3778,21 @@ function renderBattleplanTab(data, el) {
 
 function renderMeeting(mtg) {
   let html = `<div class="meeting-card">
-    <div class="mtg-row"><span class="mtg-label">时间</span><span class="mtg-val">${mtg.time}</span></div>
-    <div class="mtg-row"><span class="mtg-label">地点</span><span class="mtg-val">${mtg.location}</span></div>
-    <div class="mtg-row"><span class="mtg-label">对方</span><span class="mtg-val">${mtg.counterparty}</span></div>
-    <div class="mtg-row"><span class="mtg-label">对方参会</span><span class="mtg-val">${mtg.counterparty_attendees}</span></div>
-    <div class="mtg-row"><span class="mtg-label">我方参会</span><span class="mtg-val">${mtg.our_attendees}</span></div>
-    <div class="mtg-row"><span class="mtg-label">会议类型</span><span class="mtg-val">${mtg.meeting_type}</span></div>
+    <div class="mtg-row"><span class="mtg-label">时间</span><span class="mtg-val">${mtg.time || '待确认'}</span></div>
+    <div class="mtg-row"><span class="mtg-label">地点</span><span class="mtg-val">${mtg.location || '待确认'}</span></div>
+    <div class="mtg-row"><span class="mtg-label">对方</span><span class="mtg-val">${mtg.counterparty || '待确认'}</span></div>
+    ${mtg.counterparty_attendees ? `<div class="mtg-row"><span class="mtg-label">对方参会</span><span class="mtg-val">${mtg.counterparty_attendees}</span></div>` : ''}
+    ${mtg.our_attendees ? `<div class="mtg-row"><span class="mtg-label">我方参会</span><span class="mtg-val">${mtg.our_attendees}</span></div>` : ''}
+    <div class="mtg-row"><span class="mtg-label">会议类型</span><span class="mtg-val">${mtg.meeting_type || '待确认'}</span></div>
   </div>`;
-  html += '<div class="sub-heading">议题</div>';
-  html += '<ul class="insight-list">';
-  mtg.agenda_items.forEach(a => {
-    html += `<li><span class="bullet" style="background:var(--blue-plan)"></span><span class="val">${a}</span></li>`;
-  });
-  html += '</ul>';
+  if (mtg.agenda_items && mtg.agenda_items.length > 0) {
+    html += '<div class="sub-heading">议题</div>';
+    html += '<ul class="insight-list">';
+    mtg.agenda_items.forEach(a => {
+      html += `<li><span class="bullet" style="background:var(--blue-plan)"></span><span class="val">${a}</span></li>`;
+    });
+    html += '</ul>';
+  }
   return html;
 }
 
@@ -3908,7 +3916,6 @@ function init() {
   scheduleData = [
     { startH: 16, startM: 0, endH: 17, endM: 30, title: '华为老挝公司·陈祎靖CEO会晤', location: '万象', tags: [{label:'算力ICT', type:'client'}, {label:'重要', type:'urgent'}], insightKey: '华为老挝公司·陈祎靖' },
     { startH: 16, startM: 0, endH: 17, endM: 30, title: '中能建国际建设集团·白健首席代表会晤', location: '万象', tags: [{label:'能源基建', type:'client'}, {label:'重要', type:'urgent'}], insightKey: '中能建国际建设集团·白健' },
-    { startH: 18, startM: 0, endH: 21, endM: 0, title: '陶总+国企老总·晚餐商谈', location: '万象', tags: [{label:'商谈', type:'client'}, {label:'重要', type:'urgent'}], insightKey: '老挝资讯网·陶总' },
   ];
 
   travelData = {
