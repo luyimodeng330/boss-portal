@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- boss-portal v20260627-c -->
+<!-- boss-portal v20260628-a -->
 <title>Boss Portal · 总裁每日工作看板</title>
 <style>
   :root {
@@ -297,71 +297,109 @@
   .domestic-icon { min-width: 24px; }
   .domestic-detail { flex: 1; }
 
-  /* Exercise Section */
-  .exercise-item {
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--beige-dark);
-    display: flex;
-    gap: 12px;
-    align-items: center;
-  }
-  .exercise-item:last-child { border-bottom: none; }
-  .exercise-icon { font-size: 20px; min-width: 24px; }
-  .exercise-detail { flex: 1; }
-  .exercise-name { font-size: 14px; font-weight: 500; }
-  .exercise-desc { font-size: 12px; color: var(--warm-gray); }
-  .exercise-status {
-    font-size: 12px;
-    padding: 3px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    border: 1px solid var(--beige-dark);
-    background: var(--white);
-    color: var(--warm-gray);
-    transition: all 0.2s;
-  }
-  .exercise-status.done {
-    background: var(--green-ok);
-    color: var(--white);
-    border-color: var(--green-ok);
-  }
-
-  .tea-recommend {
+  /* Briefing Section */
+  .briefing-line {
     padding: 10px 16px;
-    background: var(--orange-bg);
-    font-size: 13px;
+    border-bottom: 1px solid var(--beige-dark);
+  }
+  .briefing-line:last-child { border-bottom: none; }
+  .briefing-line-header {
     display: flex;
     gap: 8px;
     align-items: center;
+    margin-bottom: 6px;
+  }
+  .briefing-line-icon { font-size: 16px; min-width: 20px; }
+  .briefing-line-title { font-size: 14px; font-weight: 600; }
+  .briefing-item {
+    padding: 4px 0 4px 28px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .briefing-item-red { color: var(--wine); font-weight: 500; }
+  .briefing-item-yellow { color: var(--warm-gray-dark); }
+  .briefing-tag {
+    display: inline-block;
+    font-size: 11px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-right: 4px;
+  }
+  .briefing-tag-red { background: rgba(67,28,30,0.12); color: var(--wine); }
+  .briefing-tag-yellow { background: rgba(153,160,172,0.15); color: var(--warm-gray-dark); }
+
+  /* Growth Section */
+  .growth-book {
+    padding: 12px 16px;
     border-bottom: 1px solid var(--beige-dark);
   }
-  .tea-icon { font-size: 16px; }
-  .tea-name { font-weight: 600; color: var(--orange); }
-  .tea-effect { color: var(--warm-gray-dark); }
-
-  /* Notes Section */
-  .notes-area {
-    padding: 12px 16px;
-  }
-  .notes-input {
-    width: 100%;
-    min-height: 80px;
-    border: 1px solid var(--beige-dark);
-    border-radius: var(--radius-sm);
-    padding: 10px 12px;
+  .growth-book-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .growth-book-why { font-size: 12px; color: var(--warm-gray-dark); line-height: 1.5; margin-bottom: 8px; }
+  .growth-insight {
+    padding: 6px 16px 6px 28px;
     font-size: 13px;
-    font-family: inherit;
-    color: var(--wine);
-    background: var(--beige);
-    resize: vertical;
-    outline: none;
-    transition: border-color 0.2s;
+    line-height: 1.5;
   }
-  .notes-input:focus { border-color: var(--wine-light); }
-  .notes-hint {
+  .growth-insight-num {
+    display: inline-block;
     font-size: 11px;
-    color: var(--warm-gray);
-    margin-top: 4px;
+    font-weight: 600;
+    color: var(--wine);
+    background: rgba(67,28,30,0.12);
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-right: 6px;
+  }
+  .growth-action {
+    padding: 8px 16px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--beige-dark);
+  }
+  .growth-action-label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-right: 4px;
+  }
+  .growth-action-p0 { background: rgba(67,28,30,0.12); color: var(--wine); }
+  .growth-action-p1 { background: rgba(153,160,172,0.15); color: var(--warm-gray-dark); }
+  .growth-week-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin: 8px 0;
+  }
+  .growth-week-table th {
+    background: var(--beige);
+    font-weight: 600;
+    padding: 6px 8px;
+    text-align: left;
+    border: 1px solid var(--beige-dark);
+  }
+  .growth-week-table td {
+    padding: 6px 8px;
+    border: 1px solid var(--beige-dark);
+    line-height: 1.4;
+  }
+  .growth-summary {
+    padding: 10px 16px;
+    font-size: 13px;
+    line-height: 1.5;
+    border-bottom: 1px solid var(--beige-dark);
+  }
+  .growth-summary-item {
+    display: flex;
+    gap: 8px;
+    padding: 2px 0;
+  }
+  .growth-summary-icon { font-size: 16px; min-width: 20px; }
+  .growth-sub-heading {
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 16px 4px;
+    color: var(--wine);
   }
 
   /* Footer */
@@ -1426,31 +1464,27 @@
   </div>
 </div>
 
-<!-- 🏃 运动板块 -->
-<div class="card-section" id="exerciseCard">
-  <div class="card-header" onclick="toggleCard('exerciseCard')">
-    <span class="icon">🏃</span>
-    <span class="title">今日运动 + 茶饮</span>
+<!-- 📋 每日简报板块 -->
+<div class="card-section" id="briefingCard">
+  <div class="card-header" onclick="toggleCard('briefingCard')">
+    <span class="icon">📋</span>
+    <span class="title">每日情报简报</span>
     <span class="toggle">▼</span>
   </div>
-  <div class="card-body" id="exerciseBody">
-    <div id="teaSection"></div>
-    <div id="exerciseList"></div>
+  <div class="card-body" id="briefingBody">
+    <div id="briefingContent"></div>
   </div>
 </div>
 
-<!-- 📝 笔记板块 -->
-<div class="card-section" id="notesCard">
-  <div class="card-header" onclick="toggleCard('notesCard')">
-    <span class="icon">📝</span>
-    <span class="title">今日笔记</span>
+<!-- 🌱 个人成长板块 -->
+<div class="card-section" id="growthCard">
+  <div class="card-header" onclick="toggleCard('growthCard')">
+    <span class="icon">🌱</span>
+    <span class="title">个人成长 · 精读卡</span>
     <span class="toggle">▼</span>
   </div>
-  <div class="card-body" id="notesBody">
-    <div class="notes-area">
-      <textarea class="notes-input" id="notesInput" placeholder="记录今日想法、备忘、谈话要点..."></textarea>
-      <div class="notes-hint">自动保存到本地 · 每日清零或手动保留</div>
-    </div>
+  <div class="card-body" id="growthBody">
+    <div id="growthContent"></div>
   </div>
 </div>
 
@@ -1471,9 +1505,8 @@ const CONFIG = {
 // ====== DATA ======
 let scheduleData = [];
 let travelData = { international: [], domestic: [] };
-let exerciseData = [];
-let teaData = {};
-let notes = '';
+let briefingData = {};
+let growthData = {};
 
 // ====== INSIGHT DATA (完整谈判作战包数据) ======
 const INSIGHT_DATA = {
@@ -3006,7 +3039,7 @@ function updateDateDisplay() {
   const todayKey = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`;
   const savedDay = loadLocal('ops_day');
   if (savedDay !== todayKey) {
-    localStorage.removeItem('ops_notes');
+    // notes feature removed
     saveLocal('ops_day', todayKey);
   }
 }
@@ -3129,61 +3162,147 @@ function renderTravel() {
   }
 }
 
-// ====== EXERCISE ======
-const EXERCISES = [
-  { icon: '🧘', name: '晨间冥想', desc: '15分钟 · 静坐调息 · 道法自然', duration: 15 },
-  { icon: '🏃', name: '午间快走', desc: '20分钟 · 出差友好 · 酒店周边', duration: 20 },
-  { icon: '💪', name: '晚间拉伸', desc: '15分钟 · 酒店房间 · 释放肩颈', duration: 15 },
-];
+// ====== BRIEFING ======
+const BRIEFING_DATA = {
+ 渔业: {
+   icon: '🐟', title: '渔业线',
+   items: [
+     { level: 'red', text: '中国进口：2026前4月7.2亿美元（↑17%），越南对华占比回升30%' },
+     { level: 'red', text: '老挝输华：天津口岸49吨通关（第二批），深圳蛇口38吨首船已验证路径' },
+     { level: 'yellow', text: '越南塘头价3年新高，原料短缺+鱼苗6年新高推升成本' },
+     { level: 'yellow', text: '竞争格局：柬埔寨全部水产准入+泰国尖吻鲈获准入' },
+   ]
+ },
+ 光伏: {
+   icon: '☀️', title: '光伏线',
+   items: [
+     { level: 'red', text: '中广核1GW光伏4月7日并网+中老500kV联网投产，跨境输电2.5亿kWh' },
+     { level: 'red', text: '中老500kV联网调度协议签署，电力互济5→150万kW（30倍跃升）' },
+     { level: 'yellow', text: '光伏出海模式打通：中广核+南网=老挝电力基础设施+跨境出口路径' },
+   ]
+ },
+ 算力: {
+   icon: '💻', title: '算力线',
+   items: [
+     { level: 'red', text: '英伟达中国份额归零+华为昇腾910B量产（算力↑3倍）——国产替代加速' },
+     { level: 'yellow', text: '阿里云530亿美元全球布局，马来西亚柔佛开服+5座数据中心' },
+     { level: 'yellow', text: '泰国从数据中心托管→AI算力节点转型' },
+   ]
+ },
+ 金融: {
+   icon: '💰', title: '金融线',
+   items: [
+     { level: 'red', text: '837号令7月1日施行——中国首部对外投资系统法规，终结碎片监管' },
+     { level: 'red', text: '中老铁路货运量破1100万吨（↑24.6%），累计超8400万吨+7300万人次' },
+     { level: 'yellow', text: '安美德2800莱布局泰老越，免征30年利润税+4个促进领域' },
+     { level: 'yellow', text: '美国DFC资本拟进场老挝，矿产+能源+化肥七大行业圈定' },
+   ]
+ },
+ 四千岛: {
+   icon: '🏗️', title: '四千岛特区',
+   items: [
+     { level: 'red', text: '中广核1GW并网+南网500kV投产=南部算力中心电力基础已就位' },
+     { level: 'yellow', text: '837号令7月1日施行——四千岛中国投资者ODI合规路径需更新' },
+     { level: 'yellow', text: '安美德30年免税先例——四千岛税收优惠可参照申请' },
+   ]
+ },
+};
 
-const TEAS = [
-  { name: '沉香茶', effect: '安神定心·助眠', days: [0,3,5] },
-  { name: '普洱熟茶', effect: '暖胃消食·降脂', days: [1,4,6] },
-  { name: '白茶(白毫银针)', effect: '清热润肺·抗衰', days: [2] },
-  { name: '绿茶(龙井)', effect: '提神醒脑·抗氧化', days: [] },
-];
-
-function renderExercise() {
-  const now = laoNow();
-  const dayOfWeek = now.getDay();
-
-  const tea = TEAS.find(t => t.days.includes(dayOfWeek)) || TEAS[1];
-  document.getElementById('teaSection').innerHTML = `
-    <div class="tea-recommend">
-      <span class="tea-icon">🍵</span>
-      <span class="tea-name">${tea.name}</span>
-      <span class="tea-effect">${tea.effect}</span>
-    </div>`;
-
+function renderBriefing() {
   let html = '';
-  EXERCISES.forEach((ex, i) => {
-    const isDone = loadLocal(`ops_ex_${i}`) || false;
-    html += `
-    <div class="exercise-item">
-      <span class="exercise-icon">${ex.icon}</span>
-      <div class="exercise-detail">
-        <div class="exercise-name">${ex.name}</div>
-        <div class="exercise-desc">${ex.desc}</div>
-      </div>
-      <button class="exercise-status ${isDone ? 'done' : ''}" onclick="toggleExercise(${i})">${isDone ? '✅ 已完成' : '待完成'}</button>
-    </div>`;
+  const lines = ['渔业','光伏','算力','金融','四千岛'];
+  lines.forEach(lineKey => {
+    const line = BRIEFING_DATA[lineKey];
+    if (!line) return;
+    html += `<div class="briefing-line">`;
+    html += `<div class="briefing-line-header"><span class="briefing-line-icon">${line.icon}</span><span class="briefing-line-title">${line.title}</span></div>`;
+    if (line.items && line.items.length > 0) {
+      line.items.forEach(item => {
+        const tagClass = item.level === 'red' ? 'briefing-tag-red' : 'briefing-tag-yellow';
+        const itemClass = item.level === 'red' ? 'briefing-item-red' : 'briefing-item-yellow';
+        const tagLabel = item.level === 'red' ? '🔴' : '🟡';
+        html += `<div class="briefing-item ${itemClass}"><span class="briefing-tag ${tagClass}">${tagLabel}</span>${item.text}</div>`;
+      });
+    }
+    html += `</div>`;
   });
-  document.getElementById('exerciseList').innerHTML = html;
+  document.getElementById('briefingContent').innerHTML = html;
 }
 
-function toggleExercise(idx) {
-  const current = loadLocal(`ops_ex_${idx}`) || false;
-  saveLocal(`ops_ex_${idx}`, !current);
-  renderExercise();
-}
+// ====== GROWTH ======
+const GROWTH_DATA = {
+  book: {
+    title: '📖 深读：反脆弱 · 第1-3章',
+    author: '纳西姆·塔勒布',
+    why: '四千岛每天面对投资决策——巴沙鱼产能、光伏合作、算力选址——都在不确定中做判断。英伟达归零、837号令7/1施行，这些变化不是风险，而是信号。塔勒布说：脆弱的东西害怕波动，反脆弱的东西从波动中成长。',
+    insights: [
+      { num: '1', text: '反脆弱≠韧性——它是波动中变得更强。越南塘头价涨≠老挝受害，而是"成本窗口正在打开"的受益者' },
+      { num: '2', text: '试错比预测更可靠——小失败=免费信息。湄公鲜生250→500→1000吨/月的产能爬坡就是试错策略' },
+      { num: '3', text: '过度优化反而更脆弱——四千岛跨4行业本身就是反脆弱结构，一个行业波动其他补位' },
+      { num: '4', text: '杠铃策略：90%极保守+10%极冒险。90%投入已验证路径(巴沙鱼+光伏)+10%押注新方向(昇腾算力+汽车)' },
+      { num: '5', text: '反脆弱指向下一本书——穷查理宝典·芒格：反脆弱是"从波动中获益"的方法论，芒格是"从多维度识别波动"的认知工具' },
+    ],
+    actions: [
+      { level: 'P0', text: '在投资评估模板新增"杠铃配比"维度——每个项目标注90%保守部分+10%冒险部分+中间风险' },
+      { level: 'P1', text: '今晚打坐聚焦："四千岛的4条业务线，哪条是90%保守、哪条是10%冒险？杠铃结构是否健康？"' },
+    ]
+  },
+  week: [
+    { day: '周一6/29', icon: '🏦', focus: '金融', book: '穷查理宝典', exercise: '多元思维模型→四千岛4线交叉判断' },
+    { day: '周二6/30', icon: '🌐', focus: 'Web3', book: '代币经济', exercise: 'DeFi跨境支付→四千岛金融合规' },
+    { day: '周三7/1', icon: '🤖', focus: 'AI', book: 'AI 2041', exercise: 'AI场景预测→算力中心商业模式' },
+    { day: '周四7/2', icon: '📊', focus: '业务', book: '大败局', exercise: '失败信号识别→IHC/华为谈判' },
+    { day: '周五7/3', icon: '🔧', focus: 'FDE', book: '前线部署工程', exercise: 'FDE方法论→审批合规现场发现' },
+    { day: '周六7/4', icon: '🧘', focus: '复盘', book: '5维交叉复盘', exercise: '本周知识交叉点+冥想深化' },
+    { day: '周日7/5', icon: '🎯', focus: '深读', book: '本周标记"想深读"的书', exercise: '深入阅读+模板沉淀' },
+  ],
+  summary: [
+    { icon: '🐟', text: '巴沙鱼进口↑17%达7.2亿美元，越南成本涨、老挝路径已验证' },
+    { icon: '☀️', text: '中广核1GW并网+南网500kV投产，电力互济30倍跃升' },
+    { icon: '💻', text: '英伟达归零+昇腾910B量产，阿里530亿美元布局东南亚' },
+    { icon: '💰', text: '837号令7/1施行首部对外投资法+中老铁路货运↑24.6%' },
+  ]
+};
 
-// ====== NOTES ======
-function initNotes() {
-  const saved = loadLocal('ops_notes') || '';
-  document.getElementById('notesInput').value = saved;
-  document.getElementById('notesInput').addEventListener('input', (e) => {
-    saveLocal('ops_notes', e.target.value);
-  });
+function renderGrowth() {
+  let html = '';
+  const book = GROWTH_DATA.book;
+  if (!book) return;
+
+  html += `<div class="growth-book"><div class="growth-book-title">${book.title}</div><div class="growth-book-why">${book.why}</div></div>`;
+
+  html += `<div class="growth-sub-heading">💡 核心洞察</div>`;
+  if (book.insights && book.insights.length > 0) {
+    book.insights.forEach(ins => {
+      html += `<div class="growth-insight"><span class="growth-insight-num">${ins.num}</span>${ins.text}</div>`;
+    });
+  }
+
+  html += `<div class="growth-sub-heading">🎯 行动建议</div>`;
+  if (book.actions && book.actions.length > 0) {
+    book.actions.forEach(act => {
+      const labelClass = act.level === 'P0' ? 'growth-action-p0' : 'growth-action-p1';
+      html += `<div class="growth-action"><span class="growth-action-label ${labelClass}">${act.level}</span>${act.text}</div>`;
+    });
+  }
+
+  html += `<div class="growth-sub-heading">📊 本周成长计划</div>`;
+  html += `<div style="padding:8px 16px"><table class="growth-week-table"><tr><th>日期</th><th>维度</th><th>主书</th><th>核心练习</th></tr>`;
+  if (GROWTH_DATA.week && GROWTH_DATA.week.length > 0) {
+    GROWTH_DATA.week.forEach(w => {
+      html += `<tr><td>${w.day}</td><td>${w.icon} ${w.focus}</td><td>${w.book}</td><td>${w.exercise}</td></tr>`;
+    });
+  }
+  html += `</table></div>`;
+
+  html += `<div class="growth-sub-heading">🏢 商业速览</div>`;
+  if (GROWTH_DATA.summary && GROWTH_DATA.summary.length > 0) {
+    GROWTH_DATA.summary.forEach(s => {
+      html += `<div class="growth-summary"><div class="growth-summary-item"><span class="growth-summary-icon">${s.icon}</span><span>${s.text}</span></div></div>`;
+    });
+  }
+
+  document.getElementById('growthContent').innerHTML = html;
 }
 
 // ====== CARD TOGGLE ======
@@ -3204,7 +3323,8 @@ function refreshData() {
   document.getElementById('lastUpdate').textContent = `最后更新: ${formatTime(laoNow().getHours(), laoNow().getMinutes())}`;
   renderSchedule();
   renderTravel();
-  renderExercise();
+  renderBriefing();
+  renderGrowth();
 }
 
 // ====== INSIGHT PANEL ======
@@ -3928,8 +4048,8 @@ function init() {
 
   renderSchedule();
   renderTravel();
-  renderExercise();
-  initNotes();
+  renderBriefing();
+  renderGrowth();
   refreshData();
 }
 
