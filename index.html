@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- boss-portal v20260628-a -->
+<!-- boss-portal v20260629-a -->
 <title>Boss Portal · 总裁每日工作看板</title>
 <style>
   :root {
@@ -240,62 +240,116 @@
   }
 
   /* Travel Section */
-  .travel-constraint {
+  .travel-tab-row {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid var(--beige-dark);
+    padding: 0 16px;
+  }
+  .travel-tab-btn {
+    font-size: 13px;
+    font-weight: 500;
     padding: 10px 16px;
-    background: var(--yellow-bg);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s;
+    color: var(--warm-gray);
+  }
+  .travel-tab-btn.active {
+    color: var(--wine);
+    font-weight: 600;
+    border-bottom-color: var(--wine);
+  }
+  .travel-prompt {
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--warm-gray);
+  }
+  .travel-quick-btn {
+    font-size: 12px;
+    color: var(--blue-plan);
+    padding: 4px 10px;
+    border: 1px solid var(--blue-plan);
+    border-radius: 16px;
+    margin: 4px 0;
+    display: inline-block;
+  }
+  .travel-sub-heading {
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 16px 6px;
+    color: var(--wine);
+  }
+  .flight-detail-item {
+    padding: 10px 16px;
     border-bottom: 1px solid var(--beige-dark);
     font-size: 13px;
+    line-height: 1.5;
   }
-  .constraint-row {
-    display: flex;
-    gap: 8px;
-    margin: 4px 0;
-    align-items: center;
-  }
-  .constraint-label { font-weight: 600; min-width: 48px; }
-  .constraint-no { color: var(--red-alert); }
-  .constraint-yes { color: var(--green-ok); }
-
-  .flight-item {
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--beige-dark);
-    display: flex;
-    gap: 10px;
-    align-items: center;
-  }
-  .flight-item:last-child { border-bottom: none; }
-  .flight-airline {
+  .flight-detail-item:last-child { border-bottom: none; }
+  .flight-number {
     font-size: 12px;
     font-weight: 600;
-    min-width: 70px;
+    color: var(--blue-plan);
+    background: rgba(0,122,255,0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-right: 6px;
   }
-  .flight-route {
-    flex: 1;
-    font-size: 13px;
-  }
-  .flight-time { font-weight: 600; }
-  .flight-duration { font-size: 11px; color: var(--warm-gray); }
-  .flight-price {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--wine);
-    min-width: 60px;
-    text-align: right;
-  }
-
-  .travel-domestic-item {
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--beige-dark);
-    font-size: 13px;
-  }
-  .domestic-option {
+  .flight-info-row {
     display: flex;
     gap: 8px;
     align-items: center;
     margin: 4px 0;
   }
-  .domestic-icon { min-width: 24px; }
-  .domestic-detail { flex: 1; }
+  .flight-info-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--warm-gray);
+    min-width: 36px;
+  }
+  .flight-info-val {
+    font-size: 13px;
+  }
+  .travel-alert {
+    padding: 8px 16px;
+    font-size: 12px;
+    color: var(--wine);
+    background: rgba(67,28,30,0.06);
+    border-bottom: 1px solid var(--beige-dark);
+  }
+  .travel-alert-icon { margin-right: 4px; }
+  .weather-item {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--beige-dark);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .weather-item:last-child { border-bottom: none; }
+  .weather-category {
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 16px 6px;
+    color: var(--wine);
+  }
+  .weather-row {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    margin: 4px 0;
+  }
+  .weather-icon { min-width: 20px; font-size: 16px; }
+  .weather-detail { flex: 1; }
+  .weather-label { font-size: 12px; font-weight: 500; color: var(--warm-gray-dark); }
+  .weather-desc { font-size: 13px; line-height: 1.5; }
+  .weather-tip {
+    font-size: 12px;
+    padding: 6px 16px;
+    background: rgba(67,28,30,0.06);
+    color: var(--wine);
+    border-bottom: 1px solid var(--beige-dark);
+  }
 
   /* Briefing Section */
   .briefing-line {
@@ -1436,15 +1490,18 @@
     <span class="toggle">▼</span>
   </div>
   <div class="card-body" id="travelBody">
-    <div class="travel-prompt" style="padding:12px 16px;">
+    <div class="travel-prompt">
       <div style="font-size:13px;color:var(--warm-gray);margin-bottom:8px;">告诉我要去哪里、什么时候，我来设计最佳行程方案</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;" id="travelQuickBtns">
-        <span style="font-size:12px;color:var(--blue-plan);padding:4px 10px;border:1px solid var(--blue-plan);border-radius:16px;">6月28日 · 出差巴色</span>
+        <span class="travel-quick-btn">6月28日 · 出差巴色</span>
       </div>
     </div>
-    <div id="internationalFlights"></div>
-    <div id="domesticTravel"></div>
-    <div id="travelResult"></div>
+    <div class="travel-tab-row">
+      <button class="travel-tab-btn active" data-travel-tab="route" onclick="switchTravelTab('route', this)">🧭 出行攻略</button>
+      <button class="travel-tab-btn" data-travel-tab="weather" onclick="switchTravelTab('weather', this)">🌤️ 天气建议</button>
+    </div>
+    <div id="travelRouteTab"></div>
+    <div id="travelWeatherTab" style="display:none"></div>
   </div>
 </div>
 
@@ -1504,7 +1561,6 @@ const CONFIG = {
 
 // ====== DATA ======
 let scheduleData = [];
-let travelData = { international: [], domestic: [] };
 let briefingData = {};
 let growthData = {};
 
@@ -3120,46 +3176,131 @@ function toggleDone(idx) {
 }
 
 // ====== TRAVEL ======
+const TRAVEL_DATA = {
+  route: {
+    flights: [
+      { flightNo: 'QV305', airline: '老挝航空', depart: '08:00', arrive: '09:00', duration: '1h', aircraft: 'A320', terminal: 'D', frequency: '每日', price: '$88' },
+      { flightNo: 'QV333', airline: '老挝航空', depart: '14:10', arrive: '15:10', duration: '1h', aircraft: 'A320/ARJ21', terminal: 'D', frequency: '每日', price: '$88' },
+    ],
+    ground: [
+      { icon: '🚗', type: '自驾', route: '万象→巴色', time: '约6-8h', note: '沿13号公路南下，路况一般，建议白天出行' },
+      { icon: '🚌', type: '大巴', route: '万象→巴色', time: '约8-10h', note: 'VIP大巴约8h，普通大巴10h+' },
+    ],
+    alerts: [
+      { icon: '⏰', text: '建议提前1.5h到达瓦岱机场(VTE)Terminal D——老挝安检+海关效率不稳定' },
+      { icon: '📱', text: '瓦岱机场WiFi有限，建议提前下载离线地图和翻译APP' },
+      { icon: '💰', text: '巴色机场(PKZ)无ATM取现，建议在万象提前换取老挝基普(LAK)' },
+    ]
+  },
+  weather: {
+    location: '巴色·占巴塞省',
+    season: '雨季（6-8月）',
+    temp: { high: '31°C', low: '24°C', feel: '体感闷热，湿度80%+' },
+    rainfall: '日均降雨概率60%+，午后阵雨常见',
+    clothing: [
+      { icon: '👕', label: '穿搭', desc: '单层棉麻短套装/T恤衫+薄牛仔裤——透气速干面料为首选，避免厚重棉质' },
+      { icon: '🩴', label: '鞋履', desc: '凉鞋/透气运动鞋为主——雨天路面泥泞，避免皮鞋和布面鞋' },
+      { icon: '🧴', label: '防护', desc: 'SPF30+防晒霜+驱蚊液(DEET)——巴色蚊虫密度高，疟蚊风险区' },
+      { icon: '☂️', label: '雨具', desc: '折叠伞随身——午后阵雨10-30min，打车候雨不现实' },
+    ],
+    health: [
+      { icon: '💧', label: '饮水', desc: '只喝瓶装水，避免自来水——巴色供水系统不完善' },
+      { icon: '🍜', label: '饮食', desc: '优先选择有空调的餐厅——湿热环境下食物腐败快，路边摊谨慎' },
+      { icon: '💊', label: '药品', desc: '随身带防腹泻药(思密达)+退烧药+防疟药(按医嘱)' },
+      { icon: '🧘', label: '作息', desc: '午间(12-14点)尽量室内休整——高温+高湿=中暑风险，谈判安排避开午间' },
+    ],
+    tips: [
+      '⚡ 巴色午后常遇短时停电——手机提前充满电，笔记本电脑带备用电池',
+      '🤝 老挝商务场合可穿polo衫+休闲长裤，不必西装——但见政府官员建议正装',
+      '🚕 巴色出租车少，出行依赖tuk-tuk或酒店接送——提前与酒店确认接送安排',
+    ]
+  }
+};
+
+function switchTravelTab(tabName, btnEl) {
+  document.querySelectorAll('.travel-tab-btn').forEach(b => b.classList.remove('active'));
+  btnEl.classList.add('active');
+  document.getElementById('travelRouteTab').style.display = tabName === 'route' ? 'block' : 'none';
+  document.getElementById('travelWeatherTab').style.display = tabName === 'weather' ? 'block' : 'none';
+}
+
 function renderTravel() {
-  const intlEl = document.getElementById('internationalFlights');
-  const domEl = document.getElementById('domesticTravel');
+  const data = TRAVEL_DATA;
+  if (!data) return;
 
-  if (travelData.international.length > 0) {
-    let html = '<div style="padding:8px 16px;font-size:13px;font-weight:600;color:var(--blue-plan)">🌍 国际航班</div>';
-    travelData.international.forEach(f => {
-      html += `
-      <div class="flight-item">
-        <div class="flight-airline">${f.airline}</div>
-        <div class="flight-route">
-          <div class="flight-time">${f.depart} → ${f.arrive}</div>
-          <div class="flight-duration">${f.duration}</div>
-        </div>
-        <div class="flight-price">¥${f.price}</div>
+  // Route tab
+  let routeHtml = '';
+  if (data.route && data.route.flights && data.route.flights.length > 0) {
+    routeHtml += '<div class="travel-sub-heading">✈️ 航班信息（万象→巴色）</div>';
+    data.route.flights.forEach(f => {
+      routeHtml += `<div class="flight-detail-item">
+        <div class="flight-info-row"><span class="flight-number">${f.flightNo}</span><span class="flight-info-val">${f.airline} · ${f.aircraft}</span></div>
+        <div class="flight-info-row"><span class="flight-info-label">时间</span><span class="flight-info-val">${f.depart} → ${f.arrive}（${f.duration}）</span></div>
+        <div class="flight-info-row"><span class="flight-info-label">航站</span><span class="flight-info-val">Terminal ${f.terminal} · ${f.frequency}</span></div>
+        <div class="flight-info-row"><span class="flight-info-label">票价</span><span class="flight-info-val">${f.price}</span></div>
       </div>`;
     });
-    intlEl.innerHTML = html;
-  } else {
-    intlEl.innerHTML = '';
   }
-
-  if (travelData.domestic.length > 0) {
-    let html = '<div style="padding:8px 16px;font-size:13px;font-weight:600;color:var(--orange)">🇨🇳 国内出行</div>';
-    travelData.domestic.forEach(d => {
-      html += `
-      <div class="travel-domestic-item">
-        <div class="domestic-option">
-          <span class="domestic-icon">${d.icon}</span>
-          <div class="domestic-detail">
-            <div style="font-weight:500">${d.type}: ${d.route}</div>
-            <div style="font-size:12px;color:var(--warm-gray)">${d.time} · ¥${d.price || '--'}</div>
-          </div>
-        </div>
+  if (data.route && data.route.ground && data.route.ground.length > 0) {
+    routeHtml += '<div class="travel-sub-heading">🚗 陆路出行</div>';
+    data.route.ground.forEach(g => {
+      routeHtml += `<div class="flight-detail-item">
+        <div class="flight-info-row"><span style="font-size:16px;min-width:20px">${g.icon}</span><span class="flight-info-val" style="font-weight:500">${g.type}: ${g.route}</span></div>
+        <div class="flight-info-row"><span class="flight-info-label">耗时</span><span class="flight-info-val">${g.time}</span></div>
+        <div class="flight-info-row"><span class="flight-info-label">提示</span><span class="flight-info-val" style="color:var(--warm-gray-dark)">${g.note}</span></div>
       </div>`;
     });
-    domEl.innerHTML = html;
-  } else {
-    domEl.innerHTML = '';
   }
+  if (data.route && data.route.alerts && data.route.alerts.length > 0) {
+    routeHtml += '<div class="travel-sub-heading">⚠️ 出行提醒</div>';
+    data.route.alerts.forEach(a => {
+      routeHtml += `<div class="travel-alert"><span class="travel-alert-icon">${a.icon}</span>${a.text}</div>`;
+    });
+  }
+  document.getElementById('travelRouteTab').innerHTML = routeHtml;
+
+  // Weather tab
+  let weatherHtml = '';
+  if (data.weather) {
+    const w = data.weather;
+    weatherHtml += `<div class="weather-item">
+      <div style="font-weight:600;font-size:14px">📍 ${w.location} · ${w.season}</div>
+      <div class="weather-row" style="margin-top:6px">
+        <span class="weather-icon">🌡️</span>
+        <div class="weather-detail">
+          <div class="weather-desc">气温 ${w.temp.high} / ${w.temp.low} · ${w.temp.feel}</div>
+        </div>
+      </div>
+      <div class="weather-row">
+        <span class="weather-icon">🌧️</span>
+        <div class="weather-detail">
+          <div class="weather-desc">${w.rainfall}</div>
+        </div>
+      </div>
+    </div>`;
+
+    if (w.clothing && w.clothing.length > 0) {
+      weatherHtml += '<div class="weather-category">👔 穿搭建议</div>';
+      w.clothing.forEach(c => {
+        weatherHtml += `<div class="weather-item"><div class="weather-row"><span class="weather-icon">${c.icon}</span><div class="weather-detail"><div class="weather-label">${c.label}</div><div class="weather-desc">${c.desc}</div></div></div></div>`;
+      });
+    }
+
+    if (w.health && w.health.length > 0) {
+      weatherHtml += '<div class="weather-category">🥗 饮食与健康</div>';
+      w.health.forEach(h => {
+        weatherHtml += `<div class="weather-item"><div class="weather-row"><span class="weather-icon">${h.icon}</span><div class="weather-detail"><div class="weather-label">${h.label}</div><div class="weather-desc">${h.desc}</div></div></div></div>`;
+      });
+    }
+
+    if (w.tips && w.tips.length > 0) {
+      weatherHtml += '<div class="weather-category">💡 当地贴士</div>';
+      w.tips.forEach(t => {
+        weatherHtml += `<div class="weather-tip">${t}</div>`;
+      });
+    }
+  }
+  document.getElementById('travelWeatherTab').innerHTML = weatherHtml;
 }
 
 // ====== BRIEFING ======
@@ -4037,14 +4178,6 @@ function init() {
     { startH: 16, startM: 0, endH: 17, endM: 30, title: '华为老挝公司·陈祎靖CEO会晤', location: '万象', tags: [{label:'算力ICT', type:'client'}, {label:'重要', type:'urgent'}], insightKey: '华为老挝公司·陈祎靖' },
     { startH: 16, startM: 0, endH: 17, endM: 30, title: '中能建国际建设集团·白健首席代表会晤', location: '万象', tags: [{label:'能源基建', type:'client'}, {label:'重要', type:'urgent'}], insightKey: '中能建国际建设集团·白健' },
   ];
-
-  travelData = {
-    international: [],
-    domestic: [
-      { icon: '✈️', type: '老挝国内航班', route: '万象→巴色', time: '约1.5h', price: '待查' },
-      { icon: '🚗', type: '自驾/大巴', route: '万象→巴色', time: '约6-8h', price: '--' },
-    ],
-  };
 
   renderSchedule();
   renderTravel();
