@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- boss-portal v20260629-b -->
+<!-- boss-portal v20260629-c -->
 <title>Boss Portal · 总裁每日工作看板</title>
 <style>
   :root {
@@ -87,6 +87,84 @@
     font-size: 13px;
     cursor: pointer;
     transition: background 0.2s;
+  }
+  .btn-lock {
+    background: none;
+    color: var(--warm-gray);
+    border: none;
+    padding: 8px 10px;
+    border-radius: var(--radius-sm);
+    font-size: 16px;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .btn-lock:hover { color: var(--wine); }
+
+  /* Login Gate */
+  .login-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--beige);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+  }
+  .login-card {
+    width: 90%;
+    max-width: 360px;
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    padding: 32px 24px;
+    text-align: center;
+  }
+  .login-logo {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--wine);
+    margin-bottom: 4px;
+  }
+  .login-sub {
+    font-size: 13px;
+    color: var(--warm-gray);
+    margin-bottom: 24px;
+  }
+  .login-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid var(--beige-dark);
+    border-radius: var(--radius-sm);
+    font-size: 16px;
+    color: var(--wine);
+    background: var(--beige);
+    outline: none;
+    transition: border-color 0.2s;
+    text-align: center;
+    letter-spacing: 3px;
+  }
+  .login-input:focus { border-color: var(--wine); }
+  .login-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--wine);
+    color: var(--beige);
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: background 0.2s;
+  }
+  .login-btn:hover { background: var(--wine-light); }
+  .login-error {
+    color: var(--red-alert);
+    font-size: 13px;
+    margin-top: 8px;
+    min-height: 20px;
+  }
   }
   .btn-refresh:hover { background: var(--wine-lighter); }
   .btn-refresh:active { transform: scale(0.95); }
@@ -1390,6 +1468,20 @@
 </head>
 <body>
 
+<!-- 🔒 Password Gate -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-card">
+    <div class="login-logo">🔒 Boss Portal</div>
+    <div class="login-sub">Charlie Chen · Private Dashboard</div>
+    <input type="password" class="login-input" id="loginInput" placeholder="输入密码" autocomplete="off">
+    <button class="login-btn" id="loginBtn" onclick="attemptLogin()">进入看板</button>
+    <div class="login-error" id="loginError"></div>
+  </div>
+</div>
+
+<!-- 🏠 Main App (hidden until authenticated) -->
+<div id="mainApp" style="display:none">
+
 <!-- Header -->
 <div class="header">
   <div class="header-top">
@@ -1398,6 +1490,7 @@
       <div class="header-subtitle" id="dateSubtitle"></div>
     </div>
     <div class="header-actions">
+      <button class="btn-lock" onclick="lockPortal()" title="锁定看板">🔒</button>
       <button class="btn-refresh" onclick="refreshData()" title="刷新数据">🔄 刷新</button>
     </div>
   </div>
@@ -1482,6 +1575,8 @@
   <div>鲁一摩灯 Boss Portal · 总裁每日工作看板</div>
   <div class="last-update" id="lastUpdate">最后更新: --</div>
 </div>
+
+</div><!-- end mainApp -->
 
 <script>
 // ====== CONFIG ======
@@ -4140,7 +4235,59 @@ function init() {
   refreshData();
 }
 
-init();
+// ====== AUTH GATE ======
+const PWD_HASH = 'e46bcf89da856f7bb4443cec7ae81e93deac47623a507c9e9009b3f20f60ce6c';
+
+async function sha256(message) {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function attemptLogin() {
+  const input = document.getElementById('loginInput');
+  const errorEl = document.getElementById('loginError');
+  const pwd = input.value.trim();
+  if (!pwd) { errorEl.textContent = '请输入密码'; return; }
+  const hash = await sha256(pwd);
+  if (hash === PWD_HASH) {
+    sessionStorage.setItem('bp_auth', '1');
+    document.getElementById('loginOverlay').style.display = 'none';
+    document.getElementById('mainApp').style.display = '';
+    init();
+  } else {
+    errorEl.textContent = '密码错误，请重试';
+    input.value = '';
+    input.focus();
+  }
+}
+
+function lockPortal() {
+  sessionStorage.removeItem('bp_auth');
+  document.getElementById('mainApp').style.display = 'none';
+  document.getElementById('loginOverlay').style.display = '';
+  document.getElementById('loginInput').value = '';
+  document.getElementById('loginError').textContent = '';
+}
+
+function checkAuth() {
+  if (sessionStorage.getItem('bp_auth') === '1') {
+    document.getElementById('loginOverlay').style.display = 'none';
+    document.getElementById('mainApp').style.display = '';
+    init();
+  } else {
+    // Auto-focus password input
+    setTimeout(() => document.getElementById('loginInput').focus(), 300);
+    // Enter key support
+    document.getElementById('loginInput').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') attemptLogin();
+    });
+  }
+}
+
+// ====== INIT ======
+checkAuth();
 </script>
 </body>
 </html>
